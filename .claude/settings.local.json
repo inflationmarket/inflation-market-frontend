@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(dir:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Read(//c/Users/dilli/OneDrive/Documents/inflation-market-contracts/**)",
+      "Bash(npx hardhat:*)"
     ],
     "deny": [],
     "ask": []
