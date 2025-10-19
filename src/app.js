@@ -154,13 +154,12 @@ const AppStateProvider = ({ children }) => {
 
   const [selectedMarket, setSelectedMarket] = useState('inflation');
   const [positions, setPositions] = useState([]);
-  const [balance, setBalance] = useState(50000); // Mock balance for now
 
   // Map Web3 wallet state to app account state
   const account = {
     address: web3?.account || null,
     isConnected: web3?.isConnected || false,
-    balance: balance, // You can fetch real balance from smart contracts later
+    balance: web3?.isConnected ? 0 : 50000, // Real balance will be fetched from smart contracts
   };
 
   // Use Web3 connect function
