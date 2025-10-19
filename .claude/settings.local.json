@@ -4,7 +4,17 @@
       "Bash(dir:*)",
       "Bash(mv:*)",
       "Read(//c/Users/dilli/OneDrive/Documents/inflation-market-contracts/**)",
-      "Bash(npx hardhat:*)"
+      "Bash(npx hardhat:*)",
+      "Bash(git commit:*)",
+      "Bash(git log:*)",
+      "Bash(awk:*)",
+      "Bash(xargs git show --format=%B -s)",
+      "Bash(git push:*)",
+      "Bash(git config:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git add:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

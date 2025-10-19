@@ -1,8 +1,6 @@
-// COPY THE ENTIRE CODE FROM THE ARTIFACT HERE
-// Starting from: import React, { useState, useEffect, createContext, useContext } from 'react';
-// All the way to the end: export default function InflationMarketApp() { ... }
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { Wallet, TrendingUp, TrendingDown, AlertTriangle, Plus, X, Shield, Zap, Users, BarChart3, ArrowRight, Menu, Twitter, MessageCircle, CheckCircle, Info, ChevronDown, ChevronUp, DollarSign, Lock, Target, ArrowUp, ArrowDown, Loader2, Check, XCircle } from 'lucide-react';
+import { Web3Context } from './contexts/Web3Context';
 
 // Custom Pyramid Logo Component
 const PyramidLogo = ({ className = "w-6 h-6" }) => (
@@ -151,25 +149,32 @@ const Toast = ({ id, message, type, onClose }) => {
 const AppStateContext = createContext(null);
 
 const AppStateProvider = ({ children }) => {
-  const [account, setAccount] = useState({ address: null, isConnected: false, balance: 50000 });
+  // Import Web3 context for real wallet integration
+  const web3 = useContext(Web3Context);
+
   const [selectedMarket, setSelectedMarket] = useState('inflation');
   const [positions, setPositions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [balance, setBalance] = useState(50000); // Mock balance for now
 
-  const connect = async () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setAccount({
-        address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
-        isConnected: true,
-        balance: 50000
-      });
-      setIsLoading(false);
-    }, 1000);
+  // Map Web3 wallet state to app account state
+  const account = {
+    address: web3?.account || null,
+    isConnected: web3?.isConnected || false,
+    balance: balance, // You can fetch real balance from smart contracts later
   };
 
+  // Use Web3 connect function
+  const connect = async () => {
+    if (web3?.connectWallet) {
+      await web3.connectWallet();
+    }
+  };
+
+  // Use Web3 disconnect function
   const disconnect = () => {
-    setAccount({ address: null, isConnected: false, balance: 0 });
+    if (web3?.disconnectWallet) {
+      web3.disconnectWallet();
+    }
     setPositions([]);
   };
 
@@ -182,8 +187,9 @@ const AppStateProvider = ({ children }) => {
       setPositions,
       connect,
       disconnect,
-      isLoading,
-      setIsLoading,
+      isLoading: web3?.isConnecting || false,
+      setIsLoading: () => {}, // Not needed with real Web3
+      web3, // Expose web3 context for contract interactions
     }}>
       {children}
     </AppStateContext.Provider>
