@@ -35,3 +35,6 @@ yarn-error.log*
 
 # Nested folder (to be removed manually)
 /inflation-market-frontend/
+
+# Windows reserved file accidentally generated
+nul
