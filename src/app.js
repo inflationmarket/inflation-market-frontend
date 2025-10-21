@@ -1,14 +1,8 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { Wallet, TrendingUp, TrendingDown, AlertTriangle, Plus, X, Shield, Zap, Users, BarChart3, ArrowRight, Menu, Twitter, MessageCircle, CheckCircle, Info, ChevronDown, ChevronUp, DollarSign, Lock, Target, ArrowUp, ArrowDown, Loader2, Check, XCircle } from 'lucide-react';
+import { Wallet, TrendingUp, TrendingDown, AlertTriangle, Plus, X, Shield, Zap, Users, BarChart3, ArrowRight, Menu, Twitter, MessageCircle, CheckCircle, Info, ChevronDown, ChevronUp, DollarSign, Lock, Target, ArrowUp, ArrowDown } from 'lucide-react';
 import { Web3Context } from './contexts/Web3Context';
-
-// Custom Pyramid Logo Component
-const PyramidLogo = ({ className = "w-6 h-6" }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M12 2L2 22h20L12 2z" />
-    <path d="M12 8L6 18h12L12 8z" opacity="0.6" />
-  </svg>
-);
+import { Button, Card, Input, PyramidLogo } from './components/ui/primitives';
+import { ToastProvider, useToast } from './components/toast/ToastProvider';
 
 // ============================================================================
 // CONFIGURATION & CONSTANTS
@@ -57,89 +51,6 @@ const parseContractError = (error) => {
   if (errorString.includes('leverage')) return 'Invalid leverage amount';
   
   return 'Transaction failed. Please try again.';
-};
-
-// ============================================================================
-// TOAST NOTIFICATION SYSTEM
-// ============================================================================
-
-const ToastContext = createContext(null);
-
-const ToastProvider = ({ children }) => {
-  const [toasts, setToasts] = useState([]);
-
-  const addToast = (message, type = 'info') => {
-    const id = Date.now();
-    setToasts(prev => [...prev, { id, message, type }]);
-    setTimeout(() => removeToast(id), 4000);
-  };
-
-  const removeToast = (id) => {
-    setToasts(prev => prev.filter(t => t.id !== id));
-  };
-
-  return (
-    <ToastContext.Provider value={{ addToast }}>
-      {children}
-      <ToastContainer toasts={toasts} onClose={removeToast} />
-    </ToastContext.Provider>
-  );
-};
-
-const useToast = () => {
-  const context = useContext(ToastContext);
-  if (!context) throw new Error('useToast must be used within ToastProvider');
-  return context;
-};
-
-const ToastContainer = ({ toasts, onClose }) => {
-  if (toasts.length === 0) return null;
-
-  return (
-    <div className="fixed top-4 right-4 z-50 space-y-2">
-      {toasts.map(toast => (
-        <Toast key={toast.id} {...toast} onClose={() => onClose(toast.id)} />
-      ))}
-    </div>
-  );
-};
-
-const Toast = ({ id, message, type, onClose }) => {
-  const icons = {
-    success: <Check className="w-5 h-5 text-green-500" />,
-    error: <XCircle className="w-5 h-5 text-red-500" />,
-    info: <Info className="w-5 h-5 text-blue-500" />,
-  };
-
-  const colors = {
-    success: 'bg-green-500/10 border-green-500/30',
-    error: 'bg-red-500/10 border-red-500/30',
-    info: 'bg-blue-500/10 border-blue-500/30',
-  };
-
-  return (
-    <div className={`${colors[type]} border rounded-lg p-4 flex items-center gap-3 min-w-[300px] shadow-lg`} style={{
-      animation: 'slideIn 0.3s ease-out'
-    }}>
-      <style>{`
-        @keyframes slideIn {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-      `}</style>
-      {icons[type]}
-      <p className="text-white text-sm flex-1">{message}</p>
-      <button onClick={onClose} className="text-gray-400 hover:text-white">
-        <X className="w-4 h-4" />
-      </button>
-    </div>
-  );
 };
 
 // ============================================================================
@@ -240,53 +151,6 @@ const MARKETS = [
     openInterest: 2100000
   }
 ];
-
-// ============================================================================
-// UI COMPONENTS - Reusable
-// ============================================================================
-
-const Button = ({ children, variant = 'primary', loading = false, disabled, onClick, className = '', ...props }) => {
-  const variants = {
-    primary: 'bg-yellow-500 hover:bg-yellow-400 text-black',
-    success: 'bg-green-500 hover:bg-green-600 text-white',
-    danger: 'bg-red-500 hover:bg-red-600 text-white',
-    ghost: 'bg-white/5 hover:bg-white/10 text-gray-400',
-  };
-
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled || loading}
-      className={`px-6 py-3 rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${variants[variant]} ${className}`}
-      {...props}
-    >
-      {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-      {children}
-    </button>
-  );
-};
-
-const Card = ({ children, className = '' }) => (
-  <div className={`bg-white/5 border border-yellow-500/20 rounded-xl p-6 ${className}`}>
-    {children}
-  </div>
-);
-
-const Input = ({ label, value, onChange, type = 'text', placeholder, disabled, helperText, ...props }) => (
-  <div>
-    {label && <label className="text-sm text-gray-400 mb-2 block">{label}</label>}
-    <input
-      type={type}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      disabled={disabled}
-      className="w-full bg-black border border-yellow-500/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-500 disabled:opacity-50"
-      {...props}
-    />
-    {helperText && <div className="text-xs text-gray-400 mt-1">{helperText}</div>}
-  </div>
-);
 
 // ============================================================================
 // MAIN APP
