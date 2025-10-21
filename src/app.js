@@ -3,7 +3,6 @@ import { Wallet, TrendingUp, TrendingDown, AlertTriangle, Plus, X, Shield, Zap, 
 import { Web3Context } from './contexts/Web3Context';
 import { Button, Card, Input, PyramidLogo } from './components/ui/primitives';
 import { ToastProvider, useToast } from './components/toast/ToastProvider';
-import FAQSection from './components/faq/FAQSection';
 import FAQPage from './components/pages/FAQPage';
 import CompliancePage from './components/pages/CompliancePage';
 
@@ -2293,6 +2292,7 @@ function SharedFooter({ onNavigate }) {
     </footer>
   );
 }
+
 
 
 
