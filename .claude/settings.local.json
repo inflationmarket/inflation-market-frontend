@@ -14,7 +14,10 @@
       "Bash(git remote set-url:*)",
       "Bash(git add:*)",
       "Bash(npm install:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(npm start)",
+      "Bash(timeout:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []
