@@ -1,0 +1,16 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="64" height="64" rx="12" fill="#000000"/>
+
+  <!-- Pyramid Logo -->
+  <g transform="translate(12, 16)">
+    <!-- Top layer -->
+    <path d="M20 4L4 14L20 24L36 14L20 4Z" fill="#EAB308" stroke="#EAB308" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Middle layer -->
+    <path d="M4 24L20 34L36 24" stroke="#EAB308" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Bottom layer -->
+    <path d="M4 34L20 44L36 34" stroke="#EAB308" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

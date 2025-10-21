@@ -3,6 +3,9 @@ import { Wallet, TrendingUp, TrendingDown, AlertTriangle, Plus, X, Shield, Zap, 
 import { Web3Context } from './contexts/Web3Context';
 import { Button, Card, Input, PyramidLogo } from './components/ui/primitives';
 import { ToastProvider, useToast } from './components/toast/ToastProvider';
+import FAQSection from './components/faq/FAQSection';
+import FAQPage from './components/pages/FAQPage';
+import CompliancePage from './components/pages/CompliancePage';
 
 // ============================================================================
 // CONFIGURATION & CONSTANTS
@@ -181,6 +184,8 @@ const AppRouter = () => {
     'how-it-works': <HowItWorksPage onNavigate={navigate} />,
     whitepaper: <WhitepaperPage onNavigate={navigate} />,
     roadmap: <RoadmapPage onNavigate={navigate} />,
+    faq: <FAQPage onNavigate={navigate} />,
+    compliance: <CompliancePage onNavigate={navigate} />,
   };
 
   return pages[currentPage] || pages.landing;
@@ -210,7 +215,7 @@ function LandingPage({ onNavigate }) {
               <button onClick={() => onNavigate('whitepaper')} className="text-gray-300 hover:text-yellow-500">Whitepaper</button>
               <button onClick={() => onNavigate('roadmap')} className="text-gray-300 hover:text-yellow-500">Roadmap</button>
               <button onClick={() => onNavigate('about')} className="text-gray-300 hover:text-yellow-500">About</button>
-              <button onClick={() => onNavigate('app')} className="px-6 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg font-bold">Launch App</button>
+              <button onClick={() => onNavigate('app')} className="px-6 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg font-bold">Open Prototype</button>
             </div>
 
             <button className="md:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -224,7 +229,7 @@ function LandingPage({ onNavigate }) {
               <button onClick={() => { onNavigate('whitepaper'); setMobileMenuOpen(false); }} className="block w-full text-left text-gray-300 hover:text-yellow-500">Whitepaper</button>
               <button onClick={() => { onNavigate('roadmap'); setMobileMenuOpen(false); }} className="block w-full text-left text-gray-300 hover:text-yellow-500">Roadmap</button>
               <button onClick={() => { onNavigate('about'); setMobileMenuOpen(false); }} className="block w-full text-left text-gray-300 hover:text-yellow-500">About</button>
-              <button onClick={() => { onNavigate('app'); setMobileMenuOpen(false); }} className="w-full px-6 py-2 bg-yellow-500 text-black rounded-lg font-bold">Launch App</button>
+              <button onClick={() => { onNavigate('app'); setMobileMenuOpen(false); }} className="w-full px-6 py-2 bg-yellow-500 text-black rounded-lg font-bold">Open Prototype</button>
             </div>
           )}
         </div>
@@ -233,44 +238,44 @@ function LandingPage({ onNavigate }) {
       <section className="pt-32 pb-20 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-block mb-4 px-4 py-2 bg-yellow-500/10 border border-yellow-500/30 rounded-full">
-            <span className="text-yellow-500 text-sm font-medium">🚀 Live on Testnet • Democratizing Macro Risk Management</span>
+            <span className="text-yellow-500 text-sm font-medium">🚧 Under Development • Testnet Preview</span>
           </div>
-          
+
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
             Hedge Inflation.
             <br />
-            <span className="text-yellow-500">Protect Your Future.</span>
+            <span className="text-yellow-500">On-Chain.</span>
           </h1>
-          
+
           <p className="text-xl text-gray-400 mb-4 max-w-3xl mx-auto">
-            The world's first decentralized perpetual futures market for real-world economic data. 
-            Trade CPI, GDP, and housing markets without intermediaries.
+            We are building the first decentralized market for CPI, housing, and GDP exposure secured by a hybrid MPC + Chainlink oracle network.
           </p>
 
           <p className="text-lg text-gray-500 mb-8 max-w-2xl mx-auto">
-            Inspired by Nobel laureate Robert Shiller's vision of democratized macro risk hedging, 
-            Inflation Market brings institutional-grade economic derivatives to everyone.
+            Inflation Market is currently in active development. Join the journey as we bring institutional-grade macro hedging tools on-chain.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button onClick={() => onNavigate('app')} className="text-lg">
-              Start Trading <ArrowRight className="w-5 h-5" />
+              Explore Prototype <ArrowRight className="w-5 h-5" />
             </Button>
             <Button variant="ghost" className="text-lg" onClick={() => onNavigate('how-it-works')}>
               <Info className="w-5 h-5" /> How It Works
             </Button>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
-              { value: '$4.3M', label: '24h Volume' },
-              { value: '2,431', label: 'Active Positions' },
-              { value: '$14.1M', label: 'Open Interest' },
-              { value: '847', label: 'Total Users' }
-            ].map((stat, i) => (
+              { icon: <Shield className="w-6 h-6" />, title: 'Hedge Monthly CPI', desc: 'Protect savings from inflation with CPI-linked perpetuals' },
+              { icon: <Target className="w-6 h-6" />, title: 'Housing & GDP Markets', desc: 'Access synthetic contracts for macro economic exposure' },
+              { icon: <Zap className="w-6 h-6" />, title: 'Hybrid Oracle Network', desc: 'Transparent data via MPC aggregation + Chainlink delivery' }
+            ].map((item, i) => (
               <Card key={i} className="hover:border-yellow-500/40 transition-all">
-                <div className="text-3xl font-bold text-yellow-500 mb-1">{stat.value}</div>
-                <div className="text-sm text-gray-400">{stat.label}</div>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="text-yellow-500">{item.icon}</div>
+                  <div className="text-lg font-bold text-white">{item.title}</div>
+                </div>
+                <div className="text-sm text-gray-400">{item.desc}</div>
               </Card>
             ))}
           </div>
@@ -295,17 +300,17 @@ function LandingPage({ onNavigate }) {
               {
                 icon: <Shield className="w-8 h-8" />,
                 title: 'Hedge Inflation Risk',
-                description: 'Protect your savings from rising prices. Go long on CPI perpetuals and profit when inflation erodes purchasing power.'
+                description: 'Protect savings from rising prices using CPI-linked perpetuals backed by verifiable macro data.'
               },
               {
                 icon: <Zap className="w-8 h-8" />,
                 title: 'Earn Funding Yields',
-                description: 'Take the other side and earn consistent funding payments. Short inflation when you believe prices will stabilize.'
+                description: 'Earn funding by providing liquidity or shorting inflation when you expect prices to cool.'
               },
               {
                 icon: <Users className="w-8 h-8" />,
                 title: 'Speculate on Economics',
-                description: 'Trade your macro views. Bullish on housing? Bearish on GDP? Express your thesis with leverage up to 20x.'
+                description: 'Trade macro views across CPI, housing, and GDP with built-in risk tools and transparent oracle data.'
               }
             ].map((feature, i) => (
               <Card key={i} className="text-center hover:border-yellow-500/40 transition-all">
@@ -328,7 +333,7 @@ function LandingPage({ onNavigate }) {
               Simple, Powerful, Decentralized
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Open a position in three steps. No KYC. No intermediaries. Just pure DeFi.
+              See how the protocol will work once live. No KYC. No intermediaries. Just transparent macro markets.
             </p>
           </div>
 
@@ -337,19 +342,19 @@ function LandingPage({ onNavigate }) {
               {
                 step: '1',
                 title: 'Connect Wallet',
-                description: 'Link your Web3 wallet. We support MetaMask, WalletConnect, and all major providers.',
+                description: 'Connect a testnet wallet (MetaMask, WalletConnect, etc.) to explore the prototype.',
                 icon: <Wallet className="w-6 h-6" />
               },
               {
                 step: '2',
                 title: 'Choose Your Position',
-                description: 'Select a market (CPI, Housing, GDP), decide long or short, and set your leverage.',
+                description: 'Preview inflation, housing, and GDP markets, choose a direction, and configure leverage settings.',
                 icon: <Target className="w-6 h-6" />
               },
               {
                 step: '3',
-                title: 'Start Trading',
-                description: 'Deposit collateral and open your position. Track P&L in real-time and close whenever you want.',
+                title: 'Explore Prototype',
+                description: 'Prototype flows demonstrate collateral management, P&L tracking, and closing mechanics before mainnet launch.',
                 icon: <TrendingUp className="w-6 h-6" />
               }
             ].map((step, i) => (
@@ -437,14 +442,14 @@ function LandingPage({ onNavigate }) {
         <div className="max-w-4xl mx-auto">
           <Card className="bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border-2 border-yellow-500/40 text-center p-12">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Ready to Start Trading?
+              Ready to Explore Prototype?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Join hundreds of traders already hedging their inflation risk and earning yields on Inflation Market.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button onClick={() => onNavigate('app')} className="text-lg">
-                Launch App <ArrowRight className="w-5 h-5" />
+                Open Prototype <ArrowRight className="w-5 h-5" />
               </Button>
               <Button variant="ghost" className="text-lg" onClick={() => onNavigate('whitepaper')}>
                 Read Whitepaper
@@ -453,6 +458,9 @@ function LandingPage({ onNavigate }) {
           </Card>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQSection />
 
       <footer className="border-t border-yellow-500/20 bg-black py-12 px-4">
         <div className="max-w-6xl mx-auto">
@@ -474,7 +482,7 @@ function LandingPage({ onNavigate }) {
                 <button onClick={() => onNavigate('whitepaper')} className="block text-sm text-gray-400 hover:text-yellow-500">Whitepaper</button>
                 <button onClick={() => onNavigate('roadmap')} className="block text-sm text-gray-400 hover:text-yellow-500">Roadmap</button>
                 <button onClick={() => onNavigate('about')} className="block text-sm text-gray-400 hover:text-yellow-500">About</button>
-                <button onClick={() => onNavigate('app')} className="block text-sm text-gray-400 hover:text-yellow-500">Launch App</button>
+                <button onClick={() => onNavigate('app')} className="block text-sm text-gray-400 hover:text-yellow-500">Open Prototype</button>
               </div>
             </div>
 
@@ -494,10 +502,11 @@ function LandingPage({ onNavigate }) {
             </div>
 
             <div>
-              <h4 className="font-bold text-white mb-4">Contact</h4>
+              <h4 className="font-bold text-white mb-4">Community</h4>
               <div className="space-y-2">
-                <a href="mailto:security@inflationmarket.com" className="block text-sm text-gray-400 hover:text-yellow-500">Security</a>
-                <a href="mailto:support@inflationmarket.com" className="block text-sm text-gray-400 hover:text-yellow-500">Support</a>
+                <a href={CONFIG.social.discord} target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-yellow-500">Discord</a>
+                <a href={CONFIG.social.twitter} target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-yellow-500">Twitter</a>
+                <a href={CONFIG.social.github} target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-yellow-500">GitHub</a>
               </div>
             </div>
           </div>
@@ -739,11 +748,20 @@ function TradingForm({ market }) {
 
   return (
     <Card>
-      <h2 className="text-xl font-bold text-white mb-6">Open Position</h2>
-      
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-white">Open Position</h2>
+        <span className="px-3 py-1 bg-blue-500/20 border border-blue-500/40 rounded-full text-xs font-bold text-blue-400">
+          PROTOTYPE - MOCK DATA
+        </span>
+      </div>
+
+      <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+        <p className="text-sm text-blue-400">ℹ️ This is a UI prototype. Transactions simulate contract interactions but do not execute on-chain yet.</p>
+      </div>
+
       {!account.isConnected && (
         <div className="mb-4 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-          <p className="text-sm text-yellow-500">⚠️ Connect wallet to trade</p>
+          <p className="text-sm text-yellow-500">⚠️ Connect wallet to test prototype</p>
         </div>
       )}
       
@@ -818,7 +836,12 @@ function OrderSummary({ market }) {
 
   return (
     <Card>
-      <h2 className="text-xl font-bold text-white mb-6">Order Summary</h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-white">Order Summary</h2>
+        <span className="px-3 py-1 bg-blue-500/20 border border-blue-500/40 rounded-full text-xs font-bold text-blue-400">
+          SAMPLE CALC
+        </span>
+      </div>
       <div className="space-y-4">
         {[
           { label: 'Entry Price', value: `$${market.price.toFixed(2)}`, color: 'white' },
@@ -926,7 +949,7 @@ function PositionCard({ position, onClose, isClosing }) {
             {position.type}
           </div>
           <div>
-            <div className="text-lg font-bold text-white">Inflation Index</div>
+            <div className="text-lg font-bold text-white">CPI Perpetual</div>
             <div className="text-sm text-gray-400">Opened {new Date(position.openedAt).toLocaleDateString()}</div>
           </div>
         </div>
@@ -1015,26 +1038,28 @@ function HowItWorksPage({ onNavigate }) {
 
         {/* The Core Mechanism */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-white mb-8">The Core Mechanism: Real Yield Tracking</h2>
-          
+          <h2 className="text-3xl font-bold text-white mb-8">The Core Mechanism: CPI-Linked Perpetuals</h2>
+
           <Card className="mb-6">
-            <h3 className="text-2xl font-bold text-white mb-4">What Our Index Actually Tracks</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">What Our Markets Track</h3>
             <p className="text-lg text-gray-300 leading-relaxed mb-4">
-              Our flagship perpetual doesn't just track raw inflation. Instead, it tracks <strong className="text-yellow-500">Real Yield</strong>—a measure of the economy's true health:
+              Inflation Market offers perpetual futures on key economic indices, starting with <strong className="text-yellow-500">Consumer Price Index (CPI)</strong>:
             </p>
             <div className="bg-black/50 rounded-xl p-6 border border-yellow-500/30 mb-4">
-              <p className="text-2xl font-bold text-white text-center">
-                Real Yield = Treasury Yields − Inflation Rate
-              </p>
+              <div className="space-y-2">
+                <p className="text-xl font-bold text-white"><strong className="text-yellow-500">CPI Market:</strong> Track monthly inflation changes</p>
+                <p className="text-xl font-bold text-white"><strong className="text-blue-400">Housing Market:</strong> FHFA House Price Index (Coming Soon)</p>
+                <p className="text-xl font-bold text-white"><strong className="text-green-400">GDP Market:</strong> Quarterly GDP growth (Coming Soon)</p>
+              </div>
             </div>
             <div className="space-y-3 text-gray-300">
               <p>
-                <strong className="text-white">• Higher Real Yields = Stronger Economy</strong><br/>
-                When Treasury rates rise faster than inflation, the economy is healthy. Your money keeps its value, and interest income is meaningful.
+                <strong className="text-white">• CPI Perpetual</strong><br/>
+                Trade monthly inflation changes. Go long if you expect inflation to accelerate, short to hedge against rising prices eroding your savings.
               </p>
               <p>
-                <strong className="text-white">• Lower Real Yields = Weaker Economy</strong><br/>
-                When inflation outpaces Treasury rates, purchasing power erodes. Savings lose value even as nominal prices rise.
+                <strong className="text-white">• Oracle-Backed Pricing</strong><br/>
+                All markets use hybrid MPC aggregation + Chainlink delivery (in development) to ensure tamper-resistant, verifiable economic data.
               </p>
             </div>
           </Card>
@@ -1047,7 +1072,7 @@ function HowItWorksPage({ onNavigate }) {
             <div className="space-y-4 text-gray-300">
               <div>
                 <p className="text-lg font-bold text-white mb-2">Index Price (Oracle Price)</p>
-                <p>This is the <strong className="text-blue-400">true, real-world value</strong> of the economic index, delivered by Chainlink oracles. It updates hourly based on official government data (CPI, Treasury yields, etc.). Think of this as "ground truth."</p>
+                <p>This is the <strong className="text-blue-400">true, real-world value</strong> of the economic index, delivered by a hybrid MPC aggregation layer with Chainlink delivery (in development). It updates based on official government data (CPI, Treasury yields, etc.). Think of this as "ground truth."</p>
               </div>
               <div>
                 <p className="text-lg font-bold text-white mb-2">Mark Price (Market Price)</p>
@@ -1148,7 +1173,7 @@ function HowItWorksPage({ onNavigate }) {
                 <strong className="text-white">If you're holding $10,000 in USDC today</strong>, and inflation runs at 5% annually while Treasury yields are only 3%, you're losing 2% in real purchasing power every year. That $10,000 will only buy $9,800 worth of goods next year.
               </p>
               <p>
-                <strong className="text-yellow-500">By going SHORT on the Real Yield perpetual</strong>, you profit as real yields compress (inflation outpacing rates). The gains from your short position offset the erosion of your stablecoin holdings. You've effectively hedged your savings.
+                <strong className="text-yellow-500">By going SHORT on the CPI perpetual</strong>, you profit as inflation rises. The gains from your short position offset the erosion of your stablecoin holdings. You've effectively hedged your savings against inflation.
               </p>
               <p>
                 Conversely, <strong className="text-white">going LONG</strong> is a bet that the economy will improve—rates will rise faster than inflation, stabilizing or expanding real yields. This is profitable when economic conditions strengthen, but it doesn't protect your savings from inflation in a deteriorating environment.
@@ -1320,7 +1345,7 @@ function HowItWorksPage({ onNavigate }) {
             Open your first position in minutes. No KYC. No intermediaries.
           </p>
           <Button onClick={() => onNavigate('app')} className="text-lg">
-            Launch App <ArrowRight className="w-5 h-5" />
+            Open Prototype <ArrowRight className="w-5 h-5" />
           </Button>
         </section>
       </main>
@@ -1413,7 +1438,7 @@ function WhitepaperPage({ onNavigate }) {
                   This whitepaper presents <strong className="text-white">Inflation Market</strong>, a decentralized, non-custodial protocol designed to enable open participation in markets for macroeconomic risks such as inflation, GDP growth, and national housing prices. Inspired by the Nobel Prize-winning work of <strong className="text-yellow-500">Robert J. Shiller</strong>, the protocol allows individuals, institutions, and DAOs to hedge or gain exposure to real-world economic indicators through <strong className="text-white">perpetual futures</strong> that never expire.
                 </p>
                 <p className="text-lg text-gray-300 leading-relaxed">
-                  Unlike traditional derivatives platforms, Inflation Market operates as a <strong className="text-white">transparent, autonomous protocol</strong> governed by smart contracts. Its design ensures on-chain settlement, decentralized oracle integration, and permissionless access, while avoiding centralized custody or investment management functions.
+                  Unlike traditional derivatives platforms, Inflation Market operates as a <strong className="text-white">transparent, autonomous protocol</strong> governed by smart contracts. A hybrid MPC + Chainlink oracle network delivers tamper-resistant CPI and treasury data, while permissionless smart contracts handle settlement without centralized custody.
                 </p>
               </div>
             </section>
@@ -1759,11 +1784,12 @@ function WhitepaperPage({ onNavigate }) {
               <Card>
                 <div className="space-y-4">
                   {[
-                    { phase: '1', title: 'Research & Simulation', desc: 'Economic modeling, oracle calibration, and historical backtesting', status: 'Complete' },
-                    { phase: '2', title: 'Testnet MVP', desc: 'CPI log-perpetual with synthetic oracle data', status: 'In Progress' },
-                    { phase: '3', title: 'Oracle Integration', desc: 'Chainlink/UMA-style multi-source oracle system', status: 'Planned' },
-                    { phase: '4', title: 'Mainnet Launch', desc: 'Fully non-custodial CPI perpetual market with insurance fund', status: 'Planned' },
-                    { phase: '5', title: 'Expansion', desc: 'Add housing and GDP indices; governance decentralization', status: 'Future' }
+                    { phase: '0', title: 'Phase 0: Manual Oracle', desc: 'Smart contracts with manual CPI data entry for testing', status: 'Complete' },
+                    { phase: '1', title: 'Phase 1: Hybrid Oracle Development', desc: 'MPC aggregation layer + Chainlink delivery integration', status: 'In Progress' },
+                    { phase: '2', title: 'Phase 2: Testnet Deployment', desc: 'Full protocol testing on Sepolia with hybrid oracles', status: 'Planned' },
+                    { phase: '3', title: 'Phase 3: Security Audits', desc: 'Smart contract audits and bug bounty program', status: 'Planned' },
+                    { phase: '4', title: 'Phase 4: Mainnet Launch', desc: 'CPI perpetuals live on mainnet with insurance fund', status: 'Planned' },
+                    { phase: '5', title: 'Phase 5: Market Expansion', desc: 'Add Housing (FHFA HPI) and GDP markets', status: 'Future' }
                   ].map((milestone) => (
                     <div key={milestone.phase} className="bg-black/30 rounded-lg p-6 border border-yellow-500/10">
                       <div className="flex items-start gap-4">
@@ -1813,7 +1839,7 @@ function WhitepaperPage({ onNavigate }) {
                 Try the protocol on our testnet deployment
               </p>
               <Button onClick={() => onNavigate('app')}>
-                Launch App <ArrowRight className="w-5 h-5" />
+                Open Prototype <ArrowRight className="w-5 h-5" />
               </Button>
             </div>
           </div>
@@ -2114,7 +2140,7 @@ function RoadmapPage({ onNavigate }) {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button onClick={() => onNavigate('app')}>
-              Launch App <ArrowRight className="w-5 h-5" />
+              Open Prototype <ArrowRight className="w-5 h-5" />
             </Button>
             <Button variant="ghost" onClick={() => onNavigate('whitepaper')}>
               Read Whitepaper
@@ -2153,8 +2179,8 @@ function AboutPage({ onNavigate }) {
             <p>• Smart Contracts: Solidity ^0.8.20</p>
             <p>• Frontend: React with Modern UX</p>
             <p>• Blockchain: Arbitrum (L2)</p>
-            <p>• Oracles: Chainlink Price Feeds</p>
-            <p>• Security: Full audit and testing</p>
+            <p>• Oracles: Hybrid MPC aggregation + Chainlink delivery (in progress)</p>
+            <p>• Security: Audits + bug bounties planned pre-mainnet</p>
           </div>
         </Card>
       </main>
@@ -2169,18 +2195,41 @@ function AboutPage({ onNavigate }) {
 // ============================================================================
 
 function SimpleHeader({ onNavigate, title }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <header className="border-b border-yellow-500/20 bg-black/90 backdrop-blur-md sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('landing')}>
             <div className="w-10 h-10 rounded-lg bg-yellow-500 flex items-center justify-center">
               <PyramidLogo className="w-6 h-6 text-black" />
             </div>
             <h1 className="text-xl font-bold text-white">Inflation Market</h1>
           </div>
-          <Button onClick={() => onNavigate('app')}>Launch App</Button>
+
+          <div className="hidden md:flex items-center gap-8">
+            <button onClick={() => onNavigate('how-it-works')} className="text-gray-300 hover:text-yellow-500">How It Works</button>
+            <button onClick={() => onNavigate('whitepaper')} className="text-gray-300 hover:text-yellow-500">Whitepaper</button>
+            <button onClick={() => onNavigate('roadmap')} className="text-gray-300 hover:text-yellow-500">Roadmap</button>
+            <button onClick={() => onNavigate('about')} className="text-gray-300 hover:text-yellow-500">About</button>
+            <button onClick={() => onNavigate('app')} className="px-6 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg font-bold">Open Prototype</button>
+          </div>
+
+          <button className="md:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <Menu className="w-6 h-6" />
+          </button>
         </div>
+
+        {mobileMenuOpen && (
+          <div className="md:hidden py-4 space-y-3 border-t border-yellow-500/20">
+            <button onClick={() => { onNavigate('how-it-works'); setMobileMenuOpen(false); }} className="block w-full text-left text-gray-300 hover:text-yellow-500">How It Works</button>
+            <button onClick={() => { onNavigate('whitepaper'); setMobileMenuOpen(false); }} className="block w-full text-left text-gray-300 hover:text-yellow-500">Whitepaper</button>
+            <button onClick={() => { onNavigate('roadmap'); setMobileMenuOpen(false); }} className="block w-full text-left text-gray-300 hover:text-yellow-500">Roadmap</button>
+            <button onClick={() => { onNavigate('about'); setMobileMenuOpen(false); }} className="block w-full text-left text-gray-300 hover:text-yellow-500">About</button>
+            <button onClick={() => { onNavigate('app'); setMobileMenuOpen(false); }} className="w-full px-6 py-2 bg-yellow-500 text-black rounded-lg font-bold">Open Prototype</button>
+          </div>
+        )}
       </div>
     </header>
   );
@@ -2208,7 +2257,15 @@ function SharedFooter({ onNavigate }) {
               <button onClick={() => onNavigate('whitepaper')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">Whitepaper</button>
               <button onClick={() => onNavigate('roadmap')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">Roadmap</button>
               <button onClick={() => onNavigate('about')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">About</button>
-              <button onClick={() => onNavigate('app')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">Launch App</button>
+              <button onClick={() => onNavigate('app')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">Open Prototype</button>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-white mb-4">Resources</h4>
+            <div className="space-y-2">
+              <button onClick={() => onNavigate('faq')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">FAQ</button>
+              <button onClick={() => onNavigate('compliance')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">Legal & Compliance</button>
             </div>
           </div>
 
@@ -2226,14 +2283,6 @@ function SharedFooter({ onNavigate }) {
               </a>
             </div>
           </div>
-
-          <div>
-            <h4 className="font-bold text-white mb-4">Contact</h4>
-            <div className="space-y-2">
-              <a href="mailto:security@inflationmarket.com" className="block text-sm text-gray-400 hover:text-yellow-500">Security</a>
-              <a href="mailto:support@inflationmarket.com" className="block text-sm text-gray-400 hover:text-yellow-500">Support</a>
-            </div>
-          </div>
         </div>
 
         <div className="border-t border-yellow-500/20 pt-8 text-center text-sm text-gray-400">
@@ -2244,3 +2293,8 @@ function SharedFooter({ onNavigate }) {
     </footer>
   );
 }
+
+
+
+
+
