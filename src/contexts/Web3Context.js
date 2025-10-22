@@ -216,6 +216,13 @@ export const NETWORKS = {
     rpcUrls: ['https://polygon-rpc.com/'],
     blockExplorerUrls: ['https://polygonscan.com'],
   },
+  ARBITRUM_SEPOLIA: {
+    chainId: `0x66eee`,
+    chainName: 'Arbitrum Sepolia',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    rpcUrls: ['https://sepolia-rollup.arbitrum.io/rpc'],
+    blockExplorerUrls: ['https://sepolia.arbiscan.io'],
+  },
   LOCALHOST: {
     chainId: `0x7a69`,
     chainName: 'Localhost 8545',
