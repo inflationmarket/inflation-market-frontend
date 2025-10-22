@@ -1,30 +1,33 @@
-// Contract ABIs for Inflation Market Protocol
-// These are extracted from the compiled contract artifacts
+// Minimal ABIs needed for basic integration
 
-// Import full contract JSONs
-import PositionManagerArtifact from '../../../inflation-market-contracts/artifacts/contracts/PositionManager.sol/PositionManager.json';
-import VaultArtifact from '../../../inflation-market-contracts/artifacts/contracts/Vault.sol/Vault.json';
-import vAMMArtifact from '../../../inflation-market-contracts/artifacts/contracts/vAMM.sol/vAMM.json';
-import FundingRateCalculatorArtifact from '../../../inflation-market-contracts/artifacts/contracts/FundingRateCalculator.sol/FundingRateCalculator.json';
-import IndexOracleArtifact from '../../../inflation-market-contracts/artifacts/contracts/IndexOracle.sol/IndexOracle.json';
-import LiquidatorArtifact from '../../../inflation-market-contracts/artifacts/contracts/Liquidator.sol/Liquidator.json';
+export const ERC20_ABI = [
+  'function approve(address spender, uint256 amount) external returns (bool)',
+  'function allowance(address owner, address spender) external view returns (uint256)',
+  'function balanceOf(address owner) external view returns (uint256)',
+  'function decimals() external view returns (uint8)'
+];
 
-// Extract just the ABI arrays
-export const PositionManagerABI = PositionManagerArtifact.abi;
-export const VaultABI = VaultArtifact.abi;
-export const vAMMABI = vAMMArtifact.abi;
-export const FundingRateCalculatorABI = FundingRateCalculatorArtifact.abi;
-export const IndexOracleABI = IndexOracleArtifact.abi;
-export const LiquidatorABI = LiquidatorArtifact.abi;
+export const VAULT_ABI = [
+  'function deposit(address token, uint256 amount) external returns (uint256 shares)',
+  'function availableBalance(address user, address token) external view returns (uint256)',
+];
 
-// Export all ABIs as an object for convenience
-export const ABIS = {
-  PositionManager: PositionManagerABI,
-  Vault: VaultABI,
-  vAMM: vAMMABI,
-  FundingRateCalculator: FundingRateCalculatorABI,
-  IndexOracle: IndexOracleABI,
-  Liquidator: LiquidatorABI,
-};
+export const POSITION_MANAGER_ABI = [
+  'function openPosition(bool isLong, uint256 collateralAmount, uint256 leverage, uint256 minPrice, uint256 maxPrice) external returns (bytes32)',
+  'function closePosition(bytes32 positionId) external returns (int256 pnl)',
+  'function addMargin(bytes32 positionId, uint256 amount) external',
+  'function removeMargin(bytes32 positionId, uint256 amount) external'
+];
 
-export default ABIS;
+export const VAMM_ABI = [
+  'function getMarkPrice() external view returns (uint256)',
+  'function getPriceForTrade(int256 size) external view returns (uint256 newMarkPrice, uint256 priceImpact)'
+];
+
+export const INDEX_ORACLE_ABI = [
+  'function getIndexPrice() external view returns (uint256)'
+];
+
+export const FUNDING_CALCULATOR_ABI = [
+  'function currentFundingRate() external view returns (int256)'
+];

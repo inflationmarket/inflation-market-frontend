@@ -3,8 +3,7 @@ import { Wallet, TrendingUp, TrendingDown, AlertTriangle, Plus, X, Shield, Zap, 
 import { Web3Context } from './contexts/Web3Context';
 import { Button, Card, Input, PyramidLogo } from './components/ui/primitives';
 import { ToastProvider, useToast } from './components/toast/ToastProvider';
-import FAQPage from './components/pages/FAQPage';
-import CompliancePage from './components/pages/CompliancePage';
+import FAQSection from './components/faq/FAQSection';
 
 // ============================================================================
 // CONFIGURATION & CONSTANTS
@@ -256,7 +255,7 @@ function LandingPage({ onNavigate }) {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button onClick={() => onNavigate('app')} className="text-lg">
-              Explore Prototype <ArrowRight className="w-5 h-5" />
+              Open Prototype <ArrowRight className="w-5 h-5" />
             </Button>
             <Button variant="ghost" className="text-lg" onClick={() => onNavigate('how-it-works')}>
               <Info className="w-5 h-5" /> How It Works
@@ -352,7 +351,7 @@ function LandingPage({ onNavigate }) {
               },
               {
                 step: '3',
-                title: 'Explore Prototype',
+                title: 'Open Prototype',
                 description: 'Prototype flows demonstrate collateral management, P&L tracking, and closing mechanics before mainnet launch.',
                 icon: <TrendingUp className="w-6 h-6" />
               }
@@ -441,7 +440,7 @@ function LandingPage({ onNavigate }) {
         <div className="max-w-4xl mx-auto">
           <Card className="bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border-2 border-yellow-500/40 text-center p-12">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Ready to Explore Prototype?
+              Ready to Open Prototype?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Join hundreds of traders already hedging their inflation risk and earning yields on Inflation Market.
@@ -2292,6 +2291,9 @@ function SharedFooter({ onNavigate }) {
     </footer>
   );
 }
+
+
+
 
 
 
