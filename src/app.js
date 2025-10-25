@@ -1,11 +1,14 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { Wallet, TrendingUp, TrendingDown, AlertTriangle, Plus, X, Shield, Zap, Users, BarChart3, ArrowRight, Menu, Twitter, MessageCircle, CheckCircle, Info, ChevronDown, ChevronUp, DollarSign, Lock, Target, ArrowUp, ArrowDown } from 'lucide-react';
+import { ethers } from 'ethers';
 import { Web3Context } from './contexts/Web3Context';
 import { Button, Card, Input, PyramidLogo } from './components/ui/primitives';
 import { ToastProvider, useToast } from './components/toast/ToastProvider';
 import FAQSection from './components/faq/FAQSection';
 import FAQPage from './components/pages/FAQPage';
 import CompliancePage from './components/pages/CompliancePage';
+import { getAddresses } from './contracts/addresses';
+import { ERC20_ABI } from './contracts/abis';
 
 // ============================================================================
 // CONFIGURATION & CONSTANTS
@@ -68,12 +71,57 @@ const AppStateProvider = ({ children }) => {
 
   const [selectedMarket, setSelectedMarket] = useState('inflation');
   const [positions, setPositions] = useState([]);
+  const [usdcBalance, setUsdcBalance] = useState(0);
+
+  // Fetch USDC balance when wallet is connected
+  useEffect(() => {
+    const fetchUsdcBalance = async () => {
+      if (!web3?.isConnected || !web3?.provider || !web3?.account) {
+        console.log('USDC Balance: Wallet not connected');
+        setUsdcBalance(0);
+        return;
+      }
+
+      try {
+        const addresses = getAddresses();
+        console.log('Fetching USDC balance for:', web3.account);
+        console.log('USDC Contract Address:', addresses.usdc);
+        console.log('RPC URL:', addresses.rpcUrl);
+
+        // Use RPC provider from .env as fallback for reading data
+        const provider = addresses.rpcUrl
+          ? new ethers.JsonRpcProvider(addresses.rpcUrl)
+          : web3.provider;
+
+        const usdcContract = new ethers.Contract(addresses.usdc, ERC20_ABI, provider);
+        const balance = await usdcContract.balanceOf(web3.account);
+        const decimals = await usdcContract.decimals();
+        const formattedBalance = parseFloat(ethers.formatUnits(balance, decimals));
+
+        console.log('USDC Balance (raw):', balance.toString());
+        console.log('USDC Decimals:', decimals);
+        console.log('USDC Balance (formatted):', formattedBalance);
+
+        setUsdcBalance(formattedBalance);
+      } catch (error) {
+        console.error('Error fetching USDC balance:', error);
+        console.error('Error details:', error.message);
+        setUsdcBalance(0);
+      }
+    };
+
+    fetchUsdcBalance();
+
+    // Refresh balance every 10 seconds
+    const interval = setInterval(fetchUsdcBalance, 10000);
+    return () => clearInterval(interval);
+  }, [web3?.isConnected, web3?.provider, web3?.account]);
 
   // Map Web3 wallet state to app account state
   const account = {
     address: web3?.account || null,
     isConnected: web3?.isConnected || false,
-    balance: web3?.isConnected ? 0 : 50000, // Real balance will be fetched from smart contracts
+    balance: usdcBalance,
   };
 
   // Use Web3 connect function
@@ -89,6 +137,7 @@ const AppStateProvider = ({ children }) => {
       web3.disconnectWallet();
     }
     setPositions([]);
+    setUsdcBalance(0);
   };
 
   return (
