@@ -9,6 +9,7 @@ import FAQPage from './components/pages/FAQPage';
 import CompliancePage from './components/pages/CompliancePage';
 import { getAddresses } from './contracts/addresses';
 import { ERC20_ABI } from './contracts/abis';
+import usePositionManager from './hooks/usePositionManager';
 
 // ============================================================================
 // CONFIGURATION & CONSTANTS
@@ -748,6 +749,7 @@ function TradingInterface({ market }) {
 function TradingForm({ market }) {
   const { account, positions, setPositions } = useAppState();
   const { addToast } = useToast();
+  const positionManager = usePositionManager();
   const [isLong, setIsLong] = useState(true);
   const [collateral, setCollateral] = useState('');
   const [leverage, setLeverage] = useState(5);
@@ -756,27 +758,65 @@ function TradingForm({ market }) {
   const positionSize = collateral ? parseFloat(collateral) * leverage : 0;
 
   const handleSubmit = async () => {
+    console.log('═══════════════════════════════════════════════════');
+    console.log('🚀 OPEN POSITION FLOW STARTED');
+    console.log('═══════════════════════════════════════════════════');
+
+    console.log('Step 1: Validating wallet connection...');
     if (!account.isConnected) {
+      console.log('❌ Wallet not connected');
       addToast('Please connect your wallet', 'error');
       return;
     }
+    console.log('✅ Wallet connected:', account.address);
 
+    console.log('Step 2: Validating collateral amount...');
+    console.log('  - Collateral input:', collateral);
+    console.log('  - Parsed collateral:', parseFloat(collateral));
     if (!collateral || parseFloat(collateral) <= 0) {
+      console.log('❌ Invalid collateral amount');
       addToast('Please enter a valid collateral amount', 'error');
       return;
     }
+    console.log('✅ Valid collateral amount');
 
+    console.log('Step 3: Checking balance...');
+    console.log('  - User balance:', account.balance, 'USDC');
+    console.log('  - Required:', parseFloat(collateral), 'USDC');
     if (parseFloat(collateral) > account.balance) {
+      console.log('❌ Insufficient balance');
       addToast('Insufficient balance', 'error');
       return;
     }
+    console.log('✅ Sufficient balance');
 
+    console.log('Step 4: Setting submitting state...');
     setIsSubmitting(true);
 
-    // Simulate transaction
-    setTimeout(() => {
+    try {
+      console.log('Step 5: Preparing transaction parameters...');
+      const txParams = {
+        isLong,
+        collateralAmount: parseFloat(collateral),
+        leverageX: leverage,
+        slippageBps: 50,
+      };
+      console.log('  - Transaction params:', txParams);
+      console.log('  - Position Manager available:', !!positionManager);
+      console.log('  - Position Manager methods:', positionManager ? Object.keys(positionManager) : 'N/A');
+
+      console.log('Step 6: Calling positionManager.openPosition()...');
+      console.log('  ⏳ Waiting for user to approve transactions in MetaMask...');
+
+      const receipt = await positionManager.openPosition(txParams);
+
+      console.log('Step 7: Transaction confirmed!');
+      console.log('  - Receipt:', receipt);
+      console.log('  - Transaction Hash:', receipt.transactionHash);
+
+      // Create position object for UI
       const newPosition = {
-        id: Date.now(),
+        id: receipt.transactionHash,
         type: isLong ? 'Long' : 'Short',
         size: positionSize,
         entryPrice: market.price,
@@ -786,31 +826,56 @@ function TradingForm({ market }) {
         openedAt: Date.now(),
       };
 
+      console.log('Step 8: Updating UI state...');
       setPositions([...positions, newPosition]);
       addToast(`${isLong ? 'Long' : 'Short'} position opened successfully!`, 'success');
-      
-      // Reset form
+
+      console.log('Step 9: Resetting form...');
       setCollateral('');
+
+      console.log('═══════════════════════════════════════════════════');
+      console.log('✅ POSITION OPENED SUCCESSFULLY!');
+      console.log('═══════════════════════════════════════════════════');
+    } catch (error) {
+      console.log('═══════════════════════════════════════════════════');
+      console.log('❌ ERROR OPENING POSITION');
+      console.log('═══════════════════════════════════════════════════');
+      console.error('Error details:', error);
+      console.error('Error message:', error?.message);
+      console.error('Error code:', error?.code);
+      console.error('Error stack:', error?.stack);
+
+      const errorMsg = error?.message || 'Failed to open position';
+      const userFriendlyMsg = errorMsg.includes('user rejected')
+        ? 'Transaction cancelled'
+        : errorMsg.includes('insufficient funds')
+        ? 'Insufficient funds for gas'
+        : 'Failed to open position';
+
+      addToast(userFriendlyMsg, 'error');
+    } finally {
+      console.log('Step 10: Cleaning up...');
       setIsSubmitting(false);
-    }, 2000);
+      console.log('═══════════════════════════════════════════════════');
+    }
   };
 
   return (
     <Card>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-white">Open Position</h2>
-        <span className="px-3 py-1 bg-blue-500/20 border border-blue-500/40 rounded-full text-xs font-bold text-blue-400">
-          PROTOTYPE - MOCK DATA
+        <span className="px-3 py-1 bg-yellow-500/20 border border-yellow-500/40 rounded-full text-xs font-bold text-yellow-400">
+          ARBITRUM SEPOLIA TESTNET
         </span>
       </div>
 
-      <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-        <p className="text-sm text-blue-400">ℹ️ This is a UI prototype. Transactions simulate contract interactions but do not execute on-chain yet.</p>
+      <div className="mb-4 p-3 bg-green-500/10 border border-green-500/30 rounded-lg">
+        <p className="text-sm text-green-400">✅ Live on Arbitrum Sepolia. Real transactions will be executed on-chain.</p>
       </div>
 
       {!account.isConnected && (
         <div className="mb-4 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-          <p className="text-sm text-yellow-500">⚠️ Connect wallet to test prototype</p>
+          <p className="text-sm text-yellow-500">⚠️ Connect wallet to open positions</p>
         </div>
       )}
       
@@ -917,16 +982,30 @@ function OrderSummary({ market }) {
 function PositionsInterface() {
   const { account, positions, setPositions } = useAppState();
   const { addToast } = useToast();
+  const positionManager = usePositionManager();
   const [closingId, setClosingId] = useState(null);
 
-  const handleClosePosition = (positionId) => {
+  const handleClosePosition = async (positionId) => {
     setClosingId(positionId);
-    
-    setTimeout(() => {
+
+    try {
+      console.log('Closing position on-chain...', positionId);
+
+      // Real on-chain transaction
+      const receipt = await positionManager.closePosition(positionId);
+
+      console.log('Position closed successfully!', receipt);
+
+      // Remove from UI
       setPositions(positions.filter(p => p.id !== positionId));
       addToast('Position closed successfully!', 'success');
+    } catch (error) {
+      console.error('Error closing position:', error);
+      const errorMsg = error?.message || 'Failed to close position';
+      addToast(errorMsg.includes('user rejected') ? 'Transaction cancelled' : 'Failed to close position', 'error');
+    } finally {
       setClosingId(null);
-    }, 1500);
+    }
   };
 
   if (!account.isConnected) {
