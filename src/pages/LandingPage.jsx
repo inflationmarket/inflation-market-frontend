@@ -1,44 +1,16 @@
-import React, { useState } from 'react';
-import { ArrowRight, BarChart3, Menu, MessageCircle, Twitter, Zap } from 'lucide-react';
+import React from 'react';
+import { ArrowRight, Zap, Shield, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import FAQSection from '../components/faq/FAQSection';
-import { Button, Card, PyramidLogo } from '../components/ui/primitives';
-import { CONFIG, MARKETS } from '../config/constants';
+import { Button, Card } from '../components/ui/primitives';
+import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
+import { MARKETS } from '../config/constants';
 
 export default function LandingPage({ onNavigate }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-black">
-      <header className="border-b border-yellow-500/20 sticky top-0 z-50 bg-black/80 backdrop-blur">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-yellow-500 flex items-center justify-center">
-              <PyramidLogo className="w-5 h-5 text-black" />
-            </div>
-            <span className="font-bold text-white">Inflation Market</span>
-          </div>
-
-          <nav className="hidden md:flex items-center gap-6">
-            <Link to="/how-it-works" className="text-sm text-gray-400 hover:text-yellow-500">How It Works</Link>
-            <Link to="/whitepaper" className="text-sm text-gray-400 hover:text-yellow-500">Whitepaper</Link>
-            <Link to="/roadmap" className="text-sm text-gray-400 hover:text-yellow-500">Roadmap</Link>
-            <Link to="/about" className="text-sm text-gray-400 hover:text-yellow-500">About</Link>
-            <Link to="/faq" className="text-sm text-gray-400 hover:text-yellow-500">FAQ</Link>
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <Link to="/app">
-              <Button>
-                Open Prototype <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
-            <button className="md:hidden text-gray-400 hover:text-yellow-500" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              <Menu className="w-6 h-6" />
-            </button>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Hero */}
       <section className="py-20 px-4">
@@ -81,6 +53,48 @@ export default function LandingPage({ onNavigate }) {
         </div>
       </section>
 
+      {/* Why Inflation Market */}
+      <section className="py-20 px-4 bg-gradient-to-b from-transparent to-yellow-500/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Why Inflation Market?
+            </h2>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              The macro risks you face every day—inflation, housing, GDP volatility—are now tradeable and hedgeable.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <Shield className="w-8 h-8" />,
+                title: 'Hedge Inflation Risk',
+                description: 'Protect savings from rising prices with CPI-linked perpetuals and transparent data.'
+              },
+              {
+                icon: <Zap className="w-8 h-8" />,
+                title: 'Earn Funding Yields',
+                description: 'Provide liquidity or short inflation to earn funding when rates favor your view.'
+              },
+              {
+                icon: <Users className="w-8 h-8" />,
+                title: 'Speculate on Economics',
+                description: 'Express macro views across CPI, housing, and GDP with built-in risk tools.'
+              }
+            ].map((feature, i) => (
+              <Card key={i} className="text-center hover:border-yellow-500/40 transition-all">
+                <div className="w-16 h-16 rounded-full bg-yellow-500/10 flex items-center justify-center text-yellow-500 mx-auto mb-4">
+                  {feature.icon}
+                </div>
+                <div className="text-xl font-bold text-white mb-2">{feature.title}</div>
+                <div className="text-sm text-gray-400">{feature.description}</div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
@@ -99,61 +113,7 @@ export default function LandingPage({ onNavigate }) {
 
       <FAQSection />
 
-      <footer className="border-t border-yellow-500/20 bg-black py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-yellow-500 flex items-center justify-center">
-                  <PyramidLogo className="w-5 h-5 text-black" />
-                </div>
-                <span className="font-bold text-white">Inflation Market</span>
-              </div>
-              <p className="text-sm text-gray-400">{CONFIG.domain}</p>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-white mb-4">Product</h4>
-              <div className="space-y-2">
-                <Link to="/how-it-works" className="block text-sm text-gray-400 hover:text-yellow-500">How It Works</Link>
-                <Link to="/whitepaper" className="block text-sm text-gray-400 hover:text-yellow-500">Whitepaper</Link>
-                <Link to="/roadmap" className="block text-sm text-gray-400 hover:text-yellow-500">Roadmap</Link>
-                <Link to="/about" className="block text-sm text-gray-400 hover:text-yellow-500">About</Link>
-                <Link to="/app" className="block text-sm text-gray-400 hover:text-yellow-500">Open Prototype</Link>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-white mb-4">Community</h4>
-              <div className="space-y-2">
-                <a href={CONFIG.social.twitter} target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-yellow-500 flex items-center gap-2">
-                  <Twitter className="w-4 h-4" /> Twitter
-                </a>
-                <a href={CONFIG.social.discord} target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-yellow-500 flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4" /> Discord
-                </a>
-                <a href={CONFIG.social.github} target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-yellow-500 flex items-center gap-2">
-                  <BarChart3 className="w-4 h-4" /> GitHub
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-white mb-4">Community</h4>
-              <div className="space-y-2">
-                <a href={CONFIG.social.discord} target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-yellow-500">Discord</a>
-                <a href={CONFIG.social.twitter} target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-yellow-500">Twitter</a>
-                <a href={CONFIG.social.github} target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-yellow-500">GitHub</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-yellow-500/20 pt-8 text-center text-sm text-gray-400">
-            <p>© 2025 Inflation Market. All rights reserved.</p>
-            <p className="mt-2 text-xs text-yellow-500">⚠️ Testnet Demo - {CONFIG.domain}</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
