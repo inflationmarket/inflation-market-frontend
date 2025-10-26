@@ -11,7 +11,8 @@ import { useContracts } from './useContracts';
  */
 export const usePositions = () => {
   const { account, isConnected } = useContext(Web3Context);
-  const { positionManager, isReady } = useContracts();
+  const { getRead } = useContracts();
+  const [isReady, setIsReady] = useState(false);
 
   const [positions, setPositions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,11 @@ export const usePositions = () => {
    * Fetch all positions for the connected user
    */
   const fetchPositions = useCallback(async () => {
-    if (!isConnected || !account || !positionManager || !isReady) {
+    const read = await getRead();
+    const pm = read?.positionManager;
+    const ready = !!pm;
+    setIsReady(ready);
+    if (!isConnected || !account || !ready) {
       setPositions([]);
       return;
     }
@@ -31,7 +36,12 @@ export const usePositions = () => {
       setError(null);
 
       // Get user's position IDs
-      const positionIds = await positionManager.getUserPositions(account);
+      if (typeof pm.getUserPositions !== 'function') {
+        setPositions([]);
+        setLoading(false);
+        return;
+      }
+      const positionIds = await pm.getUserPositions(account);
 
       if (positionIds.length === 0) {
         setPositions([]);
@@ -42,7 +52,8 @@ export const usePositions = () => {
       // Fetch details for each position
       const positionPromises = positionIds.map(async (id) => {
         try {
-          const positionData = await positionManager.getPosition(id);
+          if (typeof pm.getPosition !== 'function') return null;
+          const positionData = await pm.getPosition(id);
 
           // Convert contract data to usable format
           return {
@@ -76,7 +87,7 @@ export const usePositions = () => {
       setError(err.message);
       setLoading(false);
     }
-  }, [isConnected, account, positionManager, isReady]);
+  }, [isConnected, account, getRead]);
 
   /**
    * Fetch a single position by ID
@@ -84,12 +95,13 @@ export const usePositions = () => {
    * @returns {Object|null} Position data or null
    */
   const getPosition = useCallback(async (positionId) => {
-    if (!positionManager || !isReady) {
-      return null;
-    }
+    const read = await getRead();
+    const pm = read?.positionManager;
+    if (!pm) return null;
 
     try {
-      const positionData = await positionManager.getPosition(positionId);
+      if (typeof pm.getPosition !== 'function') return null;
+      const positionData = await pm.getPosition(positionId);
 
       return {
         id: positionId,
@@ -107,7 +119,7 @@ export const usePositions = () => {
       console.error(`Error fetching position ${positionId}:`, err);
       return null;
     }
-  }, [positionManager, isReady]);
+  }, [getRead]);
 
   /**
    * Check if a position is liquidatable
@@ -115,17 +127,18 @@ export const usePositions = () => {
    * @returns {boolean} True if position can be liquidated
    */
   const isPositionLiquidatable = useCallback(async (positionId) => {
-    if (!positionManager || !isReady) {
-      return false;
-    }
+    const read = await getRead();
+    const pm = read?.positionManager;
+    if (!pm) return false;
 
     try {
-      return await positionManager.isPositionLiquidatable(positionId);
+      if (typeof pm.isPositionLiquidatable !== 'function') return false;
+      return await pm.isPositionLiquidatable(positionId);
     } catch (err) {
       console.error(`Error checking liquidation status for ${positionId}:`, err);
       return false;
     }
-  }, [positionManager, isReady]);
+  }, [getRead]);
 
   /**
    * Add a new position to the local state (optimistic update)
@@ -161,17 +174,24 @@ export const usePositions = () => {
 
   // Subscribe to position events
   useEffect(() => {
-    if (!positionManager || !isReady || !account) {
-      return;
-    }
+    let unsubscribe = () => {};
+    (async () => {
+      const read = await getRead();
+      const pm = read?.positionManager;
+      if (!pm || !account) return;
 
-    let isMounted = true;
+      let isMounted = true;
 
     // Event filters for the current user
-    const positionOpenedFilter = positionManager.filters.PositionOpened(null, account);
-    const positionClosedFilter = positionManager.filters.PositionClosed(null, account);
-    const marginAddedFilter = positionManager.filters.MarginAdded(null, account);
-    const marginRemovedFilter = positionManager.filters.MarginRemoved(null, account);
+    const canFilter = pm.filters && pm.filters.PositionOpened && pm.filters.PositionClosed && pm.filters.MarginAdded && pm.filters.MarginRemoved;
+    if (!canFilter) {
+      unsubscribe = () => {};
+      return;
+    }
+    const positionOpenedFilter = pm.filters.PositionOpened(null, account);
+    const positionClosedFilter = pm.filters.PositionClosed(null, account);
+    const marginAddedFilter = pm.filters.MarginAdded(null, account);
+    const marginRemovedFilter = pm.filters.MarginRemoved(null, account);
 
     // Event handlers
     const handlePositionOpened = (positionId, trader, ...args) => {
@@ -215,22 +235,25 @@ export const usePositions = () => {
     };
 
     // Subscribe to events
-    positionManager.on(positionOpenedFilter, handlePositionOpened);
-    positionManager.on(positionClosedFilter, handlePositionClosed);
-    positionManager.on(marginAddedFilter, handleMarginAdded);
-    positionManager.on(marginRemovedFilter, handleMarginRemoved);
+    pm.on(positionOpenedFilter, handlePositionOpened);
+    pm.on(positionClosedFilter, handlePositionClosed);
+    pm.on(marginAddedFilter, handleMarginAdded);
+    pm.on(marginRemovedFilter, handleMarginRemoved);
 
     // Cleanup
-    return () => {
-      isMounted = false;
-      if (positionManager.removeAllListeners) {
-        positionManager.off(positionOpenedFilter, handlePositionOpened);
-        positionManager.off(positionClosedFilter, handlePositionClosed);
-        positionManager.off(marginAddedFilter, handleMarginAdded);
-        positionManager.off(marginRemovedFilter, handleMarginRemoved);
-      }
-    };
-  }, [positionManager, isReady, account, fetchPositions, removePosition, getPosition, updatePosition]);
+      unsubscribe = () => {
+        isMounted = false;
+        if (pm.off) {
+          pm.off(positionOpenedFilter, handlePositionOpened);
+          pm.off(positionClosedFilter, handlePositionClosed);
+          pm.off(marginAddedFilter, handleMarginAdded);
+          pm.off(marginRemovedFilter, handleMarginRemoved);
+        }
+      };
+    })();
+
+    return () => unsubscribe();
+  }, [account, getRead, fetchPositions, removePosition, getPosition, updatePosition]);
 
   return {
     positions,

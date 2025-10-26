@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
 
 const Web3Context = createContext(null);
@@ -28,12 +28,12 @@ export const Web3Provider = ({ children }) => {
   };
 
   // Connect wallet
-  const connectWallet = async () => {
+  const connectWallet = useCallback(async () => {
     try {
       setIsConnecting(true);
       setError(null);
 
-      if (!isMetaMaskInstalled()) {
+      if (typeof window === 'undefined' || !window.ethereum) {
         throw new Error('Please install MetaMask to use this dApp');
       }
 
@@ -61,7 +61,7 @@ export const Web3Provider = ({ children }) => {
     } finally {
       setIsConnecting(false);
     }
-  };
+  }, []);
 
   // Disconnect wallet
   const disconnectWallet = () => {
@@ -157,7 +157,7 @@ export const Web3Provider = ({ children }) => {
   // Auto-connect if previously connected
   useEffect(() => {
     const autoConnect = async () => {
-      if (isMetaMaskInstalled()) {
+      if (typeof window !== 'undefined' && window.ethereum) {
         try {
           const accounts = await window.ethereum.request({
             method: 'eth_accounts',
@@ -173,7 +173,7 @@ export const Web3Provider = ({ children }) => {
     };
 
     autoConnect();
-  }, []);
+  }, [connectWallet]);
 
   const value = {
     account,

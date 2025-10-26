@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { CheckCircle, Info, XCircle } from 'lucide-react';
+import { CheckCircle, Info, XCircle, X } from 'lucide-react';
 
 const ToastContext = createContext(null);
 
@@ -61,9 +61,10 @@ const Toast = ({ message, type, onClose }) => {
     <div className={`border px-4 py-3 rounded-lg flex items-center gap-3 text-sm text-white ${colors[type]}`}>
       {icons[type] ?? icons.info}
       <span className="flex-1">{message}</span>
-      <button onClick={onClose} className="text-gray-400 hover:text-white transition">
-        ✕
+      <button onClick={onClose} className="text-gray-400 hover:text-white transition" aria-label="Close notification">
+        <X className="w-4 h-4" aria-hidden="true" />
       </button>
     </div>
   );
 };
+

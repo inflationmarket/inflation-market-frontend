@@ -1,4 +1,5 @@
 import { parseUnits } from 'ethers';
+/* global BigInt */
 import { useContracts } from './useContracts';
 import { getAddresses } from '../contracts/addresses';
 
@@ -29,8 +30,9 @@ export default function usePositionManager() {
 
     // Get current mark price and compute slippage bounds
     const mark = await read.vamm.getMarkPrice();
-    const minPrice = isLong ? 0n : (mark * (10000n - BigInt(slippageBps))) / 10000n;
-    const maxPrice = isLong ? (mark * (10000n + BigInt(slippageBps))) / 10000n : (2n ** 256n - 1n);
+    const slippage = BigInt(slippageBps);
+    const minPrice = isLong ? 0n : (mark * (10000n - slippage)) / 10000n;
+    const maxPrice = isLong ? (mark * (10000n + slippage)) / 10000n : (2n ** 256n - 1n);
 
     // Ensure USDC approval to Vault for deposit, then deposit to Vault for available balance
     await ensureApproval(account, usdc, write.vault.target, collateral);
