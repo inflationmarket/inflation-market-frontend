@@ -1,7 +1,6 @@
 import React from 'react';
 import { ArrowRight, Zap, Shield, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import FAQSection from '../components/faq/FAQSection';
 import { Button, Card } from '../components/ui/primitives';
 import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
 import { MARKETS } from '../config/constants';
@@ -111,7 +110,17 @@ export default function LandingPage({ onNavigate }) {
         </div>
       </section>
 
-      <FAQSection />
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <Card className="p-10">
+            <h3 className="text-2xl font-bold text-white mb-2">Have questions?</h3>
+            <p className="text-gray-300 mb-6">Visit our Frequently Asked Questions for quick, clear answers.</p>
+            <Link to="/faq">
+              <Button>Go to FAQ</Button>
+            </Link>
+          </Card>
+        </div>
+      </section>
 
       <SiteFooter />
     </div>

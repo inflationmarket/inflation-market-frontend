@@ -49,6 +49,7 @@ export const SiteFooter = () => (
             <Link to="/whitepaper" className="block text-sm text-gray-400 hover:text-yellow-500">Whitepaper</Link>
             <Link to="/roadmap" className="block text-sm text-gray-400 hover:text-yellow-500">Roadmap</Link>
             <Link to="/about" className="block text-sm text-gray-400 hover:text-yellow-500">About</Link>
+            <Link to="/faq" className="block text-sm text-gray-400 hover:text-yellow-500">FAQ</Link>
             <Link to="/app" className="block text-sm text-gray-400 hover:text-yellow-500">Open Prototype</Link>
           </div>
         </div>
@@ -70,4 +71,3 @@ export const SiteFooter = () => (
     </div>
   </footer>
 );
-
