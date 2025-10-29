@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Button } from '../components/ui/primitives';
+import { Card } from '../components/ui/primitives';
 import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
 
 export default function WhitepaperPage() {
@@ -59,12 +59,17 @@ export default function WhitepaperPage() {
       <SiteHeader />
       
       <main className="max-w-7xl mx-auto px-4 py-12">
-        <div className="lg:grid lg:grid-cols-4 lg:gap-8">
-          <aside className="hidden lg:block lg:col-span-1">
+        {/* Desktop/large screens: sidebar + single section */}
+        <div className="hidden lg:grid lg:grid-cols-4 lg:gap-8">
+          <aside className="lg:col-span-1">
             <Card>
               <div className="space-y-2">
                 {sections.map((s) => (
-                  <button key={s.id} onClick={() => setActiveSection(s.id)} className={`block w-full text-left px-3 py-2 rounded ${activeSection===s.id? 'bg-yellow-500/20 text-white':'text-gray-300 hover:bg-yellow-500/10'}`}>
+                  <button
+                    key={s.id}
+                    onClick={() => setActiveSection(s.id)}
+                    className={`block w-full text-left px-3 py-2 rounded ${activeSection===s.id? 'bg-yellow-500/20 text-white':'text-gray-300 hover:bg-yellow-500/10'}`}
+                  >
                     {s.title}
                   </button>
                 ))}
@@ -75,11 +80,24 @@ export default function WhitepaperPage() {
             <Card>
               <h1 className="text-4xl font-bold text-white mb-6">Whitepaper</h1>
               {renderBody(activeSection)}
-              <div className="mt-6">
-                <Button as="a" href="https://github.com/" target="_blank" rel="noopener noreferrer">Follow Development on GitHub</Button>
-              </div>
+              {/* CTA removed per request */}
             </Card>
           </section>
+        </div>
+
+        {/* Mobile/tablet: show all sections sequentially so content is never hidden */}
+        <div className="lg:hidden space-y-6">
+          <Card>
+            <h1 className="text-4xl font-bold text-white mb-6">Whitepaper</h1>
+            <div className="text-sm text-gray-400 mb-4">Full contents below</div>
+          </Card>
+          {sections.map((s) => (
+            <Card key={s.id} id={s.id}>
+              <div className="text-2xl font-bold text-white mb-4">{s.title.replace(/^[0-9]+\.\s*/, '')}</div>
+              {renderBody(s.id)}
+            </Card>
+          ))}
+          {/* CTA removed per request */}
         </div>
       </main>
 
