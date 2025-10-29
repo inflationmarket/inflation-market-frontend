@@ -9,7 +9,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #000000;
+  background-color: #0b0b0f;
+  background-image:
+    radial-gradient(600px 300px at 50% -10%, rgba(245, 213, 66, 0.08), transparent),
+    radial-gradient(800px 400px at 100% 0%, rgba(245, 213, 66, 0.05), transparent),
+    radial-gradient(800px 400px at 0% 0%, rgba(245, 213, 66, 0.05), transparent);
+  color: #e5e7eb;
 }
 
 code {
@@ -20,3 +25,9 @@ code {
 * {
   box-sizing: border-box;
 }
+
+h1, .text-display-1 { letter-spacing: -0.02em; }
+h2, .text-display-2 { letter-spacing: -0.01em; }
+
+a { color: #f5d742; }
+a:hover { color: #fde68a; }
