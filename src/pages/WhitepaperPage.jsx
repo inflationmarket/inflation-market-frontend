@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '../components/ui/primitives';
 import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
-import { FileText, Lightbulb, ShieldCheck, Layers, Sigma, Shield, Activity, Gavel, Scale, BarChart3, TrendingUp, Flag, Home } from 'lucide-react';
+import { FileText, Lightbulb, ShieldCheck, Layers, Sigma, Shield, Activity, Gavel, Scale, BarChart3, TrendingUp, Flag, Home, CheckCircle2, Clock, Circle } from 'lucide-react';
 
 export default function WhitepaperPage() {
   const P = ({ children }) => <p className="text-gray-300 leading-relaxed mb-4">{children}</p>;
@@ -61,6 +61,43 @@ export default function WhitepaperPage() {
   );
 
   const Divider = () => <div className="h-px bg-gradient-to-r from-yellow-500/40 to-transparent my-6" />;
+
+  const FormulaCard = ({ title, formula, lines = [] }) => (
+    <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+      <div className="text-sm font-bold text-white mb-2">{title}</div>
+      <div className="rounded-md bg-black/40 border border-white/10 px-3 py-2 font-mono text-sm text-yellow-200 overflow-x-auto">
+        {formula}
+      </div>
+      {lines.length > 0 && (
+        <ul className="mt-2 text-xs text-gray-300 space-y-1 list-disc pl-5">
+          {lines.map((l, i) => (
+            <li key={i}>{l}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+
+  const PhaseTile = ({ icon, label, bullets = [], tint = 'gray' }) => {
+    const tints = {
+      green: 'border-green-400/30 bg-green-400/10 text-green-200',
+      yellow: 'border-yellow-400/30 bg-yellow-400/10 text-yellow-200',
+      gray: 'border-white/10 bg-white/5 text-gray-200',
+    };
+    return (
+      <div className={`rounded-xl border p-4 ${tints[tint] || tints.gray}`}>
+        <div className="flex items-center gap-2 mb-2">
+          {icon}
+          <div className="font-bold">{label}</div>
+        </div>
+        <ul className="text-sm list-disc pl-5 space-y-1">
+          {bullets.map((b, i) => (
+            <li key={i}>{b}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
 
   // small inline diagrams
   const AMMFlowDiagram = () => (
@@ -212,7 +249,28 @@ export default function WhitepaperPage() {
             <P>Two potential market‑making designs:</P>
             <H>1) Virtual AMM (vAMM)</H><P>Similar to Perpetual Protocol; synthetic reserves and funding anchor to oracle fair values.</P>
             <H>2) Cost‑Function AMM</H><P>Logarithmic or quadratic curve provides continuous liquidity, earning funding and trading fees.</P>
-            <InfoCard title="Price impact">Larger trades move the mark price more; funding incentivizes mean‑reversion to index.</InfoCard>
+            <H className="mt-4">Price Impact</H>
+            <InfoCard title="Intuition">Larger trades move the mark price more; the slope depends on AMM parameters and current inventory. Funding incentivizes mean‑reversion toward the index.</InfoCard>
+            <div className="grid md:grid-cols-2 gap-4 mt-4">
+              <FormulaCard
+                title="Linearized impact (illustrative)"
+                formula="P_mark(q) ≈ P_index · (1 + k · q)"
+                lines={[
+                  'q: signed trade size (positive = buy/long, negative = sell/short)',
+                  'k: local impact coefficient set by AMM/inventory',
+                ]}
+              />
+              <FormulaCard
+                title="Constant‑product intuition"
+                formula="(x + Δx) · (y − Δy) = k  →  price ≈ y/x,  Δprice ≈ (Δy/y) − (Δx/x)"
+                lines={[
+                  'As trade size grows relative to reserves, marginal price moves more',
+                ]}
+              />
+            </div>
+            <InfoCard title="Funding rate (typical form)">
+              f ≈ λ · (P_mark − P_index) / P_index, bounded per epoch.
+            </InfoCard>
           </Card>
 
           {/* Governance */}
@@ -254,13 +312,60 @@ export default function WhitepaperPage() {
           {/* Roadmap */}
           <Card id="roadmap" className="anchor-offset">
             <HIcon>12. Implementation Roadmap</HIcon>
-            <div className="space-y-6">
-              <Card><H>Phase 0: Manual Oracle — <span className="text-green-400">Complete</span></H><P>Smart contracts with manual CPI data entry for testing.</P></Card>
-              <Card><H>Phase 1: Hybrid Oracle Development — <span className="text-yellow-400">In Progress</span></H><P>MPC aggregation layer + Chainlink delivery integration.</P></Card>
-              <Card><H>Phase 2: Testnet Deployment — <span className="text-gray-300">Planned</span></H><P>Full protocol testing on Sepolia with hybrid oracles.</P></Card>
-              <Card><H>Phase 3: Security Audits — <span className="text-gray-300">Planned</span></H><P>Smart contract audits and bug bounty program.</P></Card>
-              <Card><H>Phase 4: Mainnet Launch — <span className="text-gray-300">Planned</span></H><P>CPI perpetuals live on mainnet with insurance fund.</P></Card>
-              <Card><H>Phase 5: Market Expansion — <span className="text-gray-300">Future</span></H><P>Add Housing (FHFA HPI) and GDP markets.</P></Card>
+            <P>Milestones and tangible deliverables toward a guarded mainnet launch. Status colors: green = complete, yellow = in progress, gray = planned.</P>
+            <div className="grid md:grid-cols-2 gap-4 mt-4">
+              <PhaseTile
+                tint="green"
+                icon={<CheckCircle2 className="w-4 h-4" />}
+                label="Phase 0 — Manual Oracle (Complete)"
+                bullets={[
+                  'Core contracts deployed with manual CPI input for dev testing',
+                  'Basic position lifecycle validated (open/close, margin add/remove)',
+                ]}
+              />
+              <PhaseTile
+                tint="yellow"
+                icon={<Clock className="w-4 h-4" />}
+                label="Phase 1 — Hybrid Oracle (In Progress)"
+                bullets={[
+                  'MPC aggregation layer scaffolding',
+                  'Chainlink delivery interface + failsafes',
+                  'Data provenance + versioning plan',
+                ]}
+              />
+              <PhaseTile
+                icon={<Circle className="w-4 h-4" />}
+                label="Phase 2 — Public Testnet"
+                bullets={[
+                  'Full protocol on Sepolia (vaults, AMM, funding)',
+                  'Telemetry + risk dashboards for parameters',
+                  'Docs + SDK for integrators',
+                ]}
+              />
+              <PhaseTile
+                icon={<Circle className="w-4 h-4" />}
+                label="Phase 3 — Security"
+                bullets={[
+                  'Formal audit scope + rounds',
+                  'Bug bounty + monitoring',
+                ]}
+              />
+              <PhaseTile
+                icon={<Circle className="w-4 h-4" />}
+                label="Phase 4 — Guarded Mainnet"
+                bullets={[
+                  'CPI market with caps + insurance fund',
+                  'Progressive parameter loosening',
+                ]}
+              />
+              <PhaseTile
+                icon={<Circle className="w-4 h-4" />}
+                label="Phase 5 — Expansion"
+                bullets={[
+                  'Add Housing (FHFA HPI) and GDP markets',
+                  'Partnerships and integrations',
+                ]}
+              />
             </div>
           </Card>
 
