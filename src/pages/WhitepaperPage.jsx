@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '../components/ui/primitives';
 import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
-import { FileText, Lightbulb, ShieldCheck, Layers, Sigma, Shield, Activity, Gavel, Scale, BarChart3, TrendingUp, Flag, Home, CheckCircle2, Clock, Circle } from 'lucide-react';
+import { FileText, Lightbulb, ShieldCheck, Layers, Sigma, Shield, Activity, Gavel, Scale, BarChart3, TrendingUp, Flag, Home, CheckCircle2, Clock, Circle, BookOpen } from 'lucide-react';
 
 export default function WhitepaperPage() {
   const P = ({ children }) => <p className="text-gray-300 leading-relaxed mb-4">{children}</p>;
@@ -172,6 +172,37 @@ export default function WhitepaperPage() {
             <HIcon icon={<FileText className="w-4 h-4" />}>1. Abstract</HIcon>
             <P>This whitepaper presents Inflation Market, a decentralized, non‑custodial protocol designed to enable open participation in markets for macroeconomic risks such as inflation, GDP growth, and national housing prices. Inspired by Robert J. Shiller, the protocol allows individuals, institutions, and DAOs to hedge or gain exposure to real‑world economic indicators through perpetual futures that never expire.</P>
             <P>Unlike traditional derivatives platforms, Inflation Market operates as a transparent, autonomous protocol governed by smart contracts. A hybrid MPC + Chainlink oracle network delivers tamper‑resistant CPI and treasury data, while permissionless smart contracts handle settlement without centralized custody.</P>
+          </Card>
+
+          {/* Compact Glossary */}
+          <Card id="glossary" className="anchor-offset">
+            <HIcon icon={<BookOpen className="w-4 h-4" />}>Glossary (Compact)</HIcon>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <div className="text-sm font-semibold text-white">CPI (Consumer Price Index)</div>
+                <div className="text-sm text-gray-300">Measures average change in consumer prices. Demo uses CPI‑U (monthly, NSA).</div>
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-white">Index Price</div>
+                <div className="text-sm text-gray-300">Oracle‑delivered value of the underlying economic index.</div>
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-white">Mark Price</div>
+                <div className="text-sm text-gray-300">AMM‑derived price used for PnL and funding; converges toward index via funding.</div>
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-white">Funding</div>
+                <div className="text-sm text-gray-300">Cash flow between longs and shorts to align mark with index (bounded). Typical: f ≈ λ · (P<sub>mark</sub> − P<sub>index</sub>)/P<sub>index</sub>.</div>
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-white">Maintenance Margin</div>
+                <div className="text-sm text-gray-300">Minimum collateral ratio to keep a position open; falling below triggers liquidation.</div>
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-white">Leverage</div>
+                <div className="text-sm text-gray-300">Position size ÷ collateral (e.g., $5,000 ÷ $1,000 = 5×). Amplifies both PnL and risk.</div>
+              </div>
+            </div>
           </Card>
 
           {/* Vision */}
