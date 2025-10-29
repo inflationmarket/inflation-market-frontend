@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '../components/ui/primitives';
 import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
 import { FileText, Lightbulb, ShieldCheck, Layers, Sigma, Shield, Activity, Gavel, Scale, BarChart3, TrendingUp, Flag, Home } from 'lucide-react';
@@ -62,6 +62,47 @@ export default function WhitepaperPage() {
 
   const Divider = () => <div className="h-px bg-gradient-to-r from-yellow-500/40 to-transparent my-6" />;
 
+  // small inline diagrams
+  const AMMFlowDiagram = () => (
+    <svg viewBox="0 0 560 120" className="w-full h-28" aria-label="AMM flow diagram">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto-start-reverse">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#f5d742" />
+        </marker>
+      </defs>
+      <rect x="8" y="20" width="120" height="60" rx="8" fill="rgba(245,215,66,0.08)" stroke="rgba(245,215,66,0.4)" />
+      <text x="68" y="55" textAnchor="middle" fill="#e5e7eb" fontSize="12">Index Price</text>
+      <line x1="130" y1="50" x2="210" y2="50" stroke="#f5d742" strokeWidth="2" markerEnd="url(#arrow)" />
+      <rect x="210" y="20" width="120" height="60" rx="8" fill="rgba(66,82,245,0.08)" stroke="rgba(66,82,245,0.4)" />
+      <text x="270" y="45" textAnchor="middle" fill="#e5e7eb" fontSize="12">AMM</text>
+      <text x="270" y="62" textAnchor="middle" fill="#94a3b8" fontSize="11">Mark Price</text>
+      <line x1="330" y1="50" x2="410" y2="50" stroke="#f5d742" strokeWidth="2" markerEnd="url(#arrow)" />
+      <rect x="410" y="20" width="140" height="60" rx="8" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.35)" />
+      <text x="480" y="42" textAnchor="middle" fill="#e5e7eb" fontSize="12">Funding</text>
+      <text x="480" y="62" textAnchor="middle" fill="#94a3b8" fontSize="11">Long ⇄ Short</text>
+    </svg>
+  );
+
+  const FundingCurveDiagram = () => (
+    <svg viewBox="0 0 560 140" className="w-full h-32" aria-label="Funding curve diagram">
+      <line x1="40" y1="100" x2="520" y2="100" stroke="#475569" strokeWidth="1" />
+      <line x1="100" y1="20" x2="100" y2="120" stroke="#475569" strokeWidth="1" />
+      <text x="48" y="115" fill="#94a3b8" fontSize="11">Index</text>
+      <text x="510" y="115" fill="#94a3b8" fontSize="11">Mark</text>
+      <text x="74" y="32" fill="#94a3b8" fontSize="11">Funding</text>
+      <path d="M100,100 C 200,40 360,40 520,100" fill="none" stroke="#f5d742" strokeWidth="2" />
+      <text x="310" y="50" fill="#e5e7eb" fontSize="11" textAnchor="middle">Funding → 0 when Mark ≈ Index</text>
+    </svg>
+  );
+
+  const [showTop, setShowTop] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 480);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <div className="min-h-screen bg-black">
       <SiteHeader />
@@ -122,12 +163,13 @@ export default function WhitepaperPage() {
             <P>Each perpetual corresponds to a specific economic index such as the Consumer Price Index (CPI), GDP growth rate, or national housing index.</P>
             <H>Core Architecture</H>
             <L items={[ 'Smart Contracts: manage collateral, funding, liquidation, settlement', 'Oracle Layer: aggregates macroeconomic data from multiple sources', 'Liquidity Layer: AMM or hybrid orderbook for pricing and matching positions', 'Governance Layer: token‑based or DAO‑driven risk parameter updates' ]} />
-            <H>Index Oracles</H>
-            <L items={[ 'Official data sources (BLS, Federal Reserve, S&P CoreLogic)', 'Decentralized relayers providing signed attestations', 'Time‑weighted median aggregation to resist manipulation' ]} />
-            <InfoCard title="How data flows">
-              Index price → AMM mark price → Funding between longs/shorts → Position PnL.
-            </InfoCard>
-          </Card>
+          <H>Index Oracles</H>
+          <L items={[ 'Official data sources (BLS, Federal Reserve, S&P CoreLogic)', 'Decentralized relayers providing signed attestations', 'Time‑weighted median aggregation to resist manipulation' ]} />
+          <AMMFlowDiagram />
+          <InfoCard title="How data flows">
+            Index price → AMM mark price → Funding between longs/shorts → Position PnL.
+          </InfoCard>
+        </Card>
 
           {/* Funding */}
           <Card id="funding" className="anchor-offset">
@@ -136,15 +178,16 @@ export default function WhitepaperPage() {
             <L items={[ 'Funding flows continuously between longs and shorts to maintain price stability', 'The rate is bounded per epoch to prevent excessive volatility' ]} />
             <H>Log‑Level Contracts</H>
             <P>To ensure long‑term scale invariance, the contract trades on the log of index level, aligning with real‑world inflation or growth rates.</P>
-            <div className="grid md:grid-cols-2 gap-4 mt-4">
-              <ExampleCard title="Funding example (illustrative)" items={[
-                'Index = 100, Mark = 101 → Long pays Short funding',
-                'Index = 100, Mark = 99  → Short pays Long funding',
-                'As mark ≈ index, funding → 0',
-              ]} />
-              <InfoCard title="Takeaway">Funding re‑anchors price to the index; it is not a fee from/to protocol.</InfoCard>
-            </div>
-          </Card>
+          <div className="grid md:grid-cols-2 gap-4 mt-4">
+            <ExampleCard title="Funding example (illustrative)" items={[
+              'Index = 100, Mark = 101 → Long pays Short funding',
+              'Index = 100, Mark = 99  → Short pays Long funding',
+              'As mark ≈ index, funding → 0',
+            ]} />
+            <InfoCard title="Takeaway">Funding re‑anchors price to the index; it is not a fee from/to protocol.</InfoCard>
+          </div>
+          <FundingCurveDiagram />
+        </Card>
 
           {/* Collateral */}
           <Card id="collateral" className="anchor-offset">
@@ -228,8 +271,10 @@ export default function WhitepaperPage() {
             <P>This innovation bridges economic theory and decentralized finance, turning Shiller’s dream of social risk management into a practical, global, on‑chain reality.</P>
           </Card>
         </section>
-        {/* Back to top */}
-        <a href="#top" className="fixed bottom-6 right-6 rounded-full bg-yellow-500 text-black w-10 h-10 flex items-center justify-center shadow-lg hover:bg-yellow-400" aria-label="Back to top">↑</a>
+        {/* Back to top (shows after scrolling) */}
+        {showTop && (
+          <a href="#top" className="fixed bottom-6 right-6 rounded-full bg-yellow-500 text-black w-10 h-10 flex items-center justify-center shadow-lg hover:bg-yellow-400" aria-label="Back to top">↑</a>
+        )}
       </main>
 
       <SiteFooter />
