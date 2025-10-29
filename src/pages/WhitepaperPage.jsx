@@ -35,6 +35,33 @@ export default function WhitepaperPage() {
     </div>
   );
 
+  const InfoCard = ({ title, children }) => (
+    <div className="rounded-lg border border-blue-400/20 bg-blue-400/10 p-4">
+      <div className="text-sm font-bold text-blue-300 mb-1">{title}</div>
+      <div className="text-sm text-blue-100/90">{children}</div>
+    </div>
+  );
+
+  const WarningCard = ({ title, children }) => (
+    <div className="rounded-lg border border-red-400/20 bg-red-400/10 p-4">
+      <div className="text-sm font-bold text-red-300 mb-1">{title}</div>
+      <div className="text-sm text-red-100/90">{children}</div>
+    </div>
+  );
+
+  const ExampleCard = ({ title, items }) => (
+    <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-4">
+      <div className="text-sm font-bold text-yellow-300 mb-1">{title}</div>
+      <ul className="text-sm text-yellow-50/90 space-y-1 list-disc pl-4">
+        {items.map((x, i) => (
+          <li key={i}>{x}</li>
+        ))}
+      </ul>
+    </div>
+  );
+
+  const Divider = () => <div className="h-px bg-gradient-to-r from-yellow-500/40 to-transparent my-6" />;
+
   return (
     <div className="min-h-screen bg-black">
       <SiteHeader />
@@ -45,8 +72,19 @@ export default function WhitepaperPage() {
           <div className="pointer-events-none absolute inset-0 opacity-30 bg-gradient-to-br from-yellow-500/20 via-yellow-500/5 to-transparent" />
           <h1 className="text-5xl font-extrabold text-white mb-4">Whitepaper</h1>
           <P className="text-gray-300">A non‑custodial protocol for macro risk hedging.</P>
-          <div className="h-px bg-gradient-to-r from-yellow-500/50 to-transparent my-4" />
-          {/* Simple single-page format */}
+          <Divider />
+          {/* Value snapshot */}
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <Tile icon={<Shield className="w-5 h-5" />} title="Protect Savings">
+              Hedge buying‑power against CPI moves. Simple, perpetual exposure.
+            </Tile>
+            <Tile icon={<TrendingUp className="w-5 h-5" />} title="Express Macro Views">
+              Long/short CPI, Housing, or GDP with transparent funding.
+            </Tile>
+            <Tile icon={<ShieldCheck className="w-5 h-5" />} title="Non‑Custodial & Transparent">
+              On‑chain collateral, verifiable oracle data, auditable parameters.
+            </Tile>
+          </div>
         </Card>
 
         {/* Full document */}
@@ -86,6 +124,9 @@ export default function WhitepaperPage() {
             <L items={[ 'Smart Contracts: manage collateral, funding, liquidation, settlement', 'Oracle Layer: aggregates macroeconomic data from multiple sources', 'Liquidity Layer: AMM or hybrid orderbook for pricing and matching positions', 'Governance Layer: token‑based or DAO‑driven risk parameter updates' ]} />
             <H>Index Oracles</H>
             <L items={[ 'Official data sources (BLS, Federal Reserve, S&P CoreLogic)', 'Decentralized relayers providing signed attestations', 'Time‑weighted median aggregation to resist manipulation' ]} />
+            <InfoCard title="How data flows">
+              Index price → AMM mark price → Funding between longs/shorts → Position PnL.
+            </InfoCard>
           </Card>
 
           {/* Funding */}
@@ -95,6 +136,14 @@ export default function WhitepaperPage() {
             <L items={[ 'Funding flows continuously between longs and shorts to maintain price stability', 'The rate is bounded per epoch to prevent excessive volatility' ]} />
             <H>Log‑Level Contracts</H>
             <P>To ensure long‑term scale invariance, the contract trades on the log of index level, aligning with real‑world inflation or growth rates.</P>
+            <div className="grid md:grid-cols-2 gap-4 mt-4">
+              <ExampleCard title="Funding example (illustrative)" items={[
+                'Index = 100, Mark = 101 → Long pays Short funding',
+                'Index = 100, Mark = 99  → Short pays Long funding',
+                'As mark ≈ index, funding → 0',
+              ]} />
+              <InfoCard title="Takeaway">Funding re‑anchors price to the index; it is not a fee from/to protocol.</InfoCard>
+            </div>
           </Card>
 
           {/* Collateral */}
@@ -104,6 +153,14 @@ export default function WhitepaperPage() {
             <H>Leverage</H><P>Conservative (1–20x) given market volatility.</P>
             <H>Liquidation</H><P>Triggered when margin ratio falls below maintenance level.</P>
             <H>Insurance Fund</H><P>Protocol‑owned buffer covers oracle lags or black‑swan events.</P>
+            <div className="grid md:grid-cols-2 gap-4 mt-4">
+              <ExampleCard title="Position math (illustrative)" items={[
+                '$1,000 USDC collateral, 5× leverage → $5,000 position',
+                'Maintenance margin 6.25% → liquidation near −18–20% move',
+                'Numbers vary by parameters and market conditions',
+              ]} />
+              <WarningCard title="Risk reminder">Leverage amplifies both gains and losses; monitor margin and funding.</WarningCard>
+            </div>
           </Card>
 
           {/* AMM */}
@@ -112,6 +169,7 @@ export default function WhitepaperPage() {
             <P>Two potential market‑making designs:</P>
             <H>1) Virtual AMM (vAMM)</H><P>Similar to Perpetual Protocol; synthetic reserves and funding anchor to oracle fair values.</P>
             <H>2) Cost‑Function AMM</H><P>Logarithmic or quadratic curve provides continuous liquidity, earning funding and trading fees.</P>
+            <InfoCard title="Price impact">Larger trades move the mark price more; funding incentivizes mean‑reversion to index.</InfoCard>
           </Card>
 
           {/* Governance */}
@@ -120,6 +178,7 @@ export default function WhitepaperPage() {
             <H>Protocol DAO</H><P>Governs parameters such as funding coefficient, leverage limits, and index onboarding.</P>
             <H>Oracle Governance</H><P>Decentralized committee verifies data sources and manages oracle relayers.</P>
             <H>Transparent Auditing</H><P>All index definitions, updates, and oracle attestations are on‑chain and IPFS‑archived.</P>
+            <InfoCard title="Parameters (examples)">Funding coefficient c, max leverage, maintenance margin, listing criteria.</InfoCard>
           </Card>
 
           {/* Regulatory */}
@@ -146,6 +205,7 @@ export default function WhitepaperPage() {
             <L items={[ 'Inflation risk hedging for stablecoin holders', 'Macro diversification for institutional portfolios', 'Continuous expectation formation for policymakers' ]} />
             <H>Key Risks</H>
             <L items={[ 'Oracle reliability and data revision risk', 'Low liquidity in early stages', 'Potential regulatory reinterpretation' ]} />
+            <InfoCard title="Intuition">When hedging demand is strong, funding can be non‑zero until liquidity deepens.</InfoCard>
           </Card>
 
           {/* Roadmap */}
