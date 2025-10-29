@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ChevronDown, Info, CheckCircle } from 'lucide-react';
 import { Card } from '../ui/primitives';
 
-const faqs = [
+export const HOME_FAQS = [
   {
     question: 'What is Inflation Market?',
     answer: `Inflation Market is a decentralized protocol that lets anyone hedge or speculate on macroeconomic indicators like CPI, housing prices, and GDP growth. Inspired by Nobel Laureate Robert Shiller's macro-risk exchange concept, the protocol provides perpetual swaps, margin management, and a hybrid oracle network so exposure to real-world economics can be handled on-chain—permissionlessly, transparently, and without centralized custody.`,
@@ -180,7 +180,7 @@ const FAQSection = () => {
 
         {/* FAQ Items */}
         <div className="space-y-3 mb-16">
-          {faqs.map((faq, index) => (
+          {HOME_FAQS.map((faq, index) => (
             <FAQItem
               key={faq.question}
               faq={faq}

@@ -9,7 +9,7 @@ const HowItWorksPage = lazy(() => import('./pages/HowItWorksPage'));
 const WhitepaperPage = lazy(() => import('./pages/WhitepaperPage'));
 const RoadmapPage = lazy(() => import('./pages/RoadmapPage'));
 
-const FAQPage = lazy(() => import('./components/pages/FAQPage'));
+const FAQPage = lazy(() => import('./pages/FAQPage'));
 const CompliancePage = lazy(() => import('./components/pages/CompliancePage'));
 
 const AppStateContext = createContext(null);
@@ -97,3 +97,4 @@ const RoutedApp = () => (
 );
 
 // Pages moved to src/pages/* and lazy-loaded above
+
