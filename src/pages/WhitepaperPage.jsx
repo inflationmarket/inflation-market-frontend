@@ -16,39 +16,154 @@ export default function WhitepaperPage() {
     { id: 'regulatory', title: '9. Regulatory Positioning' },
     { id: 'markets', title: '10. Example Markets' },
     { id: 'economic', title: '11. Economic Rationale' },
-    { id: 'roadmap', title: '12. Implementation' },
-    { id: 'conclusion', title: '13. Conclusion' }
+    { id: 'roadmap', title: '12. Implementation Roadmap' },
+    { id: 'conclusion', title: '13. Conclusion' },
   ];
 
+  const P = ({ children }) => <p className="text-gray-300 leading-relaxed mb-4">{children}</p>;
+  const H = ({ children }) => <h3 className="text-xl font-bold text-white mb-3">{children}</h3>;
+  const L = ({ items }) => (
+    <ul className="list-disc pl-5 text-gray-300 space-y-1 mb-4">
+      {items.map((t, i) => (
+        <li key={i}>{t}</li>
+      ))}
+    </ul>
+  );
+
   const renderBody = (id) => {
-    const P = ({ children }) => <p className="text-gray-300 mb-4">{children}</p>;
     switch (id) {
       case 'abstract':
-        return <P>Inflation Market is a perpetuals protocol that enables hedging and speculation on real-world macroeconomic indices such as CPI, housing, and GDP. It combines an on-chain AMM for mark pricing with an index oracle pipeline.</P>;
+        return (<>
+          <P>This whitepaper presents Inflation Market, a decentralized, non‑custodial protocol designed to enable open participation in markets for macroeconomic risks such as inflation, GDP growth, and national housing prices. Inspired by the work of Robert J. Shiller, the protocol allows individuals, institutions, and DAOs to hedge or gain exposure to real‑world economic indicators through perpetual futures that never expire.</P>
+          <P>Unlike traditional derivatives platforms, Inflation Market operates as a transparent, autonomous protocol governed by smart contracts. A hybrid MPC + Chainlink oracle network delivers tamper‑resistant CPI and treasury data, while permissionless smart contracts handle settlement without centralized custody.</P>
+        </>);
       case 'vision':
-        return <P>Our vision is to make macro risk management accessible to everyone with transparent, programmable markets.</P>;
+        return (<>
+          <P>Robert Shiller’s core insight: society’s largest risks are macroeconomic—yet individuals cannot insure against them. Inflation Market aims to fulfill that vision by:</P>
+          <L items={[
+            'Democratizing access to macro risk‑hedging tools',
+            'Allowing decentralized, transparent price discovery on key economic variables',
+            'Creating liquid, rolling markets for hedging systemic risks',
+          ]} />
+          <P>In contrast to prediction markets or short‑term derivatives, Inflation Market perpetuals are continuous exposure instruments with fair funding mechanisms that reflect real‑world economic data.</P>
+        </>);
       case 'principles':
-        return <P>Key principles: transparency, risk-resilience, credible decentralization, and progressive decentralization of governance.</P>;
+        return (
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card><H>Non‑Custodial</H><P>All positions, collateral, and settlements occur on‑chain under user control.</P></Card>
+            <Card><H>Transparency</H><P>All funding, oracle updates, and index sources are verifiable and auditable.</P></Card>
+            <Card><H>Open Participation</H><P>Any user or DAO can enter or exit markets without intermediary permission.</P></Card>
+            <Card><H>Oracle Integrity</H><P>Macroeconomic data is sourced from decentralized oracle networks with verifiable provenance.</P></Card>
+            <Card><H>Perpetual Liquidity</H><P>Contracts have no expiry; funding rates ensure long‑term equilibrium.</P></Card>
+          </div>
+        );
       case 'market':
-        return <P>Markets list perpetual contracts on macro indices; positions are collateralized with USDC and margined with clear liquidation rules.</P>;
+        return (<>
+          <P>Each Inflation Market perpetual corresponds to a specific economic index such as CPI, GDP growth rate, or national housing index.</P>
+          <H>Core Architecture</H>
+          <L items={[
+            'Smart Contracts — manage collateral, funding, liquidation, settlement',
+            'Oracle Layer — aggregates macroeconomic data from multiple sources',
+            'Liquidity Layer — AMM or hybrid orderbook for pricing and matching positions',
+            'Governance Layer — token‑based or DAO‑driven risk parameter updates',
+          ]} />
+          <H>Index Oracles</H>
+          <L items={[
+            'Official data sources (BLS, Federal Reserve, S&P CoreLogic)',
+            'Decentralized relayers providing signed attestations',
+            'Time‑weighted median aggregation to resist manipulation',
+          ]} />
+        </>);
       case 'funding':
-        return <P>Funding aligns mark and index prices. Rate is computed based on inventory and index deviation over a time window.</P>;
+        return (<>
+          <H>Continuous Funding</H>
+          <L items={[
+            'Funding flows continuously between longs and shorts to maintain price stability',
+            'The rate is bounded per epoch to prevent excessive volatility',
+          ]} />
+          <H>Log‑Level Contracts</H>
+          <P>To ensure long‑term scale invariance, the contract trades on the log of index level, aligning with real‑world inflation or growth rates.</P>
+        </>);
       case 'collateral':
-        return <P>Collateralization uses a vault with risk parameters for leverage limits, maintenance margin, and liquidation penalties.</P>;
+        return (<>
+          <H>Collateral</H><P>Stablecoins or tokenized treasuries accepted as margin.</P>
+          <H>Leverage</H><P>Conservative (1–20x) given market volatility.</P>
+          <H>Liquidation</H><P>Triggered when margin ratio falls below maintenance level.</P>
+          <H>Insurance Fund</H><P>Protocol‑owned buffer covers oracle lags or black‑swan events.</P>
+        </>);
       case 'amm':
-        return <P>AMM provides quotes with price impact for trade size; parameters are tuned for stability across market conditions.</P>;
+        return (<>
+          <P>Two potential market‑making designs:</P>
+          <H>1) Virtual AMM (vAMM)</H><P>Similar to Perpetual Protocol; synthetic reserves and funding anchor to oracle fair values.</P>
+          <H>2) Cost‑Function AMM</H><P>Logarithmic or quadratic curve provides continuous liquidity, earning funding and trading fees.</P>
+        </>);
       case 'governance':
-        return <P>Governance will evolve from multisig to community-driven proposals for parameters and listings, subject to legal constraints.</P>;
+        return (<>
+          <H>Protocol DAO</H><P>Governs parameters such as funding coefficient, leverage limits, and index onboarding.</P>
+          <H>Oracle Governance</H><P>Decentralized committee verifies data sources and manages oracle relayers.</P>
+          <H>Transparent Auditing</H><P>All index definitions, updates, and oracle attestations are on‑chain and IPFS‑archived.</P>
+        </>);
       case 'regulatory':
-        return <P>We follow a careful compliance posture, limiting jurisdictions and access during test phases and adapting for mainnet readiness.</P>;
+        return (<>
+          <P>To remain compliant while enabling open participation:</P>
+          <L items={[
+            'Protocol operates as software infrastructure, not a broker or investment manager',
+            'No custody: users retain control of their assets at all times',
+            'Open access: smart contracts are publicly deployed with regional compliance',
+            'Transparency: funding rates, index sources, and oracle attestations are open and auditable',
+          ]} />
+        </>);
       case 'markets':
-        return <P>Initial markets: CPI (Inflation), Housing (Case‑Shiller), and GDP growth. Additional indexes will be added with demand.</P>;
+        return (
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card>
+              <H>Inflation — CPI Index</H>
+              <P><span className="text-gray-400">Underlying:</span> U.S. CPI‑U (monthly, NSA)</P>
+              <P><span className="text-gray-400">Use Case:</span> Savers hedge inflation exposure; investors speculate on inflation surprises.</P>
+            </Card>
+            <Card>
+              <H>Housing — Home Price Index</H>
+              <P><span className="text-gray-400">Underlying:</span> S&P CoreLogic National Case–Shiller HPI</P>
+              <P><span className="text-gray-400">Use Case:</span> Hedge regional housing market fluctuations.</P>
+            </Card>
+            <Card>
+              <H>GDP Growth — Economic Growth</H>
+              <P><span className="text-gray-400">Underlying:</span> Real GDP Growth Rate (quarterly)</P>
+              <P><span className="text-gray-400">Use Case:</span> Firms and DAOs hedge against recessionary risks.</P>
+            </Card>
+          </div>
+        );
       case 'economic':
-        return <P>We outline funding economics, expected yields, and risk premiums driven by hedging demand and speculator capital.</P>;
+        return (<>
+          <P>Inflation Market serves as a macro‑financial primitive, enabling:</P>
+          <L items={[
+            'Inflation risk hedging for stablecoin holders',
+            'Macro diversification for institutional portfolios',
+            'Continuous expectation formation for policymakers',
+          ]} />
+          <H>Key Risks</H>
+          <L items={[
+            'Oracle reliability and data revision risk',
+            'Low liquidity in early stages',
+            'Potential regulatory reinterpretation',
+          ]} />
+        </>);
       case 'roadmap':
-        return <P>Implementation proceeds via public testnets, audits, guarded mainnet, and integrations with wallets and analytics.</P>;
+        return (
+          <div className="space-y-6">
+            <Card><H>Phase 0: Manual Oracle — <span className="text-green-400">Complete</span></H><P>Smart contracts with manual CPI data entry for testing.</P></Card>
+            <Card><H>Phase 1: Hybrid Oracle Development — <span className="text-yellow-400">In Progress</span></H><P>MPC aggregation layer + Chainlink delivery integration.</P></Card>
+            <Card><H>Phase 2: Testnet Deployment — <span className="text-gray-300">Planned</span></H><P>Full protocol testing on Sepolia with hybrid oracles.</P></Card>
+            <Card><H>Phase 3: Security Audits — <span className="text-gray-300">Planned</span></H><P>Smart contract audits and bug bounty program.</P></Card>
+            <Card><H>Phase 4: Mainnet Launch — <span className="text-gray-300">Planned</span></H><P>CPI perpetuals live on mainnet with insurance fund.</P></Card>
+            <Card><H>Phase 5: Market Expansion — <span className="text-gray-300">Future</span></H><P>Add Housing (FHFA HPI) and GDP markets.</P></Card>
+          </div>
+        );
       case 'conclusion':
-        return <P>We aim to provide the missing macro hedging layer for on‑chain finance.</P>;
+        return (<>
+          <P>Inflation Market operationalizes Robert Shiller’s vision of a world where individuals and institutions can manage society’s largest, most pervasive economic risks. By leveraging blockchain technology and decentralized governance, the protocol creates a transparent, permissionless system for sharing macro risk—without centralized intermediaries or custodial control.</P>
+          <P>This innovation bridges economic theory and decentralized finance, turning Shiller’s dream of social risk management into a practical, global, on‑chain reality.</P>
+        </>);
       default:
         return null;
     }
