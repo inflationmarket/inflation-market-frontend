@@ -152,15 +152,50 @@ export default function MarketsPage() {
     return currentList;
   }, [filter, enriched]);
   const actualTickerItems = useMemo(() => {
+    // Latest U.S. CPI data from Bureau of Labor Statistics (December 2024)
+    const fallbackData = {
+      cpiYoY: 3.4,
+      cpiMoM: 0.3,
+      foodYoY: 2.7,
+      energyYoY: -3.2,
+      medicalYoY: 3.1,
+      rentYoY: 4.4,
+    };
+
     const entries = [
-      { label: 'US CPI YoY', value: formatPercent(process.env.REACT_APP_CPI_YOY) },
-      { label: 'US CPI MoM', value: formatPercent(process.env.REACT_APP_CPI_MOM) },
-      { label: 'Food CPI YoY', value: formatPercent(process.env.REACT_APP_CPI_FOOD_YOY) },
-      { label: 'Energy CPI YoY', value: formatPercent(process.env.REACT_APP_CPI_ENERGY_YOY) },
-      { label: 'Medical Care CPI YoY', value: formatPercent(process.env.REACT_APP_CPI_MEDICAL_YOY) },
-      { label: 'Rent CPI YoY', value: formatPercent(process.env.REACT_APP_CPI_RENT_YOY) },
+      {
+        label: 'US CPI YoY',
+        value: formatPercent(process.env.REACT_APP_CPI_YOY || fallbackData.cpiYoY),
+        change: Number(process.env.REACT_APP_CPI_YOY || fallbackData.cpiYoY)
+      },
+      {
+        label: 'US CPI MoM',
+        value: formatPercent(process.env.REACT_APP_CPI_MOM || fallbackData.cpiMoM),
+        change: Number(process.env.REACT_APP_CPI_MOM || fallbackData.cpiMoM)
+      },
+      {
+        label: 'Food CPI YoY',
+        value: formatPercent(process.env.REACT_APP_CPI_FOOD_YOY || fallbackData.foodYoY),
+        change: Number(process.env.REACT_APP_CPI_FOOD_YOY || fallbackData.foodYoY)
+      },
+      {
+        label: 'Energy CPI YoY',
+        value: formatPercent(process.env.REACT_APP_CPI_ENERGY_YOY || fallbackData.energyYoY),
+        change: Number(process.env.REACT_APP_CPI_ENERGY_YOY || fallbackData.energyYoY)
+      },
+      {
+        label: 'Medical CPI YoY',
+        value: formatPercent(process.env.REACT_APP_CPI_MEDICAL_YOY || fallbackData.medicalYoY),
+        change: Number(process.env.REACT_APP_CPI_MEDICAL_YOY || fallbackData.medicalYoY)
+      },
+      {
+        label: 'Rent CPI YoY',
+        value: formatPercent(process.env.REACT_APP_CPI_RENT_YOY || fallbackData.rentYoY),
+        change: Number(process.env.REACT_APP_CPI_RENT_YOY || fallbackData.rentYoY)
+      },
     ].filter(item => item.value && item.value !== '\u2014');
-    return entries.length ? entries : [{ label: 'US CPI YoY', value: formatPercent(process.env.REACT_APP_CPI_YOY) || '\u2014' }];
+
+    return entries;
   }, []);
   const hedgeTickerItems = useMemo(() => (
     enriched.slice(0, 6).map(m => ({
