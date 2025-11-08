@@ -143,50 +143,49 @@ export default function LandingPage() {
 
       {/* Hero */}
       <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-yellow-500/10 border border-yellow-500/30 rounded-full text-yellow-500 mb-6">
-              <Zap className="w-4 h-4" />
-              Non-custodial • Decentralized • Testnet demo
-            </div>
-            <h1 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
-              Protect Your Wealth from Inflation
-            </h1>
-            <p className="text-xl text-gray-300 mb-6 leading-relaxed">
-              Take direct positions on inflation markets. Go long to hedge your purchasing power, or short if you expect deflation. Start with US CPI or explore specialized markets.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
-              <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
-                <div className="w-6 h-6 rounded-md bg-yellow-500/10 text-yellow-500 flex items-center justify-center">
-                  <Shield className="w-4 h-4" />
-                </div>
-                <span className="text-gray-300 text-sm">Non-custodial</span>
-              </div>
-              <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
-                <div className="w-6 h-6 rounded-md bg-yellow-500/10 text-yellow-500 flex items-center justify-center">
-                  <Sigma className="w-4 h-4" />
-                </div>
-                <span className="text-gray-300 text-sm">Hybrid MPC + Chainlink</span>
-              </div>
-              <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
-                <div className="w-6 h-6 rounded-md bg-yellow-500/10 text-yellow-500 flex items-center justify-center">
-                  <RefreshCw className="w-4 h-4" />
-                </div>
-                <span className="text-gray-300 text-sm">Perpetual markets</span>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button onClick={handleStartTrading} className="text-lg px-8 py-6">
-                Start Trading <ArrowRight className="w-5 h-5 ml-2" />
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-yellow-500/10 border border-yellow-500/30 rounded-full text-yellow-500 mb-6">
+            <Zap className="w-4 h-4" />
+            Non-custodial • Decentralized • Testnet demo
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+            Protect Your Wealth from Inflation
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+            Take direct positions on inflation markets. Go long to hedge your purchasing power, or short if you expect deflation. Start with US CPI or explore specialized markets.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Button onClick={handleStartTrading} className="text-lg px-10 py-6">
+              Start Trading <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+            <Link to="/markets">
+              <Button variant="ghost" className="text-lg px-10 py-6 w-full">
+                Browse Markets
               </Button>
-              <Link to="/whitepaper">
-                <Button variant="ghost" className="text-lg px-8 py-6 w-full">
-                  Read Whitepaper
-                </Button>
-              </Link>
-            </div>
+            </Link>
           </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            <div className="flex items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/5 px-4 py-3">
+              <div className="w-8 h-8 rounded-md bg-yellow-500/10 text-yellow-500 flex items-center justify-center flex-shrink-0">
+                <Shield className="w-5 h-5" />
+              </div>
+              <span className="text-gray-300 text-sm font-medium">Non-custodial</span>
+            </div>
+            <div className="flex items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/5 px-4 py-3">
+              <div className="w-8 h-8 rounded-md bg-yellow-500/10 text-yellow-500 flex items-center justify-center flex-shrink-0">
+                <Sigma className="w-5 h-5" />
+              </div>
+              <span className="text-gray-300 text-sm font-medium">MPC + Chainlink</span>
+            </div>
+            <div className="flex items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/5 px-4 py-3">
+              <div className="w-8 h-8 rounded-md bg-yellow-500/10 text-yellow-500 flex items-center justify-center flex-shrink-0">
+                <RefreshCw className="w-5 h-5" />
+              </div>
+              <span className="text-gray-300 text-sm font-medium">Perpetual markets</span>
+            </div>
+          </div>
         </div>
       </section>
 
