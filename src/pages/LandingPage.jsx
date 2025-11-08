@@ -17,7 +17,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Card } from '../components/ui/primitives';
 import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
 import { MARKETS } from '../config/constants';
@@ -76,6 +76,13 @@ function TickerRow({ title, subtitle, items, showArrows = false, variant = 'defa
 }
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+
+  const handleStartTrading = () => {
+    navigate('/app');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -175,10 +182,10 @@ export default function LandingPage() {
               Non-custodial • Decentralized • Testnet demo
             </div>
             <h1 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
-              Hedge Against Inflation: Start with US CPI
+              Protect Your Wealth from Inflation
             </h1>
-            <p className="text-lg text-gray-300 mb-6">
-              Start by hedging against general US CPI. Our platform simplifies long or short positions, with a vision to expand into specialized inflation markets.
+            <p className="text-xl text-gray-300 mb-6 leading-relaxed">
+              Take direct positions on inflation markets. Go long to hedge your purchasing power, or short if you expect deflation. Start with US CPI or explore specialized markets.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
               <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
@@ -201,8 +208,14 @@ export default function LandingPage() {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link to="/app"><Button className="text-lg">Start Trading <ArrowRight className="w-5 h-5" /></Button></Link>
-              <Link to="/whitepaper"><Button variant="ghost" className="text-lg">Read Whitepaper</Button></Link>
+              <Button onClick={handleStartTrading} className="text-lg px-8 py-6">
+                Start Trading <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+              <Link to="/whitepaper">
+                <Button variant="ghost" className="text-lg px-8 py-6 w-full">
+                  Read Whitepaper
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -352,12 +365,12 @@ export default function LandingPage() {
               <p className="text-sm text-gray-300">Connect your wallet and switch to the supported network.</p>
             </Card>
             <Card>
-              <div className="flex items-center gap-2 mb-2 text-yellow-500"><TrendingUp className="w-4 h-4"/><span className="text-white font-semibold">Pick a market</span></div>
-              <p className="text-sm text-gray-300">Start with the general US CPI market and set slippage.</p>
+              <div className="flex items-center gap-2 mb-2 text-yellow-500"><TrendingUp className="w-4 h-4"/><span className="text-white font-semibold">Choose your market</span></div>
+              <p className="text-sm text-gray-300">Select from US CPI or specialized inflation indices. Set your leverage (1x-20x).</p>
             </Card>
             <Card>
-              <div className="flex items-center gap-2 mb-2 text-yellow-500"><CheckCircle className="w-4 h-4"/><span className="text-white font-semibold">Open a trade</span></div>
-              <p className="text-sm text-gray-300">Confirm approvals, open the position, and monitor funding.</p>
+              <div className="flex items-center gap-2 mb-2 text-yellow-500"><CheckCircle className="w-4 h-4"/><span className="text-white font-semibold">Open your position</span></div>
+              <p className="text-sm text-gray-300">Go long to hedge or short to speculate. Your collateral stays under your control.</p>
             </Card>
           </div>
         </div>
@@ -367,10 +380,19 @@ export default function LandingPage() {
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <Card className="bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border-2 border-yellow-500/40 text-center p-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Launch the Test Prototype</h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Open a position on the general US CPI market. You're always in control of your collateral.</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Ready to Start Trading?</h2>
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+              Test the platform on Arbitrum Sepolia. Connect your wallet and explore our inflation markets with no risk to real funds.
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/app"><Button className="text-lg">Trade <ArrowRight className="w-5 h-5" /></Button></Link>
+              <Button onClick={handleStartTrading} className="text-lg px-8 py-6">
+                Open Trade Ticket <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+              <Link to="/markets">
+                <Button variant="ghost" className="text-lg px-8 py-6 w-full">
+                  Browse Markets
+                </Button>
+              </Link>
             </div>
           </Card>
         </div>
