@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Sparkline from '../components/charts/Sparkline';
 import useSparkline from '../hooks/useSparkline';
 import { useAppState } from '../app';
+import { MARKETS } from '../config/constants';
 import { ShoppingCart, Stethoscope, Home, Flame, GraduationCap, Globe, Activity } from 'lucide-react';
 
 const formatPercent = (input) => {
@@ -120,7 +121,9 @@ function MarketCard({ market, onTrade }) {
 export default function MarketsPage() {
   const [filter, setFilter] = useState('All');
   const [region, setRegion] = useState('US');
-  const { markets } = useInflationData();
+  const { markets: apiMarkets } = useInflationData();
+  // Fallback to static MARKETS if API fails or returns empty
+  const markets = (apiMarkets && apiMarkets.length > 0) ? apiMarkets : MARKETS;
   const addDerivedTags = (m) => {
     const tags = new Set([...(m.tags || [])]);
     if (Math.abs(m.change24h) >= 0.6) tags.add('Trending');
