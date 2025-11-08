@@ -284,7 +284,7 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button onClick={handleStartTrading} className="text-lg px-8 py-6">
-                Open Trade Ticket <ArrowRight className="w-5 h-5 ml-2" />
+                Start Trading <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
               <Link to="/markets">
                 <Button variant="ghost" className="text-lg px-8 py-6 w-full">
