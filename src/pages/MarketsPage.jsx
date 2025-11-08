@@ -73,7 +73,7 @@ function MarketCard({ market, onTrade }) {
   };
 
   return (
-    <Card className="h-full cursor-pointer hover:border-yellow-500/40 hover:bg-white/10 transition-all" onClick={handleClick}>
+    <Card className="h-full cursor-pointer hover:border-yellow-500/40 transition-all" onClick={handleClick}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex gap-3">
           <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center">
