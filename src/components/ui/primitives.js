@@ -40,7 +40,7 @@ export const Button = ({
 };
 
 export const Card = ({ children, className = '' }) => (
-  <div className={`bg-white/5/ [@supports(backdrop-filter:blur(0px))]:backdrop-blur-sm border border-yellow-500/20 rounded-xl p-6 shadow-lg shadow-black/30 ${className}`}>
+  <div className={`bg-white/5 [@supports(backdrop-filter:blur(0px))]:backdrop-blur-sm border border-white/10 rounded-xl p-6 shadow-lg shadow-black/30 ${className}`}>
     {children}
   </div>
 );

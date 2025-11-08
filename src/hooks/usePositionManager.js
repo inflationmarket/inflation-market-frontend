@@ -1,4 +1,4 @@
-import { parseUnits } from 'ethers';
+import { parseUnits, Interface } from 'ethers';
 /* global BigInt */
 import { useContracts } from './useContracts';
 import { getAddresses } from '../contracts/addresses';
@@ -42,7 +42,24 @@ export default function usePositionManager() {
     const leverageWei = parseUnits(String(leverageX), 18);
     const tx = await write.positionManager.openPosition(isLong, collateral, leverageWei, minPrice, maxPrice);
     const receipt = await tx.wait();
-    return receipt;
+    let positionId = null;
+    try {
+      const iface = new Interface([
+        'event PositionOpened(bytes32 indexed positionId, address indexed trader)'
+      ]);
+      for (const log of receipt.logs || []) {
+        if (log.address?.toLowerCase() === write.positionManager.target?.toLowerCase()) {
+          try {
+            const parsed = iface.parseLog({ topics: log.topics, data: log.data });
+            if (parsed?.name === 'PositionOpened') {
+              positionId = parsed.args?.positionId || parsed.args?.[0] || null;
+              break;
+            }
+          } catch (_) {}
+        }
+      }
+    } catch (_) {}
+    return { receipt, positionId };
   };
 
   const closePosition = async (positionId) => {

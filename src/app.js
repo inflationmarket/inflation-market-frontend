@@ -4,6 +4,12 @@ import { ToastProvider } from './components/toast/ToastProvider';
 import { Web3Context } from './contexts/Web3Context';
 import LandingPageComp from './pages/LandingPage';
 import TradingAppPageComp from './pages/TradingAppPage';
+import MobileNavBar from './components/nav/MobileNavBar';
+import MarketsPage from './pages/MarketsPage';
+import PortfolioPage from './pages/PortfolioPage';
+import LearnPage from './pages/LearnPage';
+import SettingsPage from './pages/SettingsPage';
+import KYCStatusPage from './pages/KYCStatusPage';
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const HowItWorksPage = lazy(() => import('./pages/HowItWorksPage'));
 const WhitepaperPage = lazy(() => import('./pages/WhitepaperPage'));
@@ -57,6 +63,7 @@ export default function InflationMarketApp() {
       <AppStateProvider>
         <Suspense fallback={<div className="text-white p-6">Loading...</div>}>
           <RoutedApp />
+          <MobileNavBar />
         </Suspense>
       </AppStateProvider>
     </ToastProvider>
@@ -85,9 +92,14 @@ const WithNavigate = ({ Component }) => {
 const RoutedApp = () => (
   <Routes>
     <Route path="/" element={<WithNavigate Component={LandingPageComp} />} />
+    <Route path="/markets" element={<WithNavigate Component={MarketsPage} />} />
+    <Route path="/portfolio" element={<WithNavigate Component={PortfolioPage} />} />
+    <Route path="/learn" element={<WithNavigate Component={LearnPage} />} />
     <Route path="/app" element={<WithNavigate Component={TradingAppPageComp} />} />
     <Route path="/faq" element={<WithNavigate Component={FAQPage} />} />
     <Route path="/compliance" element={<WithNavigate Component={CompliancePage} />} />
+    <Route path="/settings" element={<WithNavigate Component={SettingsPage} />} />
+    <Route path="/settings/kyc-status" element={<WithNavigate Component={KYCStatusPage} />} />
     <Route path="/about" element={<AboutPage />} />
     <Route path="/how-it-works" element={<HowItWorksPage />} />
     <Route path="/whitepaper" element={<WhitepaperPage />} />

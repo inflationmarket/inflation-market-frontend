@@ -174,9 +174,9 @@ export default function WhitepaperPage() {
             <P>Unlike traditional derivatives platforms, Inflation Market operates as a transparent, autonomous protocol governed by smart contracts. A hybrid MPC + Chainlink oracle network delivers tamper‑resistant CPI and treasury data, while permissionless smart contracts handle settlement without centralized custody.</P>
           </Card>
 
-          {/* Compact Glossary */}
+          {/* Glossary */}
           <Card id="glossary" className="anchor-offset">
-            <HIcon icon={<BookOpen className="w-4 h-4" />}>Glossary (Compact)</HIcon>
+            <HIcon icon={<BookOpen className="w-4 h-4" />}>Glossary</HIcon>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <div className="text-sm font-semibold text-white">CPI (Consumer Price Index)</div>
@@ -342,8 +342,19 @@ export default function WhitepaperPage() {
 
           {/* Roadmap */}
           <Card id="roadmap" className="anchor-offset">
-            <HIcon>12. Implementation Roadmap</HIcon>
-            <P>Milestones and tangible deliverables toward a guarded mainnet launch. Status colors: green = complete, yellow = in progress, gray = planned.</P>
+            <HIcon icon={<Clock className="w-4 h-4" />}>12. Implementation Roadmap</HIcon>
+            <P>Milestones and tangible deliverables toward a guarded mainnet launch.</P>
+            <div className="flex flex-wrap gap-3 text-xs mb-2">
+              <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-green-400/10 border border-green-400/30 text-green-200">
+                <span className="w-2 h-2 rounded-full bg-green-400"></span> Complete
+              </span>
+              <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-yellow-400/10 border border-yellow-400/30 text-yellow-200">
+                <span className="w-2 h-2 rounded-full bg-yellow-400"></span> In Progress
+              </span>
+              <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-gray-300">
+                <span className="w-2 h-2 rounded-full bg-gray-300"></span> Planned
+              </span>
+            </div>
             <div className="grid md:grid-cols-2 gap-4 mt-4">
               <PhaseTile
                 tint="green"

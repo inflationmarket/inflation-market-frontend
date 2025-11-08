@@ -9,6 +9,9 @@ const formatCurrency = (value, decimals = 2) =>
     maximumFractionDigits: decimals,
   }).format(value ?? 0);
 
+const formatPercent = (value, decimals = 2) =>
+  `${value >= 0 ? '+' : ''}${(value ?? 0).toFixed(decimals)}%`;
+
 const MarginManagementModal = ({
   isOpen,
   onClose,
@@ -42,7 +45,7 @@ const MarginManagementModal = ({
           <div>
             <p className="text-xs uppercase tracking-wide text-gray-500">Margin management</p>
             <h2 className="text-xl font-semibold text-white">
-              Position #{position.id.slice(0, 8)} – {position.direction === 'long' ? 'Long' : 'Short'}
+              Position #{position.id.slice(0, 8)} - {position.direction === 'long' ? 'Long' : 'Short'}
             </h2>
           </div>
           <Button variant="ghost" onClick={onClose}>

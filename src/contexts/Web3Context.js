@@ -29,20 +29,32 @@ export const Web3Provider = ({ children }) => {
 
   // Connect wallet
   const connectWallet = useCallback(async () => {
+    if (isConnecting) return; // avoid double prompts/freezes
+    let safetyTimeout;
     try {
       setIsConnecting(true);
       setError(null);
+      safetyTimeout = setTimeout(() => {
+        // If something stalls (no extension prompt or blocked), stop spinner
+        setIsConnecting(false);
+      }, 20000);
 
       if (typeof window === 'undefined' || !window.ethereum) {
         throw new Error('Please install MetaMask to use this dApp');
       }
 
-      // Request account access
-      const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
-      });
+      // Request account access (handle user-reject gracefully)
+      let accounts = [];
+      try {
+        accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      } catch (reqErr) {
+        if (reqErr && reqErr.code === 4001) {
+          setError('User rejected connection');
+          return;
+        }
+        throw reqErr;
+      }
 
-      // Create provider and signer
       const web3Provider = new ethers.BrowserProvider(window.ethereum);
       const web3Signer = await web3Provider.getSigner();
       const network = await web3Provider.getNetwork();
@@ -52,16 +64,15 @@ export const Web3Provider = ({ children }) => {
       setSigner(web3Signer);
       setChainId(Number(network.chainId));
 
-      console.log('Wallet connected:', accounts[0]);
-      console.log('Chain ID:', Number(network.chainId));
+      try { localStorage.setItem('im_connected', '1'); } catch (_) {}
 
     } catch (err) {
-      console.error('Error connecting wallet:', err);
       setError(err.message);
     } finally {
       setIsConnecting(false);
+      try { if (safetyTimeout) clearTimeout(safetyTimeout); } catch (_) {}
     }
-  }, []);
+  }, [isConnecting]);
 
   // Disconnect wallet
   const disconnectWallet = () => {
@@ -70,7 +81,7 @@ export const Web3Provider = ({ children }) => {
     setSigner(null);
     setChainId(null);
     setError(null);
-    console.log('Wallet disconnected');
+    try { localStorage.removeItem('im_connected'); } catch (_) {}
   };
 
   // Switch network
@@ -89,10 +100,8 @@ export const Web3Provider = ({ children }) => {
     } catch (err) {
       // This error code indicates that the chain has not been added to MetaMask
       if (err.code === 4902) {
-        console.error('Network not added to MetaMask');
         return false;
       }
-      console.error('Error switching network:', err);
       setError(err.message);
       return false;
     }
@@ -110,7 +119,6 @@ export const Web3Provider = ({ children }) => {
 
       return true;
     } catch (err) {
-      console.error('Error adding network:', err);
       setError(err.message);
       return false;
     }
@@ -125,16 +133,13 @@ export const Web3Provider = ({ children }) => {
         disconnectWallet();
       } else if (accounts[0] !== account) {
         setAccount(accounts[0]);
-        console.log('Account changed:', accounts[0]);
       }
     };
 
     const handleChainChanged = (chainIdHex) => {
       const newChainId = parseInt(chainIdHex, 16);
       setChainId(newChainId);
-      console.log('Chain changed:', newChainId);
-      // Reload to avoid any stale state
-      window.location.reload();
+      // No full reload to avoid freezes; downstream hooks read chainId
     };
 
     const handleDisconnect = () => {
@@ -154,26 +159,33 @@ export const Web3Provider = ({ children }) => {
     };
   }, [account]);
 
-  // Auto-connect if previously connected
+  // Auto-connect if previously connected (non-blocking: avoid eth_requestAccounts on load)
   useEffect(() => {
     const autoConnect = async () => {
-      if (typeof window !== 'undefined' && window.ethereum) {
-        try {
-          const accounts = await window.ethereum.request({
-            method: 'eth_accounts',
-          });
-
-          if (accounts.length > 0) {
-            await connectWallet();
+      if (typeof window === 'undefined' || !window.ethereum) return;
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+        const shouldAuto = (() => { try { return localStorage.getItem('im_connected') === '1'; } catch (_) { return false; } })();
+        if (accounts.length > 0 && shouldAuto) {
+          setIsConnecting(true);
+          try {
+            const web3Provider = new ethers.BrowserProvider(window.ethereum);
+            const web3Signer = await web3Provider.getSigner();
+            const network = await web3Provider.getNetwork();
+            setAccount(accounts[0]);
+            setProvider(web3Provider);
+            setSigner(web3Signer);
+            setChainId(Number(network.chainId));
+          } finally {
+            setIsConnecting(false);
           }
-        } catch (err) {
-          console.error('Auto-connect failed:', err);
         }
+      } catch (err) {
+        setIsConnecting(false);
       }
     };
-
     autoConnect();
-  }, [connectWallet]);
+  }, []);
 
   const value = {
     account,

@@ -18,11 +18,10 @@ export const SiteHeader = () => (
         <Link to="/whitepaper" className="text-sm text-gray-400 hover:text-yellow-500">Whitepaper</Link>
         <Link to="/roadmap" className="text-sm text-gray-400 hover:text-yellow-500">Roadmap</Link>
         <Link to="/about" className="text-sm text-gray-400 hover:text-yellow-500">About</Link>
-        <Link to="/faq" className="text-sm text-gray-400 hover:text-yellow-500">FAQ</Link>
       </nav>
 
       <div className="flex items-center gap-3">
-        <Link to="/app" className="px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg font-bold">Open Prototype</Link>
+        <Link to="/app" className="px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg font-bold">Trade</Link>
       </div>
     </div>
   </header>
@@ -50,7 +49,6 @@ export const SiteFooter = () => (
             <Link to="/roadmap" className="block text-sm text-gray-400 hover:text-yellow-500">Roadmap</Link>
             <Link to="/about" className="block text-sm text-gray-400 hover:text-yellow-500">About</Link>
             <Link to="/faq" className="block text-sm text-gray-400 hover:text-yellow-500">FAQ</Link>
-            <Link to="/app" className="block text-sm text-gray-400 hover:text-yellow-500">Open Prototype</Link>
           </div>
         </div>
 
@@ -66,8 +64,9 @@ export const SiteFooter = () => (
 
       <div className="border-top border-yellow-500/20 pt-8 text-center text-sm text-gray-400">
         <p>© 2025 Inflation Market. All rights reserved.</p>
-        <p className="mt-2 text-xs text-yellow-500">⚠️ Testnet Demo - {CONFIG.domain}</p>
+        <p className="mt-2 text-xs text-yellow-500">Testnet Demo � {CONFIG.domain}</p>
       </div>
     </div>
   </footer>
 );
+

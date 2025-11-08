@@ -24,7 +24,7 @@ function SimpleHeader({ onNavigate }) {
             <button onClick={() => onNavigate('whitepaper')} className="text-gray-300 hover:text-yellow-500">Whitepaper</button>
             <button onClick={() => onNavigate('roadmap')} className="text-gray-300 hover:text-yellow-500">Roadmap</button>
             <button onClick={() => onNavigate('about')} className="text-gray-300 hover:text-yellow-500">About</button>
-            <button onClick={() => onNavigate('app')} className="px-6 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg font-bold">Open Prototype</button>
+            <button onClick={() => onNavigate('app')} className="px-6 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg font-bold">Trade</button>
           </div>
 
           <button className="md:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -40,7 +40,7 @@ function SimpleHeader({ onNavigate }) {
             <button onClick={() => { onNavigate('whitepaper'); setMobileMenuOpen(false); }} className="block w-full text-left text-gray-300 hover:text-yellow-500">Whitepaper</button>
             <button onClick={() => { onNavigate('roadmap'); setMobileMenuOpen(false); }} className="block w-full text-left text-gray-300 hover:text-yellow-500">Roadmap</button>
             <button onClick={() => { onNavigate('about'); setMobileMenuOpen(false); }} className="block w-full text-left text-gray-300 hover:text-yellow-500">About</button>
-            <button onClick={() => { onNavigate('app'); setMobileMenuOpen(false); }} className="w-full px-6 py-2 bg-yellow-500 text-black rounded-lg font-bold">Open Prototype</button>
+            <button onClick={() => { onNavigate('app'); setMobileMenuOpen(false); }} className="w-full px-6 py-2 bg-yellow-500 text-black rounded-lg font-bold">Trade</button>
           </div>
         )}
       </div>
@@ -74,7 +74,7 @@ function SharedFooter({ onNavigate }) {
               <button onClick={() => onNavigate('whitepaper')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">Whitepaper</button>
               <button onClick={() => onNavigate('roadmap')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">Roadmap</button>
               <button onClick={() => onNavigate('about')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">About</button>
-              <button onClick={() => onNavigate('app')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">Open Prototype</button>
+              <button onClick={() => onNavigate('app')} className="block w-full text-left text-sm text-gray-400 hover:text-yellow-500">Trade</button>
             </div>
           </div>
 

@@ -69,7 +69,6 @@ export const usePositions = () => {
             isLong: positionData.isLong,
           };
         } catch (err) {
-          console.error(`Error fetching position ${id}:`, err);
           return null;
         }
       });
@@ -83,7 +82,6 @@ export const usePositions = () => {
       setLoading(false);
 
     } catch (err) {
-      console.error('Error fetching positions:', err);
       setError(err.message);
       setLoading(false);
     }
@@ -116,7 +114,6 @@ export const usePositions = () => {
         isLong: positionData.isLong,
       };
     } catch (err) {
-      console.error(`Error fetching position ${positionId}:`, err);
       return null;
     }
   }, [getRead]);
@@ -135,7 +132,6 @@ export const usePositions = () => {
       if (typeof pm.isPositionLiquidatable !== 'function') return false;
       return await pm.isPositionLiquidatable(positionId);
     } catch (err) {
-      console.error(`Error checking liquidation status for ${positionId}:`, err);
       return false;
     }
   }, [getRead]);
@@ -195,7 +191,6 @@ export const usePositions = () => {
 
     // Event handlers
     const handlePositionOpened = (positionId, trader, ...args) => {
-      console.log('Position opened event:', positionId);
       if (isMounted) {
         // Refetch positions to get the latest data
         fetchPositions();
@@ -203,7 +198,6 @@ export const usePositions = () => {
     };
 
     const handlePositionClosed = (positionId, trader, ...args) => {
-      console.log('Position closed event:', positionId);
       if (isMounted) {
         // Remove position from local state
         removePosition(positionId);
@@ -211,7 +205,6 @@ export const usePositions = () => {
     };
 
     const handleMarginAdded = (positionId, trader, amount) => {
-      console.log('Margin added event:', positionId, amount);
       if (isMounted) {
         // Refetch the specific position
         getPosition(positionId).then(position => {
@@ -223,7 +216,6 @@ export const usePositions = () => {
     };
 
     const handleMarginRemoved = (positionId, trader, amount) => {
-      console.log('Margin removed event:', positionId, amount);
       if (isMounted) {
         // Refetch the specific position
         getPosition(positionId).then(position => {

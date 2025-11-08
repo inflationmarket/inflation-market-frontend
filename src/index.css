@@ -26,8 +26,96 @@ code {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* Offset for sticky header when jumping to anchors */
+.anchor-offset {
+  scroll-margin-top: 96px; /* adjust if header height changes */
+}
+
 h1, .text-display-1 { letter-spacing: -0.02em; }
 h2, .text-display-2 { letter-spacing: -0.01em; }
 
 a { color: #f5d742; }
 a:hover { color: #fde68a; }
+
+/* Hide number input arrows for cleaner UI */
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Skeleton shimmer */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(255,255,255,0.06);
+  border-radius: 9999px;
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+/* Horizontal ticker (no scrollbar) */
+.ticker {
+  overflow: hidden;
+  position: relative;
+}
+.ticker::after, .ticker::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; width: 48px;
+  pointer-events: none;
+}
+.ticker::before { left: 0; background: linear-gradient(90deg, rgba(0,0,0,0.9), rgba(0,0,0,0)); }
+.ticker::after  { right: 0; background: linear-gradient(-90deg, rgba(0,0,0,0.9), rgba(0,0,0,0)); }
+.ticker-track {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  white-space: nowrap;
+  will-change: transform;
+  animation: ticker-move 28s linear infinite;
+}
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+.ticker-official {
+  border-color: rgba(56, 189, 248, 0.3);
+  background: linear-gradient(90deg, rgba(8, 47, 73, 0.6), rgba(8, 47, 73, 0.2));
+}
+.ticker-official::before { background: linear-gradient(90deg, rgba(8, 47, 73, 0.8), rgba(8, 47, 73, 0)); }
+.ticker-official::after  { background: linear-gradient(-90deg, rgba(8, 47, 73, 0.8), rgba(8, 47, 73, 0)); }
+.ticker-hedge {
+  border-color: rgba(250, 204, 21, 0.3);
+  background: linear-gradient(90deg, rgba(54, 33, 4, 0.6), rgba(54, 33, 4, 0.2));
+}
+.ticker-hedge::before { background: linear-gradient(90deg, rgba(54, 33, 4, 0.8), rgba(54, 33, 4, 0)); }
+.ticker-hedge::after  { background: linear-gradient(-90deg, rgba(54, 33, 4, 0.8), rgba(54, 33, 4, 0)); }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+@keyframes ticker-move {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
