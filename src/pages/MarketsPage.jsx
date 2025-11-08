@@ -202,13 +202,13 @@ export default function MarketsPage() {
           </div>
         <div className="space-y-3 mb-4">
           <TickerRow
-            title="Official inflation benchmarks"
-            subtitle="Source: Bureau of Labor Statistics"
+            title="U.S. Consumer Price Index (CPI) — Official government data"
+            subtitle="Source: Bureau of Labor Statistics • Updated monthly"
             items={actualTickerItems}
           />
           <TickerRow
-            title="Inflation hedge indices"
-            subtitle="Source: Inflation Market oracles"
+            title="Tradable inflation derivatives — Live perpetual prices"
+            subtitle="Inflation Market indices • Real-time oracle feeds"
             items={hedgeTickerItems}
           />
         </div>

@@ -191,15 +191,21 @@ export default function LandingPage() {
 
       {/* Live Markets Ticker (auto-scroll, no scrollbar) */}
       <section className="px-4 -mt-8">
-        <div className="max-w-6xl mx-auto border border-white/10 rounded-xl bg-white/5 ticker">
-          <div className="ticker-track px-4 py-3">
-            {[...MARKETS, ...MARKETS].map((m, i) => (
-              <div key={m.id + '-' + i} className="flex items-center gap-2">
-                <span className="text-sm text-gray-400">{m.name}</span>
-                <span className="text-sm text-white font-semibold">${m.price.toFixed(2)}</span>
-                <span className={`text-xs font-bold ${m.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>{m.change24h >= 0 ? '+' : ''}{m.change24h.toFixed(2)}%</span>
-              </div>
-            ))}
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between mb-1 text-xs text-gray-400 px-1">
+            <span>Live market prices</span>
+            <span className="text-[11px] text-gray-500">Real-time perpetual rates • Updated continuously</span>
+          </div>
+          <div className="border border-white/10 rounded-xl bg-white/5 ticker">
+            <div className="ticker-track px-4 py-3">
+              {[...MARKETS, ...MARKETS].map((m, i) => (
+                <div key={m.id + '-' + i} className="flex items-center gap-2">
+                  <span className="text-sm text-gray-400">{m.name}</span>
+                  <span className="text-sm text-white font-semibold">${m.price.toFixed(2)}</span>
+                  <span className={`text-xs font-bold ${m.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>{m.change24h >= 0 ? '+' : ''}{m.change24h.toFixed(2)}%</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
