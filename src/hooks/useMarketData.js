@@ -59,6 +59,7 @@ export default function useMarketData() {
       mounted = false;
       if (timer) clearInterval(timer);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getRead]);
 
   return state;

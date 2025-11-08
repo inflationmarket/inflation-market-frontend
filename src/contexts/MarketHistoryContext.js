@@ -23,7 +23,8 @@ export function MarketHistoryProvider({ children, markets = ['inflation', 'housi
         if (prevArr === next) return prev; // not expected, but defensive
         return { ...prev, [id]: next };
       });
-    }, [id, last, maxPoints]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id, last]);
   });
 
   const value = useMemo(() => ({
