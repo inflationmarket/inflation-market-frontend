@@ -62,8 +62,18 @@ function MarketCard({ market, onTrade }) {
   const ms = next ? Math.max(0, next - now) : null;
   const days = ms != null ? Math.floor(ms / 86400000) : null;
   const Icon = marketIconMap[market.id] || Activity;
+
+  const handleClick = () => {
+    console.log('Market card clicked:', market.id, market.name);
+    if (onTrade) {
+      onTrade();
+    } else {
+      console.error('onTrade function not provided');
+    }
+  };
+
   return (
-    <Card className="h-full cursor-pointer hover:border-yellow-500/40 transition-all" onClick={onTrade}>
+    <Card className="h-full cursor-pointer hover:border-yellow-500/40 hover:bg-white/10 transition-all" onClick={handleClick}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex gap-3">
           <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center">
@@ -301,7 +311,7 @@ function TopFive({ markets, onPick }) {
       <div className="overflow-x-auto -mx-4 px-4 pb-2">
         <div className="flex gap-3 snap-x snap-mandatory">
           {scored.map(m => (
-            <Card key={m.id} className="min-w-[240px] snap-start cursor-pointer hover:border-yellow-500/40 transition-all" onClick={() => onPick(m.id)}>
+            <Card key={m.id} className="min-w-[240px] snap-start cursor-pointer hover:border-yellow-500/40 hover:bg-white/10 transition-all" onClick={() => { console.log('Top 5 clicked:', m.id); onPick(m.id); }}>
               <div className="flex items-center justify-between mb-1">
                 <div>
                   <div className="text-white font-semibold">{m.name}</div>
