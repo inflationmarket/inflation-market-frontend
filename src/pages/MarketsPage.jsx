@@ -6,6 +6,7 @@ import Sparkline from '../components/charts/Sparkline';
 import useSparkline from '../hooks/useSparkline';
 import { useAppState } from '../app';
 import { MARKETS } from '../config/constants';
+import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
 import { ShoppingCart, Stethoscope, Home, Flame, GraduationCap, Globe, Activity } from 'lucide-react';
 
 const formatPercent = (input) => {
@@ -120,7 +121,6 @@ function MarketCard({ market, onTrade }) {
 
 export default function MarketsPage() {
   const [filter, setFilter] = useState('All');
-  const [region, setRegion] = useState('US');
   const { markets: apiMarkets } = useInflationData();
   // Fallback to static MARKETS if API fails or returns empty
   const markets = (apiMarkets && apiMarkets.length > 0) ? apiMarkets : MARKETS;
@@ -192,12 +192,14 @@ export default function MarketsPage() {
     })),
   };
   return (
-    <main className="min-h-screen bg-black px-4 py-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-white">Markets</h1>
-          <Link to="/app"><Button>Open Trade Ticket</Button></Link>
-        </div>
+    <div className="min-h-screen bg-black">
+      <SiteHeader />
+      <main className="px-4 py-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-3xl font-bold text-white">Markets</h1>
+            <Link to="/app"><Button>Open Trade Ticket</Button></Link>
+          </div>
         <div className="space-y-3 mb-4">
           <TickerRow
             title="Official inflation benchmarks"
@@ -212,14 +214,11 @@ export default function MarketsPage() {
         </div>
         {/* Top 5 carousel */}
         <TopFive markets={enriched} onPick={(id)=> { setSelectedMarket(id); navigate('/app'); }} />
+        {/* Region selector - currently showing US only */}
         <div className="mb-3 flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setRegion('US')}
-            className={`px-3 py-1 rounded-full text-xs border ${region==='US' ? 'border-yellow-500 text-yellow-500' : 'border-white/10 text-gray-300 hover:border-yellow-500/40'}`}
-          >US</button>
-          <button type="button" disabled className="px-3 py-1 rounded-full text-xs border border-white/10 text-gray-500 cursor-not-allowed" title="EU coming soon">EU</button>
-          <button type="button" disabled className="px-3 py-1 rounded-full text-xs border border-white/10 text-gray-500 cursor-not-allowed" title="UK coming soon">UK</button>
+          <div className="px-3 py-1 rounded-full text-xs border border-yellow-500/30 text-yellow-500 bg-yellow-500/10">
+            <span className="font-semibold">US Markets</span>
+          </div>
         </div>
         <div className="mb-4 flex flex-wrap items-center gap-2">
           {filters.map(f => (
@@ -238,9 +237,11 @@ export default function MarketsPage() {
             <MarketCard key={m.id} market={m} onTrade={() => { setSelectedMarket(m.id); navigate('/app'); }} />
           ))}
         </div>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(financialProductsSchema) }} />
-      </div>
-    </main>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(financialProductsSchema) }} />
+        </div>
+      </main>
+      <SiteFooter />
+    </div>
   );
 }
 
