@@ -101,6 +101,7 @@ function TradingHeader({ onSwitchNetwork }) {
   );
 }
 
+// eslint-disable-next-line no-unused-vars
 function MarketSelectorCompact({ markets, selectedMarket, onSelectMarket }) {
   const [isOpen, setIsOpen] = useState(false);
   const currentMarket = markets.find(m => m.id === selectedMarket) || markets[0];

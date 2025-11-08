@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import useInflationData from '../hooks/useInflationData';
-import { Card, Button } from '../components/ui/primitives';
-import { Link, useNavigate } from 'react-router-dom';
+import { Card } from '../components/ui/primitives';
+import { useNavigate } from 'react-router-dom';
 import Sparkline from '../components/charts/Sparkline';
 import useSparkline from '../hooks/useSparkline';
 import { useAppState } from '../app';
