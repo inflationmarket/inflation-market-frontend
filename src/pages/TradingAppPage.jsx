@@ -640,13 +640,53 @@ export default function TradingAppPage() {
           </div>
         )}
 
-        {/* Market Selector */}
+        {/* Available Markets Grid */}
         <div className="mb-6">
-          <MarketSelectorCompact
-            markets={MARKETS}
-            selectedMarket={selectedMarket}
-            onSelectMarket={setSelectedMarket}
-          />
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-white">Available Markets</h2>
+            <Link to="/markets" className="text-sm text-yellow-500 hover:text-yellow-400 transition-colors">
+              View all →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {MARKETS.map((market) => {
+              const Icon = MARKET_ICON_MAP[market.id] || Activity;
+              const isActive = selectedMarket === market.id;
+              return (
+                <button
+                  key={market.id}
+                  onClick={() => setSelectedMarket(market.id)}
+                  className={`text-left p-4 rounded-xl border transition-all ${
+                    isActive
+                      ? 'border-yellow-500/60 bg-yellow-500/10 shadow-lg'
+                      : 'border-white/10 bg-white/5 hover:border-yellow-500/30 hover:bg-white/10'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-5 h-5 text-yellow-500" />
+                      </div>
+                      <div>
+                        <div className="text-white font-semibold text-sm">{market.name}</div>
+                        <div className="text-xs text-gray-400 line-clamp-1">{market.description}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-white font-bold text-sm">${market.price.toFixed(2)}</div>
+                      <div className={`text-xs font-semibold ${market.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {market.change24h >= 0 ? '+' : ''}{market.change24h.toFixed(2)}%
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <span>{market.releaseCadence}</span>
+                    <span>APR: {market.fundingRateAPR.toFixed(1)}%</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Main Trading Interface */}
