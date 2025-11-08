@@ -230,9 +230,9 @@ export default function MarketsPage() {
       <SiteHeader />
       <main className="px-4 py-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
+          <div className="mb-6">
             <h1 className="text-3xl font-bold text-white">Markets</h1>
-            <Link to="/app"><Button>Open Trade Ticket</Button></Link>
+            <p className="text-gray-400 mt-2">Click any market to start trading</p>
           </div>
         <div className="space-y-3 mb-4">
           <TickerRow
