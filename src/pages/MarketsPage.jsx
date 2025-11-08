@@ -63,7 +63,7 @@ function MarketCard({ market, onTrade }) {
   const days = ms != null ? Math.floor(ms / 86400000) : null;
   const Icon = marketIconMap[market.id] || Activity;
   return (
-    <Card className="h-full">
+    <Card className="h-full cursor-pointer hover:border-yellow-500/40 transition-all" onClick={onTrade}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex gap-3">
           <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center">
@@ -74,7 +74,7 @@ function MarketCard({ market, onTrade }) {
             <div className="text-gray-400 text-sm">{market.description}</div>
             <div className="mt-2 text-[11px] text-gray-500 flex flex-wrap gap-2">
               {market.sourceName && (
-                <span>Data: <a className="underline underline-offset-2 hover:text-yellow-400" href={market.sourceUrl} target="_blank" rel="noopener noreferrer">{market.sourceName}</a></span>
+                <span>Data: <a className="underline underline-offset-2 hover:text-yellow-400" href={market.sourceUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>{market.sourceName}</a></span>
               )}
               {market.releaseCadence && <span>Cadence: {market.releaseCadence}</span>}
               {market.region && <span>Region: {market.region}</span>}
@@ -111,9 +111,8 @@ function MarketCard({ market, onTrade }) {
           )}
         </div>
       </div>
-      <div className="mt-3 flex items-center justify-between">
-        <div className="text-[11px] text-gray-500">Protection widens briefly near data releases.</div>
-        <Button variant="ghost" onClick={onTrade}>Trade</Button>
+      <div className="mt-3 text-[11px] text-gray-500">
+        Click to trade • Protection widens briefly near data releases
       </div>
     </Card>
   );
