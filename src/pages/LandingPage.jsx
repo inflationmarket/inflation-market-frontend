@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ArrowRight,
   Zap,
@@ -9,13 +9,8 @@ import {
   CheckCircle,
   Sigma,
   RefreshCw,
-  ShoppingCart,
-  Stethoscope,
-  Activity,
   ArrowUpRight,
   ArrowDownRight,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Card } from '../components/ui/primitives';
@@ -27,14 +22,6 @@ const formatPercent = (value) => {
   const num = Number(value);
   return Number.isFinite(num) ? `${num.toFixed(2)}%` : '—';
 };
-
-const marketIconMap = {
-  'cost-of-living': Activity,
-  'essentials-pack': ShoppingCart,
-  'healthcare-shield': Stethoscope,
-};
-
-const HERO_MARKETS = ['cost-of-living', 'essentials-pack', 'healthcare-shield'];
 
 function TickerRow({ title, subtitle, items, showArrows = false, variant = 'default' }) {
   if (!items || items.length === 0) return null;
@@ -92,7 +79,6 @@ export default function LandingPage() {
       acceptedAnswer: { '@type': 'Answer', text: f.answer },
     })),
   };
-  const heroMarkets = MARKETS.filter((m) => HERO_MARKETS.includes(m.id));
   const actualTickerItems = [
     {
       label: 'US CPI YoY',
@@ -139,24 +125,6 @@ export default function LandingPage() {
     });
     actualTickerItems.push(...fallbackActual);
   }
-  const [activeMarketIndex, setActiveMarketIndex] = useState(0);
-  const hasHeroMarkets = heroMarkets.length > 0;
-  const activeMarket = hasHeroMarkets
-    ? heroMarkets[(activeMarketIndex % heroMarkets.length + heroMarkets.length) % heroMarkets.length]
-    : null;
-  const ActiveMarketIcon = activeMarket ? (marketIconMap[activeMarket.id] || Activity) : null;
-  const cycleHeroMarket = (direction) => {
-    if (!hasHeroMarkets) return;
-    setActiveMarketIndex((prev) => {
-      const total = heroMarkets.length;
-      const next = prev + direction;
-      return ((next % total) + total) % total;
-    });
-  };
-  const goToHeroMarket = (idx) => {
-    if (!hasHeroMarkets) return;
-    setActiveMarketIndex(idx);
-  };
   return (
     <div className="min-h-screen bg-black">
       <SiteHeader />
@@ -219,81 +187,6 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="relative">
-            {activeMarket && (
-              <Card className="relative overflow-hidden">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center">
-                      {ActiveMarketIcon ? <ActiveMarketIcon className="w-5 h-5 text-yellow-500" /> : null}
-                    </div>
-                    <div>
-                      <div className="text-white font-bold text-xl">{activeMarket.name}</div>
-                      <div className="text-gray-400 text-sm">{activeMarket.description}</div>
-                      {activeMarket.bestFor && (
-                        <div className="text-xs text-gray-500 mt-2">Best for: {activeMarket.bestFor}</div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-white font-bold text-2xl">${activeMarket.price.toFixed(2)}</div>
-                    <div className={`text-sm font-bold ${activeMarket.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {(activeMarket.change24h >= 0 ? '+' : '') + activeMarket.change24h.toFixed(2)}%
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
-                  <div className="flex flex-wrap gap-2">
-                    {(activeMarket.tags || []).slice(0, 3).map((tag) => (
-                      <span key={tag} className="px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-[10px] uppercase tracking-wide text-gray-300">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="text-right">
-                    <div>Cadence: {activeMarket.releaseCadence || 'Monthly'}</div>
-                    <div>Region: {activeMarket.region || 'US'}</div>
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center justify-end">
-                  <Link to="/markets" className="text-sm text-yellow-500 underline underline-offset-2">Browse all markets</Link>
-                </div>
-              </Card>
-            )}
-            {heroMarkets.length > 1 && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => cycleHeroMarket(-1)}
-                  className="absolute -left-4 top-1/2 -translate-y-1/2 rounded-full border border-white/10 bg-black/80 p-2 text-gray-300 hover:text-white hover:border-yellow-500/40 transition-colors"
-                  aria-label="Previous market"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => cycleHeroMarket(1)}
-                  className="absolute -right-4 top-1/2 -translate-y-1/2 rounded-full border border-white/10 bg-black/80 p-2 text-gray-300 hover:text-white hover:border-yellow-500/40 transition-colors"
-                  aria-label="Next market"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </>
-            )}
-            {heroMarkets.length > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-4">
-                {heroMarkets.map((market, idx) => (
-                  <button
-                    key={market.id}
-                    type="button"
-                    onClick={() => goToHeroMarket(idx)}
-                    className={`h-2.5 w-2.5 rounded-full transition-colors ${idx === activeMarketIndex ? 'bg-yellow-500' : 'bg-white/20 hover:bg-white/40'}`}
-                    aria-label={`View ${market.name}`}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
         </div>
       </section>
 
