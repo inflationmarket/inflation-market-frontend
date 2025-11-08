@@ -210,7 +210,7 @@ export default function LandingPage() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Why Inflation Market?</h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Hedge macro risks you actually faceâ€”like inflation and housingâ€”using perpetuals anchored to real data instead of crypto spot prices.
+              Hedge macro risks you actually face—like inflation and housing—using perpetuals anchored to real economic data instead of crypto spot prices.
             </p>
           </div>
 
