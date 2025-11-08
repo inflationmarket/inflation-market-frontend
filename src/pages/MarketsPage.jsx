@@ -301,7 +301,7 @@ function TopFive({ markets, onPick }) {
       <div className="overflow-x-auto -mx-4 px-4 pb-2">
         <div className="flex gap-3 snap-x snap-mandatory">
           {scored.map(m => (
-            <Card key={m.id} className="min-w-[240px] snap-start">
+            <Card key={m.id} className="min-w-[240px] snap-start cursor-pointer hover:border-yellow-500/40 transition-all" onClick={() => onPick(m.id)}>
               <div className="flex items-center justify-between mb-1">
                 <div>
                   <div className="text-white font-semibold">{m.name}</div>
@@ -312,9 +312,11 @@ function TopFive({ markets, onPick }) {
                 </div>
               </div>
               <Sparkline data={m.series || []} width={180} height={28} />
-              <div className="mt-2 flex items-center justify-between">
-                <div className="text-xs text-white font-bold">${m.price.toFixed(2)}</div>
-                <Button variant="ghost" onClick={() => onPick(m.id)}>Trade</Button>
+              <div className="mt-2 text-xs text-gray-500">
+                <div className="flex items-center justify-between">
+                  <span className="text-white font-bold">${m.price.toFixed(2)}</span>
+                  <span>Click to trade</span>
+                </div>
               </div>
             </Card>
           ))}
