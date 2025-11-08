@@ -30,6 +30,19 @@ function TradingHeader({ onSwitchNetwork }) {
   const navigate = useNavigate();
   const bal = useTokenBalance(addresses.usdc, account?.address);
 
+  const handleConnectClick = async () => {
+    console.log('🖱️  [TradingHeader] Connect button clicked');
+    console.log('🔍 [TradingHeader] account:', account);
+    console.log('🔍 [TradingHeader] connect function:', typeof connect);
+    console.log('🔍 [TradingHeader] isLoading:', isLoading);
+    try {
+      await connect();
+      console.log('✅ [TradingHeader] connect() completed');
+    } catch (error) {
+      console.error('❌ [TradingHeader] connect() error:', error);
+    }
+  };
+
   return (
     <header className="border-b border-yellow-500/20 sticky top-0 z-40 bg-black backdrop-blur-xl bg-opacity-90">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-4">
@@ -60,7 +73,7 @@ function TradingHeader({ onSwitchNetwork }) {
               </>
             )}
             {!account?.isConnected ? (
-              <Button onClick={connect} loading={isLoading}>
+              <Button onClick={handleConnectClick} loading={isLoading}>
                 <Wallet className="w-4 h-4" />
                 <span className="hidden sm:inline ml-2">Connect</span>
               </Button>

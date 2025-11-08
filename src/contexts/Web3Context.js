@@ -29,46 +29,71 @@ export const Web3Provider = ({ children }) => {
 
   // Connect wallet
   const connectWallet = useCallback(async () => {
-    if (isConnecting) return; // avoid double prompts/freezes
+    console.log('🔌 [Web3Context] connectWallet called');
+    if (isConnecting) {
+      console.log('⚠️  [Web3Context] Already connecting, ignoring duplicate call');
+      return; // avoid double prompts/freezes
+    }
     let safetyTimeout;
     try {
+      console.log('⏳ [Web3Context] Setting isConnecting = true');
       setIsConnecting(true);
       setError(null);
       safetyTimeout = setTimeout(() => {
+        console.log('⏱️  [Web3Context] Safety timeout triggered (20s)');
         // If something stalls (no extension prompt or blocked), stop spinner
         setIsConnecting(false);
       }, 20000);
 
+      console.log('🔍 [Web3Context] Checking window.ethereum...');
       if (typeof window === 'undefined' || !window.ethereum) {
+        console.error('❌ [Web3Context] window.ethereum not found');
         throw new Error('Please install MetaMask to use this dApp');
       }
+      console.log('✅ [Web3Context] window.ethereum exists:', window.ethereum.isMetaMask ? 'MetaMask' : 'Other provider');
 
       // Request account access (handle user-reject gracefully)
       let accounts = [];
       try {
+        console.log('📢 [Web3Context] Requesting accounts (MetaMask should popup now)...');
         accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        console.log('✅ [Web3Context] Got accounts:', accounts.length, accounts[0]);
       } catch (reqErr) {
         if (reqErr && reqErr.code === 4001) {
+          console.log('❌ [Web3Context] User rejected connection');
           setError('User rejected connection');
           return;
         }
+        console.error('❌ [Web3Context] Request accounts error:', reqErr);
         throw reqErr;
       }
 
+      console.log('⏳ [Web3Context] Creating ethers provider...');
       const web3Provider = new ethers.BrowserProvider(window.ethereum);
+      console.log('✅ [Web3Context] Provider created');
+
+      console.log('⏳ [Web3Context] Getting signer...');
       const web3Signer = await web3Provider.getSigner();
+      console.log('✅ [Web3Context] Signer created');
+
+      console.log('⏳ [Web3Context] Getting network...');
       const network = await web3Provider.getNetwork();
+      console.log('✅ [Web3Context] Network:', network.chainId.toString());
 
       setAccount(accounts[0]);
       setProvider(web3Provider);
       setSigner(web3Signer);
       setChainId(Number(network.chainId));
 
+      console.log('💾 [Web3Context] Saving to localStorage');
       try { localStorage.setItem('im_connected', '1'); } catch (_) {}
 
+      console.log('🎉 [Web3Context] Connection complete!');
     } catch (err) {
+      console.error('❌ [Web3Context] Connection error:', err);
       setError(err.message);
     } finally {
+      console.log('🏁 [Web3Context] Setting isConnecting = false');
       setIsConnecting(false);
       try { if (safetyTimeout) clearTimeout(safetyTimeout); } catch (_) {}
     }

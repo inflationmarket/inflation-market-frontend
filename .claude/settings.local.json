@@ -45,7 +45,14 @@
       "Bash(wsl bash -c \"cd /mnt/c/Users/dilli/OneDrive/Documents/inflation-market-contracts && npx hardhat run scripts/deploy/deploy-liquidator.js --network arbitrum-sepolia\")",
       "Bash(wsl bash:*)",
       "Bash(git checkout:*)",
-      "Bash(git merge:*)"
+      "Bash(git merge:*)",
+      "Bash(/tmp/markets-backup.jsx)",
+      "Bash(powershell -Command \"Get-Content ''c:\\Users\\dilli\\OneDrive\\Documents\\inflation-market-frontend\\src\\pages\\MarketsPage.jsx'' | Select-Object -First 5\")",
+      "Bash(git reset HEAD src/pages/MarketsPage-new.jsx .claude/settings.local.json)",
+      "Bash(del srcpagesMarketsPage-new.jsx)",
+      "Bash(git rev-list:*)",
+      "Bash(curl:*)",
+      "Bash(start test-results.html)"
     ],
     "deny": [],
     "ask": []

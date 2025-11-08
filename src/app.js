@@ -31,7 +31,17 @@ export const AppStateProvider = ({ children }) => {
     balance: 0,
   };
 
-  const connect = async () => web3?.connectWallet?.();
+  const connect = async () => {
+    console.log('🔘 [AppState] connect() called');
+    console.log('🔍 [AppState] web3 object:', web3);
+    console.log('🔍 [AppState] web3.connectWallet exists:', typeof web3?.connectWallet);
+    if (!web3?.connectWallet) {
+      console.error('❌ [AppState] web3.connectWallet is not available!');
+      return;
+    }
+    console.log('➡️  [AppState] Calling web3.connectWallet()...');
+    return web3.connectWallet();
+  };
   const disconnect = () => web3?.disconnectWallet?.();
 
   return (

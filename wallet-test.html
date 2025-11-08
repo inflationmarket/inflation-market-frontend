@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet Connection Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #1a1a1a;
+      color: #fff;
+    }
+    h1 { color: #fbbf24; }
+    button {
+      background: #fbbf24;
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px 5px;
+    }
+    button:hover { background: #f59e0b; }
+    button:disabled {
+      background: #666;
+      cursor: not-allowed;
+    }
+    .status {
+      background: #333;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border-left: 4px solid #fbbf24;
+    }
+    .error { border-left-color: #ef4444; color: #fca5a5; }
+    .success { border-left-color: #10b981; color: #6ee7b7; }
+    .info { border-left-color: #3b82f6; color: #93c5fd; }
+    pre {
+      background: #000;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-size: 12px;
+    }
+    .test-item {
+      background: #2a2a2a;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔌 MetaMask Connection Test</h1>
+  <p>This standalone test helps diagnose wallet connection issues.</p>
+
+  <div id="results"></div>
+
+  <h2>Tests</h2>
+  <button onclick="test1()">1. Check MetaMask Installed</button>
+  <button onclick="test2()">2. Get Current Accounts (No Prompt)</button>
+  <button onclick="test3()">3. Request Accounts (WILL PROMPT)</button>
+  <button onclick="test4()">4. Get Chain ID</button>
+  <button onclick="test5()">5. Full Connect Flow (Like App)</button>
+  <button onclick="clearResults()">Clear Results</button>
+
+  <h2>React App Simulation</h2>
+  <button onclick="simulateReactConnect()">Simulate React Connect Button Click</button>
+
+  <script>
+    const results = document.getElementById('results');
+
+    function addResult(type, title, message) {
+      const div = document.createElement('div');
+      div.className = `status ${type}`;
+      div.innerHTML = `<strong>${title}</strong><br>${message}`;
+      results.appendChild(div);
+    }
+
+    function clearResults() {
+      results.innerHTML = '';
+    }
+
+    async function test1() {
+      console.log('=== TEST 1: Check MetaMask Installed ===');
+      if (typeof window.ethereum !== 'undefined') {
+        addResult('success', 'Test 1: MetaMask Detection',
+          `✅ MetaMask is installed<br>` +
+          `Provider: ${window.ethereum.isMetaMask ? 'MetaMask' : 'Other'}<br>` +
+          `Object exists: ${!!window.ethereum}`
+        );
+        console.log('MetaMask object:', window.ethereum);
+      } else {
+        addResult('error', 'Test 1: MetaMask Detection',
+          '❌ MetaMask NOT installed or not detected.<br>' +
+          'Please install MetaMask extension and refresh.'
+        );
+      }
+    }
+
+    async function test2() {
+      console.log('=== TEST 2: Get Current Accounts (No Prompt) ===');
+      if (!window.ethereum) {
+        addResult('error', 'Test 2: Get Accounts', '❌ MetaMask not available');
+        return;
+      }
+
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+        if (accounts.length > 0) {
+          addResult('success', 'Test 2: Current Accounts',
+            `✅ Already connected<br>Accounts: ${accounts.length}<br>` +
+            `First account: ${accounts[0]}`
+          );
+        } else {
+          addResult('info', 'Test 2: Current Accounts',
+            '⚠️ No accounts connected yet. Use Test 3 to connect.'
+          );
+        }
+        console.log('Accounts:', accounts);
+      } catch (error) {
+        addResult('error', 'Test 2: Get Accounts', `❌ Error: ${error.message}`);
+        console.error('Error:', error);
+      }
+    }
+
+    async function test3() {
+      console.log('=== TEST 3: Request Accounts (WILL PROMPT METAMASK) ===');
+      if (!window.ethereum) {
+        addResult('error', 'Test 3: Request Accounts', '❌ MetaMask not available');
+        return;
+      }
+
+      try {
+        addResult('info', 'Test 3: Requesting Accounts', '⏳ MetaMask popup should appear now...');
+
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+        addResult('success', 'Test 3: Request Accounts',
+          `✅ MetaMask connected successfully!<br>` +
+          `Accounts: ${accounts.length}<br>` +
+          `Address: ${accounts[0]}`
+        );
+        console.log('Connected accounts:', accounts);
+      } catch (error) {
+        if (error.code === 4001) {
+          addResult('error', 'Test 3: Request Accounts',
+            '❌ User rejected the connection request'
+          );
+        } else {
+          addResult('error', 'Test 3: Request Accounts',
+            `❌ Error: ${error.message}<br>Code: ${error.code}`
+          );
+        }
+        console.error('Error:', error);
+      }
+    }
+
+    async function test4() {
+      console.log('=== TEST 4: Get Chain ID ===');
+      if (!window.ethereum) {
+        addResult('error', 'Test 4: Chain ID', '❌ MetaMask not available');
+        return;
+      }
+
+      try {
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        const decimalChainId = parseInt(chainId, 16);
+
+        const networks = {
+          1: 'Ethereum Mainnet',
+          5: 'Goerli Testnet',
+          11155111: 'Sepolia Testnet',
+          137: 'Polygon Mainnet',
+          421614: 'Arbitrum Sepolia',
+          31337: 'Localhost'
+        };
+
+        const networkName = networks[decimalChainId] || 'Unknown Network';
+
+        addResult('success', 'Test 4: Chain ID',
+          `✅ Network: ${networkName}<br>` +
+          `Chain ID (hex): ${chainId}<br>` +
+          `Chain ID (decimal): ${decimalChainId}`
+        );
+        console.log('Chain ID:', chainId, decimalChainId);
+      } catch (error) {
+        addResult('error', 'Test 4: Chain ID', `❌ Error: ${error.message}`);
+        console.error('Error:', error);
+      }
+    }
+
+    async function test5() {
+      console.log('=== TEST 5: Full Connect Flow (Like React App) ===');
+      if (!window.ethereum) {
+        addResult('error', 'Test 5: Full Connect', '❌ MetaMask not available');
+        return;
+      }
+
+      try {
+        addResult('info', 'Test 5: Starting Full Connect', '⏳ Requesting accounts...');
+
+        // Step 1: Request accounts
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        console.log('Step 1 - Accounts:', accounts);
+
+        // Step 2: Get chain ID
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        const decimalChainId = parseInt(chainId, 16);
+        console.log('Step 2 - Chain ID:', decimalChainId);
+
+        // Step 3: Check if ethers.js would work (we don't have it here, but we can check window.ethereum)
+        addResult('success', 'Test 5: Full Connect Flow',
+          `✅ All steps completed successfully!<br>` +
+          `Connected account: ${accounts[0]}<br>` +
+          `Chain ID: ${decimalChainId}<br>` +
+          `Ready for ethers.js provider initialization`
+        );
+
+        localStorage.setItem('im_connected', '1');
+        console.log('Saved connection to localStorage');
+
+      } catch (error) {
+        if (error.code === 4001) {
+          addResult('error', 'Test 5: Full Connect', '❌ User rejected connection');
+        } else {
+          addResult('error', 'Test 5: Full Connect', `❌ Error: ${error.message}`);
+        }
+        console.error('Error:', error);
+      }
+    }
+
+    async function simulateReactConnect() {
+      console.log('=== SIMULATING REACT CONNECT FLOW ===');
+
+      const log = [];
+
+      // Simulate the exact flow from Web3Context.js
+      try {
+        log.push('1. Checking window.ethereum...');
+        if (typeof window === 'undefined' || !window.ethereum) {
+          throw new Error('Please install MetaMask to use this dApp');
+        }
+        log.push('   ✅ window.ethereum exists');
+
+        log.push('2. Requesting accounts (MetaMask should popup now)...');
+        let accounts = [];
+        try {
+          accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          log.push(`   ✅ Got ${accounts.length} account(s): ${accounts[0]}`);
+        } catch (reqErr) {
+          if (reqErr && reqErr.code === 4001) {
+            log.push('   ❌ User rejected connection');
+            throw new Error('User rejected connection');
+          }
+          throw reqErr;
+        }
+
+        log.push('3. Checking ethers.js availability...');
+        if (typeof ethers === 'undefined') {
+          log.push('   ⚠️  ethers.js not loaded in this test page (would work in React app)');
+        } else {
+          log.push('   ✅ ethers.js available');
+        }
+
+        log.push('4. Getting chain ID...');
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        log.push(`   ✅ Chain ID: ${parseInt(chainId, 16)}`);
+
+        log.push('5. Saving to localStorage...');
+        localStorage.setItem('im_connected', '1');
+        log.push('   ✅ Saved');
+
+        addResult('success', 'React Connect Simulation',
+          '✅ Connect flow completed successfully!<br><br>' +
+          'Flow log:<br>' +
+          log.map(l => `<div style="font-family: monospace; font-size: 11px;">${l}</div>`).join('')
+        );
+
+      } catch (error) {
+        log.push(`❌ ERROR: ${error.message}`);
+        addResult('error', 'React Connect Simulation',
+          '❌ Connect flow failed<br><br>' +
+          'Flow log:<br>' +
+          log.map(l => `<div style="font-family: monospace; font-size: 11px;">${l}</div>`).join('')
+        );
+      }
+
+      console.log('Flow log:', log);
+    }
+
+    // Auto-run Test 1 on load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        test1();
+        test2();
+      }, 500);
+    });
+  </script>
+
+  <div style="margin-top: 40px; padding: 20px; background: #2a2a2a; border-radius: 8px;">
+    <h3>📝 Instructions</h3>
+    <ol>
+      <li><strong>Test 1</strong>: Verify MetaMask is installed</li>
+      <li><strong>Test 2</strong>: Check if already connected (won't prompt)</li>
+      <li><strong>Test 3</strong>: Trigger MetaMask connection popup</li>
+      <li><strong>Test 4</strong>: Check which network you're on</li>
+      <li><strong>Test 5</strong>: Full connection flow like the app uses</li>
+      <li><strong>React Simulation</strong>: Exactly mimics the React app's connect logic</li>
+    </ol>
+    <p><strong>Expected behavior:</strong></p>
+    <ul>
+      <li>Test 3 should trigger a MetaMask popup</li>
+      <li>If no popup appears, check browser popup blocker</li>
+      <li>If MetaMask is locked, it will prompt to unlock first</li>
+    </ul>
+  </div>
+</body>
+</html>
