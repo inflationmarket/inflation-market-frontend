@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Navigation Test</title>
+</head>
+<body>
+  <h1>Testing Navigation</h1>
+  <p>Open this at <a href="http://localhost:3000">http://localhost:3000</a></p>
+  <p>Then try:</p>
+  <ol>
+    <li>Click the Trade button in the header</li>
+    <li>If nothing happens, open console (F12) and check for errors</li>
+    <li>Try manually navigating to: <a href="http://localhost:3000/app">http://localhost:3000/app</a></li>
+  </ol>
+  
+  <h2>Console Test Commands:</h2>
+  <pre>
+// Test 1: Check if React Router Link component is working
+document.querySelector('a[href="/app"]')
+
+// Test 2: Check for JavaScript errors
+console.error
+
+// Test 3: Manually navigate
+window.location.href = '/app'
+  </pre>
+</body>
+</html>
