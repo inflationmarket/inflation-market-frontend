@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { getAddresses } from '../contracts/addresses';
 
 export function useProvider() {

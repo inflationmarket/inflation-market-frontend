@@ -12,7 +12,7 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button, Card } from '../components/ui/primitives';
 import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
 import { MARKETS } from '../config/constants';
