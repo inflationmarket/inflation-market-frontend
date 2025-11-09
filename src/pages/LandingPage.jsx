@@ -152,7 +152,7 @@ export default function LandingPage() {
             Protect Your Wealth from Inflation
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
-            Take direct positions on inflation markets. Go long to hedge your purchasing power, or short if you expect deflation. Start with US CPI or explore specialized markets.
+            Take direct positions on inflation markets. Go long to hedge your purchasing power, or short if you expect deflation. Access US CPI derivatives and specialized sector markets in one platform.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
