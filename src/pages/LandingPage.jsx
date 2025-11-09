@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ArrowRight,
   Zap,
@@ -17,6 +17,7 @@ import { Button, Card } from '../components/ui/primitives';
 import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
 import { MARKETS } from '../config/constants';
 import { HOME_FAQS } from '../components/faq/FAQSection';
+import UserJourneyModal from '../components/landing/UserJourneyModal';
 
 const formatPercent = (value) => {
   const num = Number(value);
@@ -63,11 +64,10 @@ function TickerRow({ title, subtitle, items, showArrows = false, variant = 'defa
 }
 
 export default function LandingPage() {
-  const navigate = useNavigate();
+  const [showJourneyModal, setShowJourneyModal] = useState(false);
 
   const handleStartTrading = () => {
-    navigate('/app');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setShowJourneyModal(true);
   };
 
   const faqSchema = {
@@ -128,6 +128,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-black">
       <SiteHeader />
+      <UserJourneyModal isOpen={showJourneyModal} onClose={() => setShowJourneyModal(false)} />
 
       <section className="px-4 pt-6">
         <div className="max-w-6xl mx-auto space-y-3">
@@ -149,15 +150,15 @@ export default function LandingPage() {
             Non-custodial • Decentralized • Testnet demo
           </div>
           <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
-            Protect Your Wealth from Inflation
+            The Savings Account That Beats Inflation
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
-            Take direct positions on inflation markets. Go long to hedge your purchasing power, or short if you expect deflation. Access US CPI derivatives and specialized sector markets in one platform.
+            Protect your savings from inflation with the world's first decentralized real-yield account. Earn returns that track actual inflation rates, not speculative crypto prices.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button onClick={handleStartTrading} className="text-lg px-10 py-6">
-              Start Trading <ArrowRight className="w-5 h-5 ml-2" />
+              Get Started <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
             <Link to="/markets">
               <Button variant="ghost" className="text-lg px-10 py-6 w-full">
@@ -278,13 +279,13 @@ export default function LandingPage() {
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <Card className="bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border-2 border-yellow-500/40 text-center p-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Ready to Start Trading?</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Ready to Get Started?</h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Test the platform on Arbitrum Sepolia. Connect your wallet and explore our inflation markets with no risk to real funds.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button onClick={handleStartTrading} className="text-lg px-8 py-6">
-                Start Trading <ArrowRight className="w-5 h-5 ml-2" />
+                Get Started <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
               <Link to="/markets">
                 <Button variant="ghost" className="text-lg px-8 py-6 w-full">
