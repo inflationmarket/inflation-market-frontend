@@ -1,13 +1,14 @@
 import { ethers } from 'ethers';
+import { useCallback, useMemo } from 'react';
 import { getAddresses } from '../contracts/addresses';
 import { ERC20_ABI, VAULT_ABI, POSITION_MANAGER_ABI, VAMM_ABI, INDEX_ORACLE_ABI, FUNDING_CALCULATOR_ABI } from '../contracts/abis';
 import { useProvider } from './useProvider';
 
 export function useContracts() {
   const { getReadProvider, getSigner } = useProvider();
-  const addr = getAddresses();
+  const addr = useMemo(() => getAddresses(), []);
 
-  const getRead = async () => {
+  const getRead = useCallback(async () => {
     const provider = getReadProvider();
     return {
       erc20: (address) => new ethers.Contract(address, ERC20_ABI, provider),
@@ -18,9 +19,9 @@ export function useContracts() {
       fundingCalc: addr.fundingCalculator ? new ethers.Contract(addr.fundingCalculator, FUNDING_CALCULATOR_ABI, provider) : null,
       addresses: addr,
     };
-  };
+  }, [getReadProvider, addr]);
 
-  const getWrite = async () => {
+  const getWrite = useCallback(async () => {
     const signer = await getSigner();
     return {
       erc20: (address) => new ethers.Contract(address, ERC20_ABI, signer),
@@ -31,7 +32,7 @@ export function useContracts() {
       fundingCalc: addr.fundingCalculator ? new ethers.Contract(addr.fundingCalculator, FUNDING_CALCULATOR_ABI, signer) : null,
       addresses: addr,
     };
-  };
+  }, [getSigner, addr]);
 
   return { getRead, getWrite, addresses: addr };
 }

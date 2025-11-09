@@ -19,7 +19,7 @@ export const Button = ({
 }) => {
   const variants = {
     primary:
-      'bg-gradient-to-b from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-black shadow-md ring-1 ring-yellow-300/30',
+      'bg-gradient-to-b from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-black hover:text-black shadow-md ring-1 ring-yellow-300/30',
     success: 'bg-green-500 hover:bg-green-600 text-white shadow-md ring-1 ring-green-300/30',
     danger: 'bg-red-500 hover:bg-red-600 text-white shadow-md ring-1 ring-red-300/30',
     ghost:

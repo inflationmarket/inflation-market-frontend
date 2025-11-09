@@ -21,7 +21,7 @@ export const SiteHeader = () => (
       </nav>
 
       <div className="flex items-center gap-3">
-        <Link to="/app" className="px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg font-bold">Trade</Link>
+        <Link to="/app" className="px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-black hover:text-black rounded-lg font-bold">Trade</Link>
       </div>
     </div>
   </header>
@@ -64,7 +64,7 @@ export const SiteFooter = () => (
 
       <div className="border-top border-yellow-500/20 pt-8 text-center text-sm text-gray-400">
         <p>Â© 2025 Inflation Market. All rights reserved.</p>
-        <p className="mt-2 text-xs text-yellow-500">Testnet Demo — {CONFIG.domain}</p>
+        <p className="mt-2 text-xs text-yellow-500">Testnet Demo ï¿½ {CONFIG.domain}</p>
       </div>
     </div>
   </footer>
