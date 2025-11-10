@@ -15,6 +15,7 @@ export const SiteHeader = () => (
 
       <nav className="hidden md:flex items-center gap-6">
         <Link to="/how-it-works" className="text-sm text-gray-400 hover:text-yellow-500">How It Works</Link>
+        <Link to="/comparisons" className="text-sm text-gray-400 hover:text-yellow-500">Comparisons</Link>
         <Link to="/whitepaper" className="text-sm text-gray-400 hover:text-yellow-500">Whitepaper</Link>
         <Link to="/roadmap" className="text-sm text-gray-400 hover:text-yellow-500">Roadmap</Link>
         <Link to="/about" className="text-sm text-gray-400 hover:text-yellow-500">About</Link>

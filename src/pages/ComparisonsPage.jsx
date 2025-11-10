@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card } from '../components/ui/primitives';
 import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
+import InfoTooltip from '../components/ui/InfoTooltip';
 import {
   Shield,
   TrendingUp,
@@ -85,11 +86,36 @@ export default function ComparisonsPage() {
                   <tbody className="text-sm">
                     <tr className="border-b border-white/10">
                       <td className="p-4 text-gray-300 font-medium">CPI Tracking</td>
-                      <td className="text-center p-4"><CheckCircle className="w-5 h-5 text-green-400 mx-auto" /></td>
-                      <td className="text-center p-4"><CheckCircle className="w-5 h-5 text-green-400 mx-auto" /></td>
-                      <td className="text-center p-4"><CheckCircle className="w-5 h-5 text-green-400 mx-auto" /></td>
-                      <td className="text-center p-4"><AlertCircle className="w-5 h-5 text-yellow-400 mx-auto" /></td>
-                      <td className="text-center p-4"><XCircle className="w-5 h-5 text-red-400 mx-auto" /></td>
+                      <td className="text-center p-4">
+                        <div className="inline-flex items-center">
+                          <CheckCircle className="w-5 h-5 text-green-400" />
+                          <InfoTooltip content="Position value tracks US CPI 1:1 via oracle-delivered data" />
+                        </div>
+                      </td>
+                      <td className="text-center p-4">
+                        <div className="inline-flex items-center">
+                          <CheckCircle className="w-5 h-5 text-green-400" />
+                          <InfoTooltip content="Interest rate adjusts with CPI-U every 6 months" />
+                        </div>
+                      </td>
+                      <td className="text-center p-4">
+                        <div className="inline-flex items-center">
+                          <CheckCircle className="w-5 h-5 text-green-400" />
+                          <InfoTooltip content="Principal adjusts with CPI, preserving real value" />
+                        </div>
+                      </td>
+                      <td className="text-center p-4">
+                        <div className="inline-flex items-center">
+                          <AlertCircle className="w-5 h-5 text-yellow-400" />
+                          <InfoTooltip content="Imperfect correlation (~0.5-0.6 historically). Gold often moves independently of CPI" />
+                        </div>
+                      </td>
+                      <td className="text-center p-4">
+                        <div className="inline-flex items-center">
+                          <XCircle className="w-5 h-5 text-red-400" />
+                          <InfoTooltip content="Fixed APY doesn't adjust with inflation. When CPI > APY, you lose purchasing power" />
+                        </div>
+                      </td>
                     </tr>
                     <tr className="border-b border-white/10">
                       <td className="p-4 text-gray-300 font-medium">Instant Liquidity</td>
@@ -596,7 +622,73 @@ export default function ComparisonsPage() {
 
               <div className="mt-6 p-4 bg-orange-500/10 border border-orange-500/30 rounded-lg">
                 <p className="text-sm text-orange-200">
-                  <strong>Key Insight:</strong> Inflation Market long positions excel when CPI is rising (the primary concern for savers). In deflationary scenarios (rare in modern economies), traditional savings accounts win. I Bonds offer the best of both worlds with principal protection—but with strict limits and lock-up periods.
+                  <strong>Key Insight (Long Positions):</strong> Inflation Market long positions excel when CPI is rising (the primary concern for savers). In deflationary scenarios (rare in modern economies), traditional savings accounts win. I Bonds offer the best of both worlds with principal protection—but with strict limits and lock-up periods.
+                </p>
+              </div>
+            </section>
+
+            {/* Short Position Scenarios */}
+            <section>
+              <h2 className="text-3xl font-bold text-white mb-6">Short Position Performance (Speculators)</h2>
+              <p className="text-gray-400 mb-6 text-center max-w-3xl mx-auto">
+                If you believe inflation will fall or want to hedge against deflationary environments, short positions offer the inverse exposure. Here's how shorts perform:
+              </p>
+              <div className="grid md:grid-cols-3 gap-6">
+                {/* Scenario 1: Normal Inflation - Short Loses */}
+                <Card className="border-red-500/30">
+                  <h3 className="text-xl font-bold text-white mb-4">📊 Scenario 1: Stable Inflation (3% CPI) - Short Position</h3>
+                  <div className="space-y-3 text-sm">
+                    <div className="p-3 bg-red-500/10 border border-red-500/30 rounded">
+                      <div className="font-semibold text-red-400">Inflation Market (Short)</div>
+                      <div className="text-gray-300">$10,000 → $9,700</div>
+                      <div className="text-xs text-red-400">-3% position value (wrong side)</div>
+                    </div>
+                    <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded">
+                      <p className="text-xs text-blue-200">
+                        <strong>Analysis:</strong> When inflation rises and you're short, you lose. Your position loses 3% while the real CPI gained 3%. This is the opposite of hedging—you're speculating that inflation will be lower than expected.
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Scenario 2: High Inflation - Short Gets Crushed */}
+                <Card className="border-red-500/30">
+                  <h3 className="text-xl font-bold text-white mb-4">🔥 Scenario 2: High Inflation (7% CPI) - Short Position</h3>
+                  <div className="space-y-3 text-sm">
+                    <div className="p-3 bg-red-500/10 border border-red-500/30 rounded">
+                      <div className="font-semibold text-red-400">Inflation Market (Short)</div>
+                      <div className="text-gray-300">$10,000 → $9,300</div>
+                      <div className="text-xs text-red-400">-7% position loss (very wrong side)</div>
+                    </div>
+                    <div className="p-4 bg-red-500/10 border border-red-500/30 rounded">
+                      <p className="text-xs text-red-200">
+                        <strong>Warning:</strong> Short positions in high inflation environments lose significantly. In 2022 when CPI hit 7%, shorts would have lost 7% while longs preserved purchasing power. Only short if you have conviction that inflation will fall.
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Scenario 3: Deflation - Short Wins */}
+                <Card className="border-green-500/30">
+                  <h3 className="text-xl font-bold text-white mb-4">❄️ Scenario 3: Deflation (-2% CPI) - Short Position</h3>
+                  <div className="space-y-3 text-sm">
+                    <div className="p-3 bg-green-500/10 border border-green-500/30 rounded">
+                      <div className="font-semibold text-green-400">Inflation Market (Short)</div>
+                      <div className="text-gray-300">$10,000 → $10,200</div>
+                      <div className="text-xs text-green-400">+2% position gain (right side!)</div>
+                    </div>
+                    <div className="p-4 bg-green-500/10 border border-green-500/30 rounded">
+                      <p className="text-xs text-green-200">
+                        <strong>Payoff:</strong> Short positions profit when CPI falls (deflation). Rare in modern economies, but if you correctly predict deflationary periods (2008-2009, COVID-19 initial shock), shorts deliver positive returns. Use for macro speculation or hedging deflationary business models.
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              <div className="mt-6 p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                <p className="text-sm text-purple-200">
+                  <strong>Key Insight (Short Positions):</strong> Shorts are for speculators who believe inflation will undershoot expectations or for businesses that benefit from deflation. Historical data shows inflation is more common than deflation in developed economies (3% average since 1990), making shorts a contrarian bet. Use with conviction and risk management.
                 </p>
               </div>
             </section>
