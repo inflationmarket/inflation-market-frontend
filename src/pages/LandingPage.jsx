@@ -3,7 +3,6 @@ import {
   ArrowRight,
   Zap,
   Shield,
-  Users,
   Wallet,
   TrendingUp,
   CheckCircle,
@@ -293,54 +292,100 @@ export default function LandingPage() {
             </Card>
           </div>
 
-          {/* Example Flow Diagram */}
+          {/* Example Flow Diagram - Two Sided */}
           <Card className="bg-gradient-to-br from-white/5 to-white/0 border-white/20">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">The Complete Flow</h3>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-              <div className="flex-1 text-center">
-                <div className="w-16 h-16 rounded-xl bg-yellow-500/20 border-2 border-yellow-500/40 flex items-center justify-center mx-auto mb-3">
-                  <span className="text-2xl">💰</span>
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">The Complete Flow: Two-Sided Market</h3>
+
+            {/* Two parallel flows */}
+            <div className="grid md:grid-cols-2 gap-8 mb-6">
+              {/* Long Side */}
+              <div className="border-2 border-green-500/30 rounded-xl p-6 bg-green-500/5">
+                <div className="text-center mb-4">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/20 rounded-full text-green-400 text-sm font-semibold mb-2">
+                    <Shield className="w-4 h-4" />
+                    Long Position (Hedger)
+                  </div>
                 </div>
-                <div className="text-sm font-semibold text-white mb-1">You Deposit</div>
-                <div className="text-xs text-gray-400">$10,000 USDC</div>
+                <div className="flex flex-col items-center gap-3">
+                  <div className="text-center">
+                    <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
+                      <span className="text-xl">💰</span>
+                    </div>
+                    <div className="text-xs font-semibold text-white">Deposit USDC</div>
+                    <div className="text-[10px] text-gray-400">$10,000 collateral</div>
+                  </div>
+                  <div className="text-green-400">↓</div>
+                  <div className="text-center">
+                    <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
+                      <TrendingUp className="w-6 h-6 text-green-400" />
+                    </div>
+                    <div className="text-xs font-semibold text-white">CPI Rises 3%</div>
+                    <div className="text-[10px] text-green-400">Position +$300</div>
+                  </div>
+                  <div className="text-green-400">↓</div>
+                  <div className="text-center">
+                    <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
+                      <CheckCircle className="w-6 h-6 text-green-400" />
+                    </div>
+                    <div className="text-xs font-semibold text-white">Purchasing Power</div>
+                    <div className="text-[10px] text-green-400">Preserved ✓</div>
+                  </div>
+                </div>
               </div>
-              <div className="hidden md:block text-yellow-500 text-2xl">→</div>
-              <div className="flex-1 text-center">
-                <div className="w-16 h-16 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-3">
-                  <Shield className="w-8 h-8 text-green-400" />
+
+              {/* Short Side */}
+              <div className="border-2 border-red-500/30 rounded-xl p-6 bg-red-500/5">
+                <div className="text-center mb-4">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/20 rounded-full text-red-400 text-sm font-semibold mb-2">
+                    <TrendingUp className="w-4 h-4 transform rotate-180" />
+                    Short Position (Speculator)
+                  </div>
                 </div>
-                <div className="text-sm font-semibold text-white mb-1">Open Long</div>
-                <div className="text-xs text-gray-400">Hedge inflation risk</div>
-              </div>
-              <div className="hidden md:block text-yellow-500 text-2xl">→</div>
-              <div className="flex-1 text-center">
-                <div className="w-16 h-16 rounded-xl bg-blue-500/20 border-2 border-blue-500/40 flex items-center justify-center mx-auto mb-3">
-                  <TrendingUp className="w-8 h-8 text-blue-400" />
+                <div className="flex flex-col items-center gap-3">
+                  <div className="text-center">
+                    <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
+                      <span className="text-xl">💰</span>
+                    </div>
+                    <div className="text-xs font-semibold text-white">Deposit USDC</div>
+                    <div className="text-[10px] text-gray-400">$10,000 collateral</div>
+                  </div>
+                  <div className="text-red-400">↓</div>
+                  <div className="text-center">
+                    <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
+                      <TrendingUp className="w-6 h-6 text-red-400 transform rotate-180" />
+                    </div>
+                    <div className="text-xs font-semibold text-white">CPI Rises 3%</div>
+                    <div className="text-[10px] text-red-400">Position -$300</div>
+                  </div>
+                  <div className="text-red-400">↓</div>
+                  <div className="text-center">
+                    <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
+                      <span className="text-xl">📉</span>
+                    </div>
+                    <div className="text-xs font-semibold text-white">Position Loses</div>
+                    <div className="text-[10px] text-red-400">Wrong side of trade</div>
+                  </div>
                 </div>
-                <div className="text-sm font-semibold text-white mb-1">CPI Rises 3%</div>
-                <div className="text-xs text-gray-400">Real economic data</div>
-              </div>
-              <div className="hidden md:block text-yellow-500 text-2xl">→</div>
-              <div className="flex-1 text-center">
-                <div className="w-16 h-16 rounded-xl bg-purple-500/20 border-2 border-purple-500/40 flex items-center justify-center mx-auto mb-3">
-                  <CheckCircle className="w-8 h-8 text-purple-400" />
-                </div>
-                <div className="text-sm font-semibold text-white mb-1">Position Gains</div>
-                <div className="text-xs text-gray-400">Purchasing power preserved</div>
               </div>
             </div>
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 text-center mb-4">
+
+            {/* Funding Flow Between Sides */}
+            <div className="relative mb-6">
+              <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-green-500 via-purple-500 to-red-500" />
+              <div className="relative flex items-center justify-center">
+                <div className="bg-purple-500/20 border-2 border-purple-500/40 rounded-lg px-4 py-2">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-purple-200">
+                    <RefreshCw className="w-4 h-4" />
+                    <span>Funding flows between Long ⇄ Short to maintain price</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 text-center">
               <p className="text-sm text-blue-200">
-                <strong>Result:</strong> While traditional savings lose 3% to inflation, your position tracks the CPI increase, preserving your purchasing power.
+                <strong>Why Both Sides?</strong> Longs need shorts as counterparties. The funding mechanism keeps the market price anchored to real CPI data by creating continuous payments between the two sides based on supply/demand imbalance.
               </p>
-            </div>
-            <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-              <div className="flex items-start gap-3">
-                <Users className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
-                <div className="text-xs text-purple-200">
-                  <strong>Two-Sided Market:</strong> The protocol requires both long positions (hedgers protecting against inflation) and short positions (speculators or those expecting deflation) to create liquidity and fair price discovery. Funding payments flow between these sides to keep the market price aligned with the real economic index.
-                </div>
-              </div>
             </div>
           </Card>
 
