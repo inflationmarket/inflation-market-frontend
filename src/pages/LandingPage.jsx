@@ -292,78 +292,168 @@ export default function LandingPage() {
             </Card>
           </div>
 
-          {/* Example Flow Diagram - Two Sided */}
+          {/* Example Flow Diagram - Two Scenarios */}
           <Card className="bg-gradient-to-br from-white/5 to-white/0 border-white/20">
             <h3 className="text-2xl font-bold text-white mb-6 text-center">The Complete Flow: Two-Sided Market</h3>
+            <p className="text-center text-gray-400 mb-8 text-sm">Both longs and shorts can win - it depends on which direction inflation moves</p>
 
-            {/* Two parallel flows */}
-            <div className="grid md:grid-cols-2 gap-8 mb-6">
-              {/* Long Side */}
-              <div className="border-2 border-green-500/30 rounded-xl p-6 bg-green-500/5">
-                <div className="text-center mb-4">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/20 rounded-full text-green-400 text-sm font-semibold mb-2">
-                    <Shield className="w-4 h-4" />
-                    Long Position (Hedger)
+            {/* Scenario 1: Rising Inflation - Longs Win */}
+            <div className="mb-10">
+              <div className="text-center mb-4">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-500/40 rounded-lg">
+                  <TrendingUp className="w-5 h-5 text-blue-400" />
+                  <span className="font-bold text-blue-300">Scenario 1: Inflation Rises (3% CPI)</span>
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Long Side Wins */}
+                <div className="border-2 border-green-500/30 rounded-xl p-6 bg-green-500/5">
+                  <div className="text-center mb-4">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/20 rounded-full text-green-400 text-sm font-semibold mb-2">
+                      <Shield className="w-4 h-4" />
+                      Long Position (Hedger) ✓
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
+                        <span className="text-xl">💰</span>
+                      </div>
+                      <div className="text-xs font-semibold text-white">Deposit USDC</div>
+                      <div className="text-[10px] text-gray-400">$10,000 collateral</div>
+                    </div>
+                    <div className="text-green-400">↓</div>
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
+                        <TrendingUp className="w-6 h-6 text-green-400" />
+                      </div>
+                      <div className="text-xs font-semibold text-white">CPI Rises +3%</div>
+                      <div className="text-[10px] text-green-400">Position gains +$300</div>
+                    </div>
+                    <div className="text-green-400">↓</div>
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
+                        <CheckCircle className="w-6 h-6 text-green-400" />
+                      </div>
+                      <div className="text-xs font-semibold text-green-400">Winner!</div>
+                      <div className="text-[10px] text-green-400">Purchasing power preserved</div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex flex-col items-center gap-3">
-                  <div className="text-center">
-                    <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
-                      <span className="text-xl">💰</span>
+
+                {/* Short Side Loses */}
+                <div className="border-2 border-red-500/30 rounded-xl p-6 bg-red-500/5">
+                  <div className="text-center mb-4">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/20 rounded-full text-red-400 text-sm font-semibold mb-2">
+                      <TrendingUp className="w-4 h-4 transform rotate-180" />
+                      Short Position (Speculator) ✗
                     </div>
-                    <div className="text-xs font-semibold text-white">Deposit USDC</div>
-                    <div className="text-[10px] text-gray-400">$10,000 collateral</div>
                   </div>
-                  <div className="text-green-400">↓</div>
-                  <div className="text-center">
-                    <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
-                      <TrendingUp className="w-6 h-6 text-green-400" />
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
+                        <span className="text-xl">💰</span>
+                      </div>
+                      <div className="text-xs font-semibold text-white">Deposit USDC</div>
+                      <div className="text-[10px] text-gray-400">$10,000 collateral</div>
                     </div>
-                    <div className="text-xs font-semibold text-white">CPI Rises 3%</div>
-                    <div className="text-[10px] text-green-400">Position +$300</div>
-                  </div>
-                  <div className="text-green-400">↓</div>
-                  <div className="text-center">
-                    <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
-                      <CheckCircle className="w-6 h-6 text-green-400" />
+                    <div className="text-red-400">↓</div>
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
+                        <TrendingUp className="w-6 h-6 text-red-400 transform rotate-180" />
+                      </div>
+                      <div className="text-xs font-semibold text-white">CPI Rises +3%</div>
+                      <div className="text-[10px] text-red-400">Position loses -$300</div>
                     </div>
-                    <div className="text-xs font-semibold text-white">Purchasing Power</div>
-                    <div className="text-[10px] text-green-400">Preserved ✓</div>
+                    <div className="text-red-400">↓</div>
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
+                        <span className="text-xl">📉</span>
+                      </div>
+                      <div className="text-xs font-semibold text-red-400">Loser</div>
+                      <div className="text-[10px] text-red-400">Wrong side of trade</div>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Short Side */}
-              <div className="border-2 border-red-500/30 rounded-xl p-6 bg-red-500/5">
-                <div className="text-center mb-4">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/20 rounded-full text-red-400 text-sm font-semibold mb-2">
-                    <TrendingUp className="w-4 h-4 transform rotate-180" />
-                    Short Position (Speculator)
+            {/* Scenario 2: Falling Inflation - Shorts Win */}
+            <div className="mb-6">
+              <div className="text-center mb-4">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/20 border border-purple-500/40 rounded-lg">
+                  <TrendingUp className="w-5 h-5 text-purple-400 transform rotate-180" />
+                  <span className="font-bold text-purple-300">Scenario 2: Inflation Falls (-2% CPI / Deflation)</span>
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Long Side Loses */}
+                <div className="border-2 border-red-500/30 rounded-xl p-6 bg-red-500/5">
+                  <div className="text-center mb-4">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/20 rounded-full text-red-400 text-sm font-semibold mb-2">
+                      <Shield className="w-4 h-4" />
+                      Long Position (Hedger) ✗
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
+                        <span className="text-xl">💰</span>
+                      </div>
+                      <div className="text-xs font-semibold text-white">Deposit USDC</div>
+                      <div className="text-[10px] text-gray-400">$10,000 collateral</div>
+                    </div>
+                    <div className="text-red-400">↓</div>
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
+                        <TrendingUp className="w-6 h-6 text-red-400 transform rotate-180" />
+                      </div>
+                      <div className="text-xs font-semibold text-white">CPI Falls -2%</div>
+                      <div className="text-[10px] text-red-400">Position loses -$200</div>
+                    </div>
+                    <div className="text-red-400">↓</div>
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
+                        <span className="text-xl">📉</span>
+                      </div>
+                      <div className="text-xs font-semibold text-red-400">Loser</div>
+                      <div className="text-[10px] text-red-400">Wrong side of trade</div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex flex-col items-center gap-3">
-                  <div className="text-center">
-                    <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
-                      <span className="text-xl">💰</span>
+
+                {/* Short Side Wins */}
+                <div className="border-2 border-green-500/30 rounded-xl p-6 bg-green-500/5">
+                  <div className="text-center mb-4">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/20 rounded-full text-green-400 text-sm font-semibold mb-2">
+                      <TrendingUp className="w-4 h-4 transform rotate-180" />
+                      Short Position (Speculator) ✓
                     </div>
-                    <div className="text-xs font-semibold text-white">Deposit USDC</div>
-                    <div className="text-[10px] text-gray-400">$10,000 collateral</div>
                   </div>
-                  <div className="text-red-400">↓</div>
-                  <div className="text-center">
-                    <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
-                      <TrendingUp className="w-6 h-6 text-red-400 transform rotate-180" />
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
+                        <span className="text-xl">💰</span>
+                      </div>
+                      <div className="text-xs font-semibold text-white">Deposit USDC</div>
+                      <div className="text-[10px] text-gray-400">$10,000 collateral</div>
                     </div>
-                    <div className="text-xs font-semibold text-white">CPI Rises 3%</div>
-                    <div className="text-[10px] text-red-400">Position -$300</div>
-                  </div>
-                  <div className="text-red-400">↓</div>
-                  <div className="text-center">
-                    <div className="w-14 h-14 rounded-xl bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mx-auto mb-2">
-                      <span className="text-xl">📉</span>
+                    <div className="text-green-400">↓</div>
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
+                        <TrendingUp className="w-6 h-6 text-green-400 transform rotate-180" />
+                      </div>
+                      <div className="text-xs font-semibold text-white">CPI Falls -2%</div>
+                      <div className="text-[10px] text-green-400">Position gains +$200</div>
                     </div>
-                    <div className="text-xs font-semibold text-white">Position Loses</div>
-                    <div className="text-[10px] text-red-400">Wrong side of trade</div>
+                    <div className="text-green-400">↓</div>
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-xl bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center mx-auto mb-2">
+                        <CheckCircle className="w-6 h-6 text-green-400" />
+                      </div>
+                      <div className="text-xs font-semibold text-green-400">Winner!</div>
+                      <div className="text-[10px] text-green-400">Right side of trade</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -384,7 +474,7 @@ export default function LandingPage() {
 
             <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 text-center">
               <p className="text-sm text-blue-200">
-                <strong>Why Both Sides?</strong> Longs need shorts as counterparties. The funding mechanism keeps the market price anchored to real CPI data by creating continuous payments between the two sides based on supply/demand imbalance.
+                <strong>Why Both Sides?</strong> Longs need shorts as counterparties. Neither side is "always right" - both can win or lose depending on inflation direction. The funding mechanism keeps the market price anchored to real CPI data by creating continuous payments between the two sides based on supply/demand imbalance.
               </p>
             </div>
           </Card>
