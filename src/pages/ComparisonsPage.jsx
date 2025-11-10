@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Card } from '../components/ui/primitives';
+import { Link } from 'react-router-dom';
+import { Button, Card } from '../components/ui/primitives';
 import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
 import {
   Shield,
@@ -1074,14 +1075,23 @@ export default function ComparisonsPage() {
 
         {/* CTA Section */}
         <section className="pt-8">
-          <Card className="bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border-2 border-yellow-500/40 text-center p-8">
-            <h2 className="text-3xl font-bold text-white mb-4">Ready to Try Inflation Market?</h2>
-            <p className="text-lg text-gray-300 mb-6 max-w-2xl mx-auto">
-              Test the platform on Arbitrum Sepolia testnet. Experience perpetual positions anchored to real economic data with no risk to real funds.
+          <Card className="bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border-2 border-yellow-500/40 text-center p-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Ready to Get Started?</h2>
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+              Test the platform on Arbitrum Sepolia. Connect your wallet and explore our inflation markets with no risk to real funds.
             </p>
-            <a href="/app" className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-lg transition-colors">
-              Launch App <ArrowRight className="w-5 h-5" />
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/app">
+                <Button className="text-lg px-8 py-6 w-full">
+                  Get Started <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
+              <Link to="/markets">
+                <Button variant="ghost" className="text-lg px-8 py-6 w-full">
+                  Browse Markets
+                </Button>
+              </Link>
+            </div>
           </Card>
         </section>
       </main>
