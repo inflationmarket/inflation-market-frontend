@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Card } from '../components/ui/primitives';
 import { SiteHeader, SiteFooter } from '../components/layout/SiteChrome';
-import InfoTooltip from '../components/ui/InfoTooltip';
 import {
   Shield,
   TrendingUp,
@@ -86,36 +85,11 @@ export default function ComparisonsPage() {
                   <tbody className="text-sm">
                     <tr className="border-b border-white/10">
                       <td className="p-4 text-gray-300 font-medium">CPI Tracking</td>
-                      <td className="text-center p-4">
-                        <div className="inline-flex items-center">
-                          <CheckCircle className="w-5 h-5 text-green-400" />
-                          <InfoTooltip content="Position value tracks US CPI 1:1 via oracle-delivered data" />
-                        </div>
-                      </td>
-                      <td className="text-center p-4">
-                        <div className="inline-flex items-center">
-                          <CheckCircle className="w-5 h-5 text-green-400" />
-                          <InfoTooltip content="Interest rate adjusts with CPI-U every 6 months" />
-                        </div>
-                      </td>
-                      <td className="text-center p-4">
-                        <div className="inline-flex items-center">
-                          <CheckCircle className="w-5 h-5 text-green-400" />
-                          <InfoTooltip content="Principal adjusts with CPI, preserving real value" />
-                        </div>
-                      </td>
-                      <td className="text-center p-4">
-                        <div className="inline-flex items-center">
-                          <AlertCircle className="w-5 h-5 text-yellow-400" />
-                          <InfoTooltip content="Imperfect correlation (~0.5-0.6 historically). Gold often moves independently of CPI" />
-                        </div>
-                      </td>
-                      <td className="text-center p-4">
-                        <div className="inline-flex items-center">
-                          <XCircle className="w-5 h-5 text-red-400" />
-                          <InfoTooltip content="Fixed APY doesn't adjust with inflation. When CPI > APY, you lose purchasing power" />
-                        </div>
-                      </td>
+                      <td className="text-center p-4"><CheckCircle className="w-5 h-5 text-green-400 mx-auto" /></td>
+                      <td className="text-center p-4"><CheckCircle className="w-5 h-5 text-green-400 mx-auto" /></td>
+                      <td className="text-center p-4"><CheckCircle className="w-5 h-5 text-green-400 mx-auto" /></td>
+                      <td className="text-center p-4"><AlertCircle className="w-5 h-5 text-yellow-400 mx-auto" /></td>
+                      <td className="text-center p-4"><XCircle className="w-5 h-5 text-red-400 mx-auto" /></td>
                     </tr>
                     <tr className="border-b border-white/10">
                       <td className="p-4 text-gray-300 font-medium">Instant Liquidity</td>
