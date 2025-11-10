@@ -264,11 +264,11 @@ export default function LandingPage() {
                   Perpetual Positions
                   <InfoTooltip
                     title="Long & Short Positions"
-                    content="Unlike traditional futures that expire monthly/quarterly, perpetuals never expire. Go LONG to hedge inflation (savers), or SHORT to speculate on deflation (traders). Both sides are needed for liquidity and fair pricing."
+                    content="Unlike traditional futures that expire monthly/quarterly, perpetuals never expire. Go LONG if you expect inflation to rise or want to hedge purchasing power. Go SHORT if you expect inflation to fall or want to hedge against deflationary scenarios. Both sides are needed for liquidity and fair pricing."
                   />
                 </h3>
               </div>
-              <p className="text-gray-300 mb-3">Open long positions to hedge inflation, or short positions to speculate. No expiry dates—hold for days, months, or years. Your position value tracks the inflation index.</p>
+              <p className="text-gray-300 mb-3">Open long or short positions based on your inflation outlook. No expiry dates—hold for days, months, or years. Your position value tracks the inflation index.</p>
               <div className="text-sm text-green-400 font-mono bg-green-500/10 rounded px-3 py-2">
                 Position Value ≈ Collateral × (1 ± ΔCPI)
               </div>
@@ -311,7 +311,7 @@ export default function LandingPage() {
                   <div className="text-center mb-4">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/20 rounded-full text-green-400 text-sm font-semibold mb-2">
                       <Shield className="w-4 h-4" />
-                      Long Position (Hedger) ✓
+                      Long Position ✓
                     </div>
                   </div>
                   <div className="flex flex-col items-center gap-3">
@@ -346,7 +346,7 @@ export default function LandingPage() {
                   <div className="text-center mb-4">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/20 rounded-full text-red-400 text-sm font-semibold mb-2">
                       <TrendingUp className="w-4 h-4 transform rotate-180" />
-                      Short Position (Speculator) ✗
+                      Short Position ✗
                     </div>
                   </div>
                   <div className="flex flex-col items-center gap-3">
@@ -392,7 +392,7 @@ export default function LandingPage() {
                   <div className="text-center mb-4">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/20 rounded-full text-red-400 text-sm font-semibold mb-2">
                       <Shield className="w-4 h-4" />
-                      Long Position (Hedger) ✗
+                      Long Position ✗
                     </div>
                   </div>
                   <div className="flex flex-col items-center gap-3">
@@ -427,7 +427,7 @@ export default function LandingPage() {
                   <div className="text-center mb-4">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/20 rounded-full text-green-400 text-sm font-semibold mb-2">
                       <TrendingUp className="w-4 h-4 transform rotate-180" />
-                      Short Position (Speculator) ✓
+                      Short Position ✓
                     </div>
                   </div>
                   <div className="flex flex-col items-center gap-3">
