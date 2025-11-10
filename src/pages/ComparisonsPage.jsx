@@ -629,7 +629,7 @@ export default function ComparisonsPage() {
 
             {/* Short Position Scenarios */}
             <section>
-              <h2 className="text-3xl font-bold text-white mb-6">Short Position Performance (Speculators)</h2>
+              <h2 className="text-3xl font-bold text-white mb-6">Short Position Performance</h2>
               <p className="text-gray-400 mb-6 text-center max-w-3xl mx-auto">
                 If you believe inflation will fall or want to hedge against deflationary environments, short positions offer the inverse exposure. Here's how shorts perform:
               </p>
