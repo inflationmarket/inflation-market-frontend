@@ -262,16 +262,16 @@ export default function LandingPage() {
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 font-bold text-xl">2</div>
                 <h3 className="text-xl font-bold text-white inline-flex items-center">
-                  Perpetual Position
+                  Perpetual Positions
                   <InfoTooltip
-                    title="Why Perpetual?"
-                    content="Unlike traditional futures that expire monthly/quarterly, perpetuals never expire. This means you can hold a long position indefinitely—protecting your savings for years without needing to 'roll' contracts or worry about expiration dates."
+                    title="Long & Short Positions"
+                    content="Unlike traditional futures that expire monthly/quarterly, perpetuals never expire. Go LONG to hedge inflation (savers), or SHORT to speculate on deflation (traders). Both sides are needed for liquidity and fair pricing."
                   />
                 </h3>
               </div>
-              <p className="text-gray-300 mb-3">Open a long position with your savings. No expiry dates—hold for days, months, or years. Your position value tracks the inflation index.</p>
+              <p className="text-gray-300 mb-3">Open long positions to hedge inflation, or short positions to speculate. No expiry dates—hold for days, months, or years. Your position value tracks the inflation index.</p>
               <div className="text-sm text-green-400 font-mono bg-green-500/10 rounded px-3 py-2">
-                Position Value ≈ Collateral × (1 + ΔCPI)
+                Position Value ≈ Collateral × (1 ± ΔCPI)
               </div>
             </Card>
 
@@ -329,10 +329,18 @@ export default function LandingPage() {
                 <div className="text-xs text-gray-400">Purchasing power preserved</div>
               </div>
             </div>
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 text-center">
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 text-center mb-4">
               <p className="text-sm text-blue-200">
                 <strong>Result:</strong> While traditional savings lose 3% to inflation, your position tracks the CPI increase, preserving your purchasing power.
               </p>
+            </div>
+            <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <Users className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
+                <div className="text-xs text-purple-200">
+                  <strong>Two-Sided Market:</strong> The protocol requires both long positions (hedgers protecting against inflation) and short positions (speculators or those expecting deflation) to create liquidity and fair price discovery. Funding payments flow between these sides to keep the market price aligned with the real economic index.
+                </div>
+              </div>
             </div>
           </Card>
 
@@ -392,17 +400,17 @@ export default function LandingPage() {
               {
                 icon: <Shield className="w-8 h-8" />,
                 title: 'Hedge Inflation Risk',
-                description: 'Protect savings from rising prices with CPI-linked markets and transparent data.'
+                description: 'Long positions protect savings from rising prices. Your position value tracks CPI increases, preserving purchasing power.'
+              },
+              {
+                icon: <TrendingUp className="w-8 h-8" />,
+                title: 'Speculate on Deflation',
+                description: 'Short positions profit when inflation falls. Express bearish macro views or hedge against deflationary environments.'
               },
               {
                 icon: <Zap className="w-8 h-8" />,
                 title: 'Earn Funding Yields',
-                description: 'Earn or pay funding as mark re-anchors to index; align positions with your macro view.'
-              },
-              {
-                icon: <Users className="w-8 h-8" />,
-                title: 'Speculate on Economics',
-                description: 'Express views on general CPI, with future expansion to sector-specific and global economic indicators.'
+                description: 'Funding flows continuously between longs and shorts. When you\'re on the right side of the market imbalance, you earn passive yield.'
               }
             ].map((feature, i) => (
               <Card key={i} className="text-center hover:border-yellow-500/40 transition-all">
