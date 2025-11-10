@@ -14,6 +14,7 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const HowItWorksPage = lazy(() => import('./pages/HowItWorksPage'));
 const WhitepaperPage = lazy(() => import('./pages/WhitepaperPage'));
 const RoadmapPage = lazy(() => import('./pages/RoadmapPage'));
+const ComparisonsPage = lazy(() => import('./pages/ComparisonsPage'));
 
 const FAQPage = lazy(() => import('./pages/FAQPage'));
 const CompliancePage = lazy(() => import('./components/pages/CompliancePage'));
@@ -90,6 +91,7 @@ const WithNavigate = ({ Component }) => {
       'how-it-works': '/how-it-works',
       whitepaper: '/whitepaper',
       roadmap: '/roadmap',
+      comparisons: '/comparisons',
       faq: '/faq',
       compliance: '/compliance',
     };
@@ -114,6 +116,7 @@ const RoutedApp = () => (
     <Route path="/how-it-works" element={<HowItWorksPage />} />
     <Route path="/whitepaper" element={<WhitepaperPage />} />
     <Route path="/roadmap" element={<RoadmapPage />} />
+    <Route path="/comparisons" element={<ComparisonsPage />} />
     <Route path="*" element={<WithNavigate Component={LandingPageComp} />} />
   </Routes>
 );
