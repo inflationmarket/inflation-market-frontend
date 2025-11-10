@@ -6,17 +6,18 @@ import { Card } from '../ui/primitives';
 export const HOME_FAQS = [
   {
     question: 'What is Inflation Market?',
-    answer: `Inflation Market is a decentralized protocol that lets anyone hedge or speculate on macroeconomic indicators like CPI, housing prices, and GDP growth. Inspired by Nobel Laureate Robert Shiller's macro-risk exchange concept, the protocol provides perpetual swaps, margin management, and a hybrid oracle network so exposure to real-world economics can be handled on-chain—permissionlessly, transparently, and without centralized custody.`,
+    answer: `Inflation Market is a decentralized protocol that lets you hedge or speculate on real economic indicators like US CPI, housing prices, and GDP growth. Using perpetual swaps (positions that never expire), you can protect your savings from inflation or profit when inflation falls—all without banks, brokers, or giving up custody of your funds.`,
     comparison: [
-      'Unlike crypto-focused perpetuals (GMX, dYdX), these markets track economic data.',
-      'Traditional inflation hedges require banks or ETFs; Inflation Market is permissionless and non-custodial.',
+      'Unlike crypto perpetuals (GMX, dYdX) that track volatile coin prices, these markets track stable economic data from official sources like the Bureau of Labor Statistics.',
+      'Traditional inflation hedges (TIPS, I Bonds) require banks and have strict limits; Inflation Market is permissionless and non-custodial.',
     ],
   },
   {
     question: 'Who is Inflation Market built for?',
-    answer: `Governments, corporate treasuries, DAOs, and individual traders who need to hedge inflation risk, express macro views, or create new structured products. Anyone who wants diversified macro exposure without relying on centralized instruments can benefit.`,
+    answer: `Individual traders, DAOs, and corporate treasuries who need to hedge inflation risk or express macro views. Anyone seeking diversified exposure to real economic data without relying on centralized instruments can benefit—from savers protecting purchasing power to speculators betting on deflationary periods.`,
     comparison: [
-      'Traditional inflation swaps are institutional-only; this platform is open to anyone with a Web3 wallet.',
+      'Traditional inflation swaps are institutional-only; this platform is permissionless and open to anyone with a Web3 wallet.',
+      'Unlike crypto perpetuals that track volatile coin prices, these markets track stable economic indicators.',
     ],
   },
   {
@@ -36,26 +37,26 @@ export const HOME_FAQS = [
   },
   {
     question: 'How are prices sourced and kept trustworthy?',
-    answer: `Inflation Market routes data through a hybrid MPC oracle network. Multiple independent operators fetch CPI updates from official sources (BLS, Eurostat, ONS), cross-check with market proxies (inflation swaps, breakevens), sign the payload, and submit it on-chain through Chainlink or direct callers. The on-chain contract enforces multi-sig consensus (median + deviation checks) before updating the index, and every update is viewable via events.`,
+    answer: `Multiple independent nodes fetch CPI data from official government sources (like the Bureau of Labor Statistics), verify it against market data, and submit it on-chain. The smart contract only accepts updates when multiple nodes agree, preventing manipulation. Every price update is publicly visible on the blockchain for full transparency.`,
     comparison: [
-      'Chainlink-only feeds use a single aggregator; we combine multiple operators, official APIs, and fallback proxies.',
-      'If a primary source is stale, the protocol automatically falls back to secondary feeds before manual intervention.',
+      'Single-source oracles create a single point of failure; our multi-node system requires consensus from multiple independent operators.',
+      'If official data is delayed, the protocol automatically uses verified market proxies (like inflation swap rates) as fallbacks.',
     ],
   },
   {
     question: 'How do the perpetual markets work?',
-    answer: `Each market is a perpetual swap with up to 20x leverage. Funding payments flow between longs and shorts to keep the swap price aligned with the oracle index. The PositionManager contract manages open/close, margin adjustments, and automatic liquidations when the health ratio breaches the maintenance margin.`,
+    answer: `Perpetual markets let you open long or short positions that never expire. You can use up to 20x leverage. To keep market prices aligned with real CPI data, "funding payments" flow between longs and shorts every period—when the market price drifts too high, longs pay shorts (and vice versa). This mechanism ensures prices stay anchored to economic reality, not speculation.`,
     comparison: [
-      'Similar to DeFi perpetuals, but the underlying index is CPI/housing/GDP instead of crypto spot prices.',
-      'Traditional futures expire monthly; perpetuals never expire and require funding mechanics.',
+      'Similar to crypto perpetuals (like on dYdX), but tracking stable economic indicators (CPI, housing, GDP) instead of volatile crypto prices.',
+      'Traditional futures contracts expire monthly or quarterly; perpetuals never expire, giving you unlimited flexibility.',
     ],
   },
   {
     question: 'How are liquidations handled?',
-    answer: `Each position tracks a health ratio (collateral versus required margin). When it drops below the maintenance threshold, the Liquidator contract closes the position. Liquidators receive a reward, and an insurance fund absorbs any residual shortfall.`,
+    answer: `Your position has a "health ratio" that tracks your collateral versus your margin requirements. If market moves cause this ratio to drop too low (below the maintenance threshold), anyone can trigger a liquidation to close your position automatically. The liquidator earns a small reward, and an insurance fund covers any remaining losses to protect the system.`,
     comparison: [
-      'This eliminates reliance on centralized brokers; the mechanics are on-chain and auditable.',
-      'The health ratio approach mirrors proven DeFi lending/liquidation patterns.',
+      'Unlike centralized exchanges where liquidations happen in black boxes, all liquidations here are transparent and executed by smart contracts anyone can audit.',
+      'The health ratio approach is battle-tested across DeFi lending protocols like Aave and Compound.',
     ],
   },
   {
@@ -67,10 +68,10 @@ export const HOME_FAQS = [
   },
   {
     question: 'What makes the hybrid oracle different from existing feeds?',
-    answer: `Multiple nodes must stake tokens, sign data, and agree before an update is accepted. Each node’s reputation and stake determine its influence. If a node posts a bad value, it’s slashed and suspended. The entire process leaves an on-chain and off-chain audit trail (report origins, timestamps, signatures).`,
+    answer: `Our hybrid oracle requires multiple independent nodes to stake tokens, fetch data from official sources, and reach consensus before any price update is accepted. If a node submits bad data, they lose their stake (get "slashed") and are suspended. This creates strong incentives for honesty while distributing trust across multiple operators instead of relying on a single source.`,
     comparison: [
-      'Sole reliance on a single Chainlink aggregator or centralized API creates a single point of failure—our hybrid network distributes trust.',
-      'By combining official data with market proxies and requiring node consensus, we reduce both oracle manipulation and stale data risk.',
+      'Single Chainlink aggregators or centralized APIs create a single point of failure; our multi-node consensus distributes trust.',
+      'We combine official government data (BLS, Federal Reserve) with market proxies (inflation swap rates) and require multiple nodes to agree, reducing manipulation risk.',
     ],
   },
   {
